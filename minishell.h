@@ -51,11 +51,10 @@ typedef struct s_shell
 // funcs of the execution  
 void  ft_execution(t_shell *minishell);
 int   ft_cmnd_nb( t_list *data);
-void  ft_is_builtins(t_shell *minishell);
-void  ft_echo(t_shell *minishell);
+void  ft_echo(t_shell *shell);
 void  ft_env(t_shell *data);
 void  ft_cd(t_shell *shell);
-void  ft_pwd();
+void  ft_pwd(t_shell *shell);
 void  ft_unset(t_shell *data);
 void  ft_export(t_shell *shell);
 int   ft_herdoc_nb(t_list *save);
@@ -67,7 +66,9 @@ int	  ft_check_is_number(char *str);
 int   cmmnd_len(char **str);
 char  *get_env_value(char **env, char *var);
 int   ft_strcmp_len(char *s1,char *s2, int len);
-int check_invalid_arg(char *command);
+int   check_invalid_arg(char *command);
+int   ft_check_is_exist(char *str,char c);
+
 
 // void ft_herdoc(t_shell *data);
 

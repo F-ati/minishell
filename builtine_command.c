@@ -34,40 +34,43 @@ void ft_print_str(t_shell *minishell , int flag)
 			}
 			i++;
 		}
-		printf(" ");
+		if(minishell->list->command[j + 1] != NULL)
+			printf(" ");
 		j++;
 	}
 	if (flag == 1 )
 		printf("\n");
 }
 
-void ft_echo(t_shell *minishell)
+void ft_echo(t_shell *shell)
 {
 	
 	int i;
 	int j ;
 	j = 1;
 	i = 0;
-	if ( minishell->list->command[j] != NULL && minishell->list->command[j][0] == '-' && minishell->list->command[j][1] != '-')
+	while(shell->list->command[j] != NULL && shell->list->command[j][i] == '-')
 	{
-		while (minishell->list->command[j] != NULL)
+		i++;
+		while(shell->list->command[j][i] != '\0' && shell->list->command[j][i] == 'n')
 		{
-			i = 0;
-			while((minishell->list->command[j][i] != '\0' && minishell->list->command[j][i] == 'n' )|| minishell->list->command[j][i] == '-')
-			{
-				i++;
-			}
-		    if (i != ft_strlen(minishell->list->command[j]))
-				break;
+			i++;
+		}
+		if(shell->list->command[j][i] == '\0')
+		{
 			j++;
 		}
+		else
+		{
+			break;
+		}
+		
 	}
-	ft_print_str(minishell,j);
-	minishell->exit_status = 0;
+	ft_print_str(shell,j);
+	shell->exit_status = 0;
 }
 
 //  env command 
-
 
 void  ft_env(t_shell *data)
 {
@@ -96,6 +99,7 @@ void ft_pwd(t_shell *shell)
     {
         perror("bash: pwd: getcwd");
         shell->exit_status = 1;
+		return;
     }
     printf("%s\n",path);
 	shell->exit_status = 0;
@@ -105,98 +109,78 @@ void ft_pwd(t_shell *shell)
 
 // cd command 
 
-char *get_pwd(t_shell *shell)
+void update_pwd_env(t_shell *shell ,char *old_pwd)
 {
 	int j = 0;
-	char *pwd;
-	pwd = NULL;
-	while (shell->env[j] != NULL)
-	{
-		if(shell->env[j][0] == 'P' && strncmp(shell->env[j] ,"PWD",3) == 0 && shell->env[j][3] == '=')
-		{
-			pwd = ft_strdup(&shell->env[j][4]);
-			break;
-		}
-		j++;
-	}
-	return(pwd);
-}
-
-void update_pwd_env(char *curr_pwd,t_shell *shell)
-{
-	int j = 0;
-	int flag = 0;
-	char *save_pwd = get_pwd(shell);
+	char *save_for_free ;
+	char *PWD = getcwd(NULL,0);
+    if (PWD ==  NULL)
+    {
+        perror("bash: cd");
+        shell->exit_status = 1;
+		return;
+    }
 	while(shell->env[j] != NULL)
 	{
-		
 		if(shell->env[j][0] == 'P' && strncmp(shell->env[j] ,"PWD",3) == 0 && shell->env[j][3] == '=')
 		{
-			char *save = shell->env[j];
-			shell->env[j] = ft_strjoin("PWD=",curr_pwd);
-			free(save);
-			flag = 1;
+			save_for_free = shell->env[j];
+			shell->env[j] = ft_strjoin("PWD=",PWD);
+			printf("%s\n",shell->env[j]);
+			free(save_for_free);
 		}	
-		if (shell->env[j][0] == 'O' && strncmp(shell->env[j] ,"OLDPWD",6) == 0 && shell->env[j][6] == '=' && flag == 1)
+		if (shell->env[j][0] == 'O' && strncmp(shell->env[j] ,"OLDPWD",6) == 0 && shell->env[j][6] == '=')
 		{
-			char *save1 = shell->env[j];
-			shell->env[j] = ft_strjoin("OLDPWD=",save_pwd);
-			free(save1);
+			save_for_free = shell->env[j];
+			shell->env[j] = ft_strjoin("OLDPWD=",old_pwd);
+			printf("%s\n",shell->env[j]);
+			free(save_for_free);
 		}
 		j++;
 	}
-	free(save_pwd);
+	free(old_pwd);
+	free(PWD);
 }
 
 void ft_cd(t_shell *shell)
 {
-    int i;
-    char *str;
-    int args_len =  cmmnd_len(shell->list->command);
-    char *curr_pwd = NULL;
-    if(args_len > 2)
+    char *path;
+	int args_nb = cmmnd_len(shell->list->command);
+    if( args_nb > 2)
     {
         printf("bash: cd: too many arguments\n");
         shell->exit_status = 1;
         return;
     }
-    if (args_len == 1)
+    if ( args_nb == 1)
     {
-        str = get_env_value(shell->env , "HOME");
-        if(str == NULL)
+        path = get_env_value(shell->env , "HOME");
+        if(path == NULL)
         {
             printf("bash: cd: HOME not set\n");
             shell->exit_status = 1;
             return;
         }
-		
-        i = chdir(str);
-        if ( i < 0)
-        {
-            perror("bash: cd:");
-            shell->exit_status = 1;
-        }
     }
-    else 
-    {
-      i = chdir(shell->list->command[1]);
-
-        if ( i < 0)
-        {
-            perror("bash: cd:");
-            shell->exit_status = 1;
-            return;
-        }
-    }
-    curr_pwd = getcwd(NULL,0);
-    if (curr_pwd ==  NULL)
+    else
+	{
+		path = shell->list->command[1]; 
+	}
+	char *old_pwd = getcwd(NULL,0);
+    if (old_pwd ==  NULL)
     {
         perror("bash: cd");
         shell->exit_status = 1;
+		return;
     }
-    update_pwd_env(curr_pwd,shell);
+	if (chdir(path) < 0) 
+	{
+    	perror("bash: cd");
+        shell->exit_status = 1;
+        return;
+    }
+    update_pwd_env(shell,old_pwd);
 	shell->exit_status = 0;
-    free(curr_pwd); 
 }
 //  export command ;
 
@@ -232,10 +216,9 @@ char **ft_resize(char **str, char *new_var)
 	p[len] = new_var;
 	len++;
 	p[len] = NULL;
-	// free(str);
+	free(str);
 	return(p);
 }
-
 
 char *get_name_var(char *command)
 {
@@ -261,21 +244,19 @@ char *get_name_var(char *command)
 void ft_apdute_env(t_shell *shell,char *new_arg)
 {
     int indix ;
-	// char *for_free;
+	char *for_free;
 	char *var_name = get_name_var(new_arg);
 	indix = get_var_indix(shell->env ,var_name);
 	if(indix < 0)
 	{
-		// printf("--->%d\n",indix);
 		shell->env = ft_resize(shell->env,new_arg);
 	}
 	else
 	{
-		// printf("--->%d\n",indix);
-		// indix = get_var_indix(shell->env ,var_name);
-		// for_free = shell->env[indix]; WHYYYYYYY???
-		shell->env[indix] = new_arg;
-		// free(for_free);
+		
+		for_free = shell->env[indix]; 
+		shell->env[indix] = ft_strdup(new_arg);
+		free(for_free);
 	}
 	free(var_name);
 }
@@ -284,7 +265,7 @@ void ft_apdute_env(t_shell *shell,char *new_arg)
 void  ft_apdute_export(t_shell *shell , char *new_arg)
 {
 	int indix ;
-	// char *for_free;
+	char *for_free;
 	char *var_name = get_name_var(new_arg);
 	indix = get_var_indix(shell->export ,var_name);
 	if(indix < 0)
@@ -293,9 +274,9 @@ void  ft_apdute_export(t_shell *shell , char *new_arg)
 	}
 	else
 	{
-		// for_free = shell->export[indix];
-		shell->export[indix] = new_arg;
-		// free(for_free);
+		for_free = shell->export[indix];
+		shell->export[indix] = ft_strdup(new_arg);
+		free(for_free);
 	}
 	free(var_name);
 }

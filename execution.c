@@ -12,120 +12,119 @@
 
 #include "minishell.h"
 
-int check_access(t_shell *minishell)
+void ft_execve(t_shell *shell,char *path)
 {
-	minishell->i = 0;
-
-	char *str;
-	str = getenv("PATH");
-	if (str == NULL)
-    {
-
-		return (-7);
-	}
-	
-		minishell->path = ft_split(str ,':');
-
-	while(minishell->path[minishell->i] != NULL)
+	int pid ;
+	int status ;
+	int signal_nb;
+	pid = fork();
+	if(pid == 0)
 	{
-		minishell->path[minishell->i] = ft_strjoin(minishell->path[minishell->i],"/");
-		minishell->path[minishell->i] = ft_strjoin(minishell->path[minishell->i] , minishell->list->command[0]);
-		minishell->i++;
-	}
-	minishell->i = 0;
-	while(minishell->path[minishell->i] != NULL)
-	{
-		if (access(minishell->path[minishell->i] , X_OK) == 0)
-			return(1);
-		minishell->i++;
-	}
-	return (-7);
-}
-
-void ft_exec_func(t_shell *minishell)
-{
-	int  pid ;
-	if (check_access(minishell) == 1)
-	{
-		pid = fork();
-		if (pid == 0)
-		{
-			execve(minishell->path[minishell->i], minishell->list->command,minishell->env);
-			//  tcheck the error if execve failed whid perror;
-		}
-		else
-		{
-			wait(NULL);
-		}
+		execve(path,shell->list->command,shell->env);
+		perror("bash : execve");
+		shell->exit_status = 1;
 	}
 	else
 	{
-		printf("command not found\n");
-	}
+		 waitpid(pid,&status,0);
+        if(WIFEXITED(status))
+        {
+            shell->exit_status = WEXITSTATUS(status);
+        }
+        if(WIFSIGNALED(status))
+        {
+            signal_nb =  WTERMSIG(status) ;
+            shell->exit_status = 128 + signal_nb;
+        }
+    }
 }
 
-void ft_is_builtins(t_shell *minishell)
+void ft_exec_non_builtin(t_shell *shell)
 {
-	
-		if(ft_strcmp("echo",minishell->list->command[0]) == 0)
-		{
-			ft_echo(minishell);
-		}
-		else if (ft_strcmp("cd",minishell->list->command[0]) == 0)
-		{
-			//  cd | cd ~ | cd ..;
-			//  if the pwd is unset ;
-			//  set the pwd in env when run the cd ;
-			ft_cd(minishell);
-		}
-		else if ( ft_strcmp("pwd",minishell->list->command[0]) == 0 )
-		{
-			ft_pwd(minishell);
-		}
-		else if ( ft_strcmp("export",minishell->list->command[0]) == 0)
-		{
-			// what happing when I run export HOME=
-			ft_export(minishell);
-		}
-		else if (ft_strcmp("unset",minishell->list->command[0]) == 0 )
-		{
-			minishell->exit_status = 0;
-			ft_unset(minishell);
-		}
-		else if ( ft_strcmp("env",minishell->list->command[0]) == 0)
-		{
-			// WHEN DESPLAY FERST TIME THE EV DON'T DESPLAY THE OLDPWD;
-			ft_env(minishell);
-		}
-		else if (ft_strcmp("exit",minishell->list->command[0]) == 0)
-		{
-			ft_exit(minishell);
-		}
-		
-	   else 
-		{ 
-			ft_exec_func(minishell);
-		}
-	
-}
-
-void ft_execution(t_shell *minishell)
-{
-	minishell->cmd_nb = ft_cmnd_nb(minishell->list);
-	minishell->herdoc_nb = ft_herdoc_nb(minishell->list);
-	if (minishell->cmd_nb == 1)
+	int i = 0;	
+	char *str ;
+	char **path;
+	str = get_env_value(shell->env, "PATH");
+	if (access(shell->list->command[0] , F_OK | X_OK) == 0)
 	{
-		while(minishell->herdoc_nb > 0)
+		ft_execve(shell,shell->list->command[0]);
+	}
+	else if ( str == NULL || ft_check_is_exist(shell->list->command[0],'/') == 1)
+	{
+		printf("bash: %s: No such file or directory\n",shell->list->command[0]);
+		shell->exit_status = 127;
+		// return or not en depend 3la fayen m3ayta l functions ;
+	}
+	else if (str != NULL)
+	{
+		path = ft_split(str,':');
+		while(path[i] != NULL)
 		{
-			ft_herdoc(minishell);
-			minishell->herdoc_nb--;
+			path[i] = ft_strjoin(path[i],"/");
+			path[i] = ft_strjoin(path[i],shell->list->command[0]);
+			if(access(path[i], F_OK | X_OK) == 0)
+			{
+				ft_execve(shell,path[i]);
+				break;
+			}
+			i++;
 		}
-		// skeep rederections;
-		// der kol func l rederct mohadd 
-		// and after hendle hadxi f builtin and call this func inside it ;
-		ft_is_builtins(minishell);
-		
+		if(ft_check_is_exist(shell->list->command[0],'/') == 1 && path[i] == NULL)
+		{
+			// perror("bash");
+			printf("bash: %s : No such file or directory\n",shell->list->command[0]);
+			shell->exit_status = 127;
+		}
+		else if (path[i] == NULL)
+		{
+			printf("%s: command not found\n" ,shell->list->command[0]);
+			shell->exit_status = 127;
+		}
 	}
 	
+}
+
+void execute_simple_command(t_shell *shell)
+{
+	if(ft_strcmp("echo",shell->list->command[0]) == 0)
+	{
+		ft_echo(shell);
+	}
+	else if ( ft_strcmp("env",shell->list->command[0]) == 0)
+	{
+		ft_env(shell);
+	}
+	else if ( ft_strcmp("pwd",shell->list->command[0]) == 0 )
+	{
+		ft_pwd(shell);
+	}
+	else if (ft_strcmp("cd",shell->list->command[0]) == 0)
+	{
+		//  cd ~ ;		
+		ft_cd(shell);
+	}
+	else if ( ft_strcmp("export",shell->list->command[0]) == 0)
+	{
+		ft_export(shell);
+	}
+	else if (ft_strcmp("unset",shell->list->command[0]) == 0 )
+	{
+		ft_unset(shell);
+	}
+	else if (ft_strcmp("exit",shell->list->command[0]) == 0)
+	{
+		ft_exit(shell);
+	}	
+	else 
+	{ 
+		ft_exec_non_builtin(shell);
+	}
+	
+}
+
+void ft_execution(t_shell *shell)
+{
+	execute_simple_command(shell);
+
 }
 

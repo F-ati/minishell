@@ -271,36 +271,36 @@ void printer(char **a)
     while (a[i])
         printf ("--%s--\n", a[i++]);    
 }
-int ft_strcmp_len(char *s1,char *s2, int len)
-{
-    int	i;
+// int ft_strcmp_len(char *s1,char *s2, int len)
+// {
+//     int	i;
 
-	i = 0;
-	while (i < len && s1[i] && s2[i])
-	{
-        if(s1[i] == s2[i])
-            i++;
-        else
-            break;
-	}
-    if(i == len)
-        return(0);
-    return (s1[i] - s2[i]);
-}
+// 	i = 0;
+// 	while (i < len && s1[i] && s2[i])
+// 	{
+//         if(s1[i] == s2[i])
+//             i++;
+//         else
+//             break;
+// 	}
+//     if(i == len)
+//         return(0);
+//     return (s1[i] - s2[i]);
+// }
 
-char *get_env_value(char **env, char *var)
-{
-    int i = 0;
-    int len = ft_strlen(var);
+// char *get_env_value(char **env, char *var)
+// {
+//     int i = 0;
+//     int len = ft_strlen(var);
     
-    while(env[i])
-    {
-        if(ft_strcmp_len(env[i],var,len) == 0 && env[i][len] == '=')
-            return(env[i] + len + 1);
-        i++;
-    }
-    return(NULL);
-}
+//     while(env[i])
+//     {
+//         if(ft_strcmp_len(env[i],var,len) == 0 && env[i][len] == '=')
+//             return(env[i] + len + 1);
+//         i++;
+//     }
+//     return(NULL);
+// }
 char *get_variable(char *command,int pos)
 {
     char *var;
@@ -905,11 +905,11 @@ void    free_list(t_list *list)
 }
 void    leak()
 {
-    system("leaks -q a.out");
+    system("leak minishell");
 }
 int main(int ac,char **av,char **env)
 {
-    atexit(leak);
+    // atexit(leak);
     (void)ac;
     (void)av;
     int c = 0;
@@ -924,7 +924,10 @@ int main(int ac,char **av,char **env)
         
         input = readline("minishell$ ");
         if(input == NULL)
+        {
+            atexit(leak);
             break ;
+        }
         com = ft_split_command(input,&minishell.exit_status);
         if (com)
         {
@@ -933,7 +936,7 @@ int main(int ac,char **av,char **env)
             ft_join(com);
             ft_join_quote(com);
             command = ft_split_by_space(com);
-            free_arr(com);
+            // free_arr(com);
             c = check_error(command);
             if(c == 0)
             {
@@ -949,7 +952,7 @@ int main(int ac,char **av,char **env)
             }
             free_arr(command);
         }
-        add_history(input);
+        // add_history(input);
         free (input);
     }
     free_arr(minishell.env);
