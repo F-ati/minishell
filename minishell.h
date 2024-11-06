@@ -17,6 +17,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <sys/wait.h>
+#include <errno.h>
 #include "libft/libft.h"
 
 typedef struct s_dir
@@ -68,6 +69,8 @@ char  *get_env_value(char **env, char *var);
 int   ft_strcmp_len(char *s1,char *s2, int len);
 int   check_invalid_arg(char *command);
 int   ft_check_is_exist(char *str,char c);
+void  redirect_output( t_shell  *shell);
+void execute_simple_command(t_shell *shell);
 
 
 // void ft_herdoc(t_shell *data);

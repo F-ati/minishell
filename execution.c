@@ -124,7 +124,12 @@ void execute_simple_command(t_shell *shell)
 
 void ft_execution(t_shell *shell)
 {
-	execute_simple_command(shell);
-
+	// execute_simple_command(shell);
+	// handel the multiple the > > with one command;
+	(void)shell;
+    redirect_output(shell);
+	// execute_simple_command(shell);
+	
+	
 }
 
