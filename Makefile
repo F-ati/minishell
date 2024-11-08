@@ -8,7 +8,7 @@ LDFLAGS = -lreadline
 
 RM = rm -rf 
 
-SRC = split_double_single.c minishell_utils.c execution.c herdoc.c builtine_command.c redirec_out.c
+SRC = split_double_single.c minishell_utils.c execution.c herdoc.c builtine_command.c redirections.c
  
 OBJ = $(SRC:.c=.o)
 

@@ -124,12 +124,27 @@ void execute_simple_command(t_shell *shell)
 
 void ft_execution(t_shell *shell)
 {
+	int saved_stdout;
 	// execute_simple_command(shell);
 	// handel the multiple the > > with one command;
 	(void)shell;
-    redirect_output(shell);
-	// execute_simple_command(shell);
+	saved_stdout = dup(1);
+    if (saved_stdout < 0)
+	{
+        printf("minishell: dup failed: %s\n", strerror(errno));
+        shell->exit_status = 1;
+        return;
+    }
+    redirect_append(shell);
+	execute_simple_command(shell);
 	
+	if (dup2(saved_stdout, 1) < 0) 
+	{
+		printf("minishell: dup2 failed: %s\n", strerror(errno));
+    	shell->exit_status = 1;
+    	return;
+    }
+	close(saved_stdout);
 	
 }
 

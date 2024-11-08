@@ -903,10 +903,10 @@ void    free_list(t_list *list)
         lst = NULL;
     }
 }
-void    leak()
-{
-    system("leak minishell");
-}
+// void    leak()
+// {
+//     system("leak minishell");
+// }
 int main(int ac,char **av,char **env)
 {
     // atexit(leak);
@@ -925,7 +925,7 @@ int main(int ac,char **av,char **env)
         input = readline("minishell$ ");
         if(input == NULL)
         {
-            atexit(leak);
+            // atexit(leak);
             break ;
         }
         com = ft_split_command(input,&minishell.exit_status);

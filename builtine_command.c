@@ -40,6 +40,7 @@ void ft_print_str(t_shell *minishell , int flag)
 	}
 	if (flag == 1 )
 		printf("\n");
+	
 }
 
 void ft_echo(t_shell *shell)
