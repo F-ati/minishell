@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 10:01:06 by jmayou            #+#    #+#             */
-/*   Updated: 2024/10/26 17:12:44 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/08 17:07:22 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -697,7 +697,7 @@ t_dir    *creat_dir_list(int typ,char *name)
 }
 void    add_dir_node(t_dir  *redir,int typ,char *name)
 {
-    t_dir *dir;
+    t_dir *dir = NULL;
     dir = creat_dir_list(typ,name);
     while(redir->next)
         redir = redir->next;

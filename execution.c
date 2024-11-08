@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/10/27 18:25:00 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/08 17:58:42 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void ft_execve(t_shell *shell,char *path)
 	}
 	else
 	{
-		 waitpid(pid,&status,0);
+		waitpid(pid,&status,0);
         if(WIFEXITED(status))
         {
             shell->exit_status = WEXITSTATUS(status);
@@ -124,27 +124,10 @@ void execute_simple_command(t_shell *shell)
 
 void ft_execution(t_shell *shell)
 {
-	int saved_stdout;
-	// execute_simple_command(shell);
-	// handel the multiple the > > with one command;
-	(void)shell;
-	saved_stdout = dup(1);
-    if (saved_stdout < 0)
-	{
-        printf("minishell: dup failed: %s\n", strerror(errno));
-        shell->exit_status = 1;
-        return;
-    }
-    redirect_append(shell);
-	execute_simple_command(shell);
 	
-	if (dup2(saved_stdout, 1) < 0) 
-	{
-		printf("minishell: dup2 failed: %s\n", strerror(errno));
-    	shell->exit_status = 1;
-    	return;
-    }
-	close(saved_stdout);
-	
+	handle_heredoc(shell);
+	handel_redictions(shell);
 }
+
+
 

@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:09:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/10/27 18:26:17 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/08 17:55:21 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,23 @@ int  ft_is_env_var(t_shell *shell ,char *str)
 	return(-7);
 }
 
-void ft_herdoc(t_shell *shell)
+void ft_herdoc( t_shell *shell,t_dir *redir)
 {
 	int fd ;
 	char *str ;
 	int i = 0;
 	int indix ;
 	int len ;
-	
-	fd = open("tmpfile.txt", O_RDWR | O_CREAT, 0666);
-	if(shell->list->redir->is_quoted == 1)
+	fd = open(redir->herdoc_file_name, O_RDWR | O_CREAT, 0777);
+	redir->fd_heredoc = fd;
+	if(redir->is_quoted == 1)
 	{
 		while(1)
 		{
 			str = readline(">");
 			if (str == NULL)
 				exit(1);
-			if(ft_strcmp(str,shell->list->redir->file_name) == 0)
+			if(ft_strcmp(str,redir->file_name) == 0)
 				break;
 			len = ft_strlen(str);
 			i = 0;
@@ -62,7 +62,7 @@ void ft_herdoc(t_shell *shell)
 			str = readline(">");
 			if (str == NULL)
 				exit(1);
-			if(strcmp(str , shell->list->redir->file_name) == 0)
+			if(strcmp(str , redir->file_name) == 0)
 				break;
 
 			if(str[0] == '$')
@@ -97,3 +97,34 @@ void ft_herdoc(t_shell *shell)
 		
 	}
 }
+char *generate_temp_filename(char *file_name)
+{
+	file_name = ft_strjoin("/tmp/",file_name);
+	while(access(file_name ,F_OK) == 0)
+	{
+		file_name = ft_strjoin(file_name,"1");
+	}
+	return(file_name);
+}
+void handle_heredoc(t_shell *shell)
+{
+	t_list *save_list  = NULL;
+	t_dir   *save_redir = NULL;
+
+	save_list = shell->list;
+	while(save_list != NULL)
+	{
+		save_redir = save_list->redir;
+		while(save_redir != NULL)
+		{
+			if(save_redir->type == HEREDOC)
+			{
+				save_redir->herdoc_file_name =  generate_temp_filename(save_redir->file_name);
+				ft_herdoc( shell,save_redir);
+			}
+			save_redir = save_redir->next;
+		}
+		save_list = save_list->next;
+	}
+}
+
