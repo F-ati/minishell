@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:09:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/08 17:55:21 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/09 18:34:03 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int  ft_is_env_var(t_shell *shell ,char *str)
 	return(-7);
 }
 
-void ft_herdoc( t_shell *shell,t_dir *redir)
+int ft_herdoc( t_shell *shell,t_dir *redir)
 {
 	int fd ;
 	char *str ;
@@ -35,7 +35,11 @@ void ft_herdoc( t_shell *shell,t_dir *redir)
 	int indix ;
 	int len ;
 	fd = open(redir->herdoc_file_name, O_RDWR | O_CREAT, 0777);
-	redir->fd_heredoc = fd;
+	if(fd < 0)
+	{
+		perror("herdoc");
+		shell->exit_status = 1;
+	}
 	if(redir->is_quoted == 1)
 	{
 		while(1)
@@ -96,6 +100,7 @@ void ft_herdoc( t_shell *shell,t_dir *redir)
 		}
 		
 	}
+	return (fd);
 }
 char *generate_temp_filename(char *file_name)
 {
@@ -119,8 +124,9 @@ void handle_heredoc(t_shell *shell)
 		{
 			if(save_redir->type == HEREDOC)
 			{
-				save_redir->herdoc_file_name =  generate_temp_filename(save_redir->file_name);
-				ft_herdoc( shell,save_redir);
+				save_redir->herdoc_file_name = generate_temp_filename(save_redir->file_name);
+				close(save_list->fd_heredoc);
+				save_list->fd_heredoc = ft_herdoc( shell,save_redir);
 			}
 			save_redir = save_redir->next;
 		}

@@ -25,7 +25,6 @@ typedef struct s_dir
     int type;
     char    *file_name;
     char    *herdoc_file_name;
-    int     fd_heredoc;
     int is_quoted;
     struct s_dir    *next;
 }   t_dir;
@@ -36,6 +35,7 @@ typedef struct s_list
     t_dir   *redir;
     int     fd_input;
     int     fd_output;
+    int     fd_heredoc;
     struct s_list   *next;
 }   t_list;
 
@@ -65,7 +65,7 @@ void  ft_export(t_shell *shell);
 int   ft_herdoc_nb(t_list *save);
 void  ft_exit(t_shell *shell);
 int   ft_strnb(char **str);
-void  ft_herdoc( t_shell *shell,t_dir *redir);
+int   ft_herdoc( t_shell *shell,t_dir *redir);
 int   get_var_indix(char **exp_or_env,char *name_var);
 int	  ft_check_is_number(char *str);
 int   cmmnd_len(char **str);
@@ -73,11 +73,12 @@ char  *get_env_value(char **env, char *var);
 int   ft_strcmp_len(char *s1,char *s2, int len);
 int   check_invalid_arg(char *command);
 int   ft_check_is_exist(char *str,char c);
-int   redirect_output( t_shell  *shell);
-int   redirect_append( t_shell  *shell);
-int   redirect_input( t_shell  *shell);
+int  ft_open_output( t_shell  *shell , char *file_name);
+int  ft_open_append( t_shell  *shell , char *file_name);
+int  ft_open_input( t_shell  *shell , char *file_name);
 void  execute_simple_command(t_shell *shell);
 void  handle_heredoc(t_shell *shell);
+void ft_open_redictions(t_shell *shell);
 
 
 // void ft_herdoc(t_shell *data);

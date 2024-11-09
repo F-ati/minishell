@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 10:01:06 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/08 17:07:22 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/09 18:15:32 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -730,9 +730,9 @@ char **ft_add_command(char **com,int start,int pos,t_list *list)
         else if (ft_strcmp (com[i], ">>") == 0)
             filling_redir(list,APPEND,com[++i], &c);
         else if (ft_strcmp (com[i], "<") == 0)
-            filling_redir(list,OUT,com[++i], &c);
-        else if (ft_strcmp (com[i], ">") == 0)
             filling_redir(list,IN,com[++i], &c);
+        else if (ft_strcmp (com[i], ">") == 0)
+            filling_redir(list,OUT,com[++i], &c);
         else
         {
             if(com[i][0] == '\"')
@@ -941,7 +941,7 @@ int main(int ac,char **av,char **env)
             if(c == 0)
             {
                 minishell.list = ft_filling_list(command);
-            //    print_list (minishell.list);
+                // print_list (minishell.list);
                 ft_execution (&minishell);
               //  free_list (minishell.list);
             }
@@ -952,7 +952,7 @@ int main(int ac,char **av,char **env)
             }
             free_arr(command);
         }
-        // add_history(input);
+        add_history(input);
         free (input);
     }
     free_arr(minishell.env);
