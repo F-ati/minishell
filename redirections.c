@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 17:44:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/09 19:04:39 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/10 12:20:49 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int  ft_open_output( t_shell *shell , char *file_name)
 	{
 		printf("minishell: %s: %s\n",file_name,strerror(errno));
 		shell->exit_status = 1;
-		return(1);
+		return(-1);
 	}
 	return (fd);
 }
@@ -33,10 +33,10 @@ int  ft_open_input( t_shell  *shell , char *file_name)
 	int fd;
 	fd = open(file_name, O_RDWR, 0644);
 	if(fd < 0)
-	{
+	{	
 		printf("minishell: %s: %s\n", file_name, strerror(errno));
 		shell->exit_status = 1;
-		return(-1);
+		exit(1);
 	}
 	return (fd);
 }

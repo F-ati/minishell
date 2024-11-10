@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/09 19:03:16 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/10 12:19:29 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,40 +127,37 @@ void execute_simple_command(t_shell *shell)
 void ft_execution(t_shell *shell)
 {
 	
-	shell->list->fd_heredoc = 0;
-	shell->list->fd_input = 0;
-	shell->list->fd_output = 1;
-	int original_stdin = dup(0);
-    int original_stdout = dup(1);
-	// close (0);
+	shell->list->fd_heredoc = -1;
+	shell->list->fd_input = -1;
+	shell->list->fd_output = -1;
 	// handle_heredoc(shell);
-	ft_open_redictions(shell);
-	// pid_t pid;
-	// if ((pid = fork()) == 0)
-	// {
+	
+	pid_t pid;
+	if ((pid = fork()) == 0)
+	{
+		ft_open_redictions(shell);
 		while(shell->list != NULL)
 		{
 			int  i = 0;
 			i++;
-			dprintf (2, "for %d : \n", i);
-			// if(shell->list->fd_input != -1)
-			// {
-			// 	dup2(shell->list->fd_input,0);
-			// 	close(shell->list->fd_input);
-			// }
-			// if(shell->list->fd_output != -1)
-			// {
-			// 	dup2(shell->list->fd_output , 1);
-			// 	close(shell->list->fd_output);
-			// }
+			if(shell->list->fd_input != -1)
+			{
+				dup2(shell->list->fd_input,0);
+				close(shell->list->fd_input);
+			}
+			if(shell->list->fd_output != -1)
+			{
+				dup2(shell->list->fd_output , 1);
+				close(shell->list->fd_output);
+			}
 			execute_simple_command(shell);
-			
 			shell->list = shell->list->next;
 		}
-	// }
-	// wait (NULL);
-	dup2(original_stdin, 0);
-    dup2(original_stdout, 1);
+		exit(1);
+	}
+	else
+		wait (NULL);
+	
 }
 
 

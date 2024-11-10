@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:16:27 by root              #+#    #+#             */
-/*   Updated: 2024/11/09 19:02:02 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/10 10:51:20 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void ft_print_str(t_shell *minishell , int flag)
 	int i ;
 	int j = flag;
 
-	dprintf (2, "printing %s in fd %d\n", minishell->list->command[j], minishell->list->fd_output);
+	// dprintf (2, "printing %s in fd %d\n", minishell->list->command[j], minishell->list->fd_output);
 
 	
 	while (minishell->list->command[j] != NULL)
