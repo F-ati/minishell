@@ -19,6 +19,7 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include "libft/libft.h"
+// remove strncmp;
 
 typedef struct s_dir
 {
@@ -59,7 +60,7 @@ int   ft_cmnd_nb( t_list *data);
 void  ft_echo(t_shell *shell);
 void  ft_env(t_shell *data);
 void  ft_cd(t_shell *shell);
-void  ft_pwd(t_shell *shell);
+void  ft_pwd();
 void  ft_unset(t_shell *data);
 void  ft_export(t_shell *shell);
 int   ft_herdoc_nb(t_list *save);
@@ -73,9 +74,9 @@ char  *get_env_value(char **env, char *var);
 int   ft_strcmp_len(char *s1,char *s2, int len);
 int   check_invalid_arg(char *command);
 int   ft_check_is_exist(char *str,char c);
-int  ft_open_output( t_shell  *shell , char *file_name);
-int  ft_open_append( t_shell  *shell , char *file_name);
-int  ft_open_input( t_shell  *shell , char *file_name);
+int  ft_open_output(  char *file_name);
+int  ft_open_append(  char *file_name);
+int  ft_open_input(  char *file_name);
 void  execute_simple_command(t_shell *shell);
 void  handle_heredoc(t_shell *shell);
 void ft_open_redictions(t_shell *shell);

@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:16:27 by root              #+#    #+#             */
-/*   Updated: 2024/11/10 10:51:20 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/10 16:56:33 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,7 @@ void ft_print_str(t_shell *minishell , int flag)
 {
 	int i ;
 	int j = flag;
-
-	// dprintf (2, "printing %s in fd %d\n", minishell->list->command[j], minishell->list->fd_output);
-
-	
+		
 	while (minishell->list->command[j] != NULL)
 	{
 		i = 0;
@@ -102,11 +99,12 @@ void ft_pwd(t_shell *shell)
     if(path == NULL)
     {
         perror("bash: pwd: getcwd");
-        shell->exit_status = 1;
+        // exit(1);
+		shell->exit_status = 1;
 		return;
     }
     printf("%s\n",path);
-	shell->exit_status = 0;
+	// shell->exit_status = 0;
     free(path);
 }
 
@@ -121,7 +119,8 @@ void update_pwd_env(t_shell *shell ,char *old_pwd)
     if (PWD ==  NULL)
     {
         perror("bash: cd");
-        shell->exit_status = 1;
+        // exit(1);
+		shell->exit_status = 1;
 		return;
     }
 	while(shell->env[j] != NULL)
@@ -130,14 +129,14 @@ void update_pwd_env(t_shell *shell ,char *old_pwd)
 		{
 			save_for_free = shell->env[j];
 			shell->env[j] = ft_strjoin("PWD=",PWD);
-			printf("%s\n",shell->env[j]);
+			// printf("%s\n",shell->env[j]);
 			free(save_for_free);
 		}	
 		if (shell->env[j][0] == 'O' && strncmp(shell->env[j] ,"OLDPWD",6) == 0 && shell->env[j][6] == '=')
 		{
 			save_for_free = shell->env[j];
 			shell->env[j] = ft_strjoin("OLDPWD=",old_pwd);
-			printf("%s\n",shell->env[j]);
+			// printf("%s\n",shell->env[j]);
 			free(save_for_free);
 		}
 		j++;
@@ -150,13 +149,13 @@ void ft_cd(t_shell *shell)
 {
     char *path;
 	int args_nb = cmmnd_len(shell->list->command);
-    if( args_nb > 2)
-    {
-        printf("bash: cd: too many arguments\n");
-        shell->exit_status = 1;
-        return;
-    }
-    if ( args_nb == 1)
+    // if( args_nb > 2)
+    // {
+    //     printf("bash: cd: too many arguments\n");
+    //     shell->exit_status = 1;
+    //     return;
+    // }
+    if ( args_nb == 1) // shell->list->commnd[1] == NULL;
     {
         path = get_env_value(shell->env , "HOME");
         if(path == NULL)
@@ -175,12 +174,14 @@ void ft_cd(t_shell *shell)
     {
         perror("bash: cd");
         shell->exit_status = 1;
+		// exit (1);
 		return;
     }
 	if (chdir(path) < 0) 
 	{
     	perror("bash: cd");
         shell->exit_status = 1;
+		// exit(1);
         return;
     }
     update_pwd_env(shell,old_pwd);
