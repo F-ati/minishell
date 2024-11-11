@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:09:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/09 18:34:03 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/11 12:53:09 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int ft_herdoc( t_shell *shell,t_dir *redir)
 	{
 		perror("herdoc");
 		shell->exit_status = 1;
+		return(-1);
 	}
 	if(redir->is_quoted == 1)
 	{

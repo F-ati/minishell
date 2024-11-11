@@ -60,7 +60,7 @@ int   ft_cmnd_nb( t_list *data);
 void  ft_echo(t_shell *shell);
 void  ft_env(t_shell *data);
 void  ft_cd(t_shell *shell);
-void  ft_pwd();
+void  ft_pwd(t_shell *shell);
 void  ft_unset(t_shell *data);
 void  ft_export(t_shell *shell);
 int   ft_herdoc_nb(t_list *save);
@@ -74,12 +74,14 @@ char  *get_env_value(char **env, char *var);
 int   ft_strcmp_len(char *s1,char *s2, int len);
 int   check_invalid_arg(char *command);
 int   ft_check_is_exist(char *str,char c);
-int  ft_open_output(  char *file_name);
-int  ft_open_append(  char *file_name);
-int  ft_open_input(  char *file_name);
+int  ft_open_output(char *file_name ,t_shell  *shell);
+int  ft_open_append(char *file_name ,t_shell *shell);
+int  ft_open_input(char *file_name ,t_shell *shell);
 void  execute_simple_command(t_shell *shell);
 void  handle_heredoc(t_shell *shell);
-void ft_open_redictions(t_shell *shell);
+int   nb_of_command(t_list *list);
+int ft_open_redictions(t_shell *shell);
+// int   is_parent_command( t_shell *shell);
 
 
 // void ft_herdoc(t_shell *data);

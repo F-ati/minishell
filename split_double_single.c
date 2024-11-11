@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 10:01:06 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/09 18:15:32 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/11 09:21:12 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -942,6 +942,9 @@ int main(int ac,char **av,char **env)
             {
                 minishell.list = ft_filling_list(command);
                 // print_list (minishell.list);
+                minishell.list->fd_heredoc = -1;
+	            minishell.list->fd_input = -1;
+	            minishell.list->fd_output = -1;
                 ft_execution (&minishell);
               //  free_list (minishell.list);
             }

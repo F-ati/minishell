@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/10 17:25:43 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/11 13:55:31 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,9 @@ void ft_exec_non_builtin(t_shell *shell)
 	else if ( str == NULL || ft_check_is_exist(shell->list->command[0],'/') == 1)
 	{
 		printf("bash: %s: No such file or directory\n",shell->list->command[0]);
-		// shell->exit_status = 127;
+		shell->exit_status = 127;
 		// return or not en depend 3la fayen m3ayta l functions ;
-		exit(127);
+		// exit(127);
 	}
 	else if (str != NULL)
 	{
@@ -73,15 +73,16 @@ void ft_exec_non_builtin(t_shell *shell)
 		if(ft_check_is_exist(shell->list->command[0],'/') == 1 && path[i] == NULL)
 		{
 			// perror("bash");
+			//  what is the mean p[i] == NULL;
 			printf("bash: %s : No such file or directory\n",shell->list->command[0]);
-			// shell->exit_status = 127;
-			exit(127);
+			shell->exit_status = 127;
+			// exit(127);
 		}
 		else if (path[i] == NULL)
 		{
 			printf("%s: command not found\n" ,shell->list->command[0]);
-			// shell->exit_status = 127;
-			exit(127);
+			shell->exit_status = 127;
+			// exit(127);
 		}
 	}
 	
@@ -101,7 +102,7 @@ void execute_simple_command(t_shell *shell)
 	}
 	else if ( ft_strcmp("pwd",shell->list->command[0]) == 0 )
 	{
-		ft_pwd();
+		ft_pwd(shell);
 	}
 	else if (ft_strcmp("cd",shell->list->command[0]) == 0)
 	{
@@ -129,55 +130,33 @@ void execute_simple_command(t_shell *shell)
 
 void ft_execution(t_shell *shell)
 {
-
-	int status ;
-	int  signal_nb;
+	int i = 0;
 	shell->list->fd_heredoc = -1;
 	shell->list->fd_input = -1;
 	shell->list->fd_output = -1;
-	// handle_heredoc(shell);
-	
-	pid_t pid;
-	if ((pid = fork()) == 0)
-	{
-		ft_open_redictions(shell);
-		while(shell->list != NULL)
+	handle_heredoc(shell);
+	i = ft_open_redictions(shell);
+	if(nb_of_command(shell->list) == 1 && i >= 0)
+	{	
+		int original_stdin = dup(0);
+		int original_stdout = dup(1);
+		if(shell->list->fd_input != -1)
 		{
-			if(shell->list->fd_input != -1)
-			{
-				dup2(shell->list->fd_input,0);
-				close(shell->list->fd_input);
-			}
-			if(shell->list->fd_output != -1)
-			{
-				dup2(shell->list->fd_output , 1);
-				close(shell->list->fd_output);
-			}
-			execute_simple_command(shell);
-			shell->list = shell->list->next;
+			dup2(shell->list->fd_input,0);
+			close(shell->list->fd_input);
 		}
-		exit(0);
-	}
-	else
-	{
-		waitpid(pid,&status,0);
-        if(WIFEXITED(status))
-        {
-            shell->exit_status = WEXITSTATUS(status);
-        }
-        if(WIFSIGNALED(status))
-        {
-            signal_nb =  WTERMSIG(status) ;
-            shell->exit_status = 128 + signal_nb;
-        }
-		if(shell->exit_status == 0)
+		if(shell->list->fd_output != -1)
 		{
-			
+			dup2(shell->list->fd_output , 1);
+			close(shell->list->fd_output);
 		}
-    
+		execute_simple_command(shell);
+		dup2(original_stdin, 0);
+		dup2(original_stdout, 1);
+		close(original_stdin);
+		close(original_stdout);
+		return;
 	}
-	
-}
-
+ }
 
 

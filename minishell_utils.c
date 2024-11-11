@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:08:34 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/10/27 18:12:02 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/11 10:47:16 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,4 +199,18 @@ char *get_env_value(char **env, char *var)
     }
     return(NULL);
 }
+int nb_of_command(t_list *list)
+{
+	int i = 0;
+	while(list != NULL)
+	{
+		i++;
+		list = list->next;
+	}
+	return(i);
+}
 
+// int is_parent_command( t_shell *shell)
+// {
+// 	if(shell->list->command)
+// }

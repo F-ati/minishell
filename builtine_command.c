@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:16:27 by root              #+#    #+#             */
-/*   Updated: 2024/11/10 16:56:33 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/11 13:41:55 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ void ft_pwd(t_shell *shell)
 		return;
     }
     printf("%s\n",path);
-	// shell->exit_status = 0;
+	shell->exit_status = 0;
     free(path);
 }
 
@@ -121,7 +121,7 @@ void update_pwd_env(t_shell *shell ,char *old_pwd)
         perror("bash: cd");
         // exit(1);
 		shell->exit_status = 1;
-		return;
+		
     }
 	while(shell->env[j] != NULL)
 	{
@@ -149,18 +149,13 @@ void ft_cd(t_shell *shell)
 {
     char *path;
 	int args_nb = cmmnd_len(shell->list->command);
-    // if( args_nb > 2)
-    // {
-    //     printf("bash: cd: too many arguments\n");
-    //     shell->exit_status = 1;
-    //     return;
-    // }
+
     if ( args_nb == 1) // shell->list->commnd[1] == NULL;
     {
         path = get_env_value(shell->env , "HOME");
         if(path == NULL)
         {
-            printf("bash: cd: HOME not set\n");
+            printf("minishell: cd: HOME not set\n");
             shell->exit_status = 1;
             return;
         }
@@ -184,8 +179,8 @@ void ft_cd(t_shell *shell)
 		// exit(1);
         return;
     }
-    update_pwd_env(shell,old_pwd);
 	shell->exit_status = 0;
+    update_pwd_env(shell,old_pwd);
 }
 //  export command ;
 
@@ -297,6 +292,8 @@ void ft_export(t_shell *shell)
 			printf("%s\n",shell->export[i]);
 			i++;
 		}
+		shell->exit_status = 0;
+		return;
 	} 
 	i = 1;
 	while(shell->list->command[i] != NULL)
@@ -412,7 +409,7 @@ void  ft_exit(t_shell *shell)
 	}
 	if ( ft_check_is_number(shell->list->command[1]) == 0)
 	{
-		printf("exit\nbash: exit: %s: numeric argument required\n",shell->list->command[1]);
+		printf("exit\nminishell: exit: %s: numeric argument required\n",shell->list->command[1]);
 		shell->exit_status = 255 ;
 		exit(255);
 		
