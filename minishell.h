@@ -81,6 +81,7 @@ void  execute_simple_command(t_shell *shell);
 void  handle_heredoc(t_shell *shell);
 int   nb_of_command(t_list *list);
 int ft_open_redictions(t_shell *shell);
+int ft_pipe(t_shell *shell);
 // int   is_parent_command( t_shell *shell);
 
 

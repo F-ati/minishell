@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/11 13:55:31 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/11 18:38:21 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ void ft_exec_non_builtin(t_shell *shell)
 			path[i] = ft_strjoin(path[i],shell->list->command[0]);
 			if(access(path[i], F_OK | X_OK) == 0)
 			{
+			
 				ft_execve(shell,path[i]);
 				break;
 			}
@@ -130,13 +131,19 @@ void execute_simple_command(t_shell *shell)
 
 void ft_execution(t_shell *shell)
 {
+	// int pid;
+	// int signal_nb;
+	// int status = 0;
+	// int nb = 0;
 	int i = 0;
 	shell->list->fd_heredoc = -1;
 	shell->list->fd_input = -1;
 	shell->list->fd_output = -1;
 	handle_heredoc(shell);
 	i = ft_open_redictions(shell);
-	if(nb_of_command(shell->list) == 1 && i >= 0)
+	if(i < 0)
+		return;
+	if(nb_of_command(shell->list) == 1)
 	{	
 		int original_stdin = dup(0);
 		int original_stdout = dup(1);
@@ -157,6 +164,43 @@ void ft_execution(t_shell *shell)
 		close(original_stdout);
 		return;
 	}
- }
+	// i = 0;
+    // nb = nb_of_command(shell->list);
+
+	// int p[2];
+	// while(shell->list != NULL)
+	// {
+	// 	pipe(p);
+	// 	pid = fork();
+	// 	if(pid == 0)
+	// 	{
+	// 		if(i == 0)
+	// 		{
+	// 			dup2(p[1],1);
+	// 			close(p[1]);
+	// 			close(p[0]);
+	// 		}
+	// 		if(i != 0)
+	// 		{
+	// 			dup2(p[0],0);
+	// 			close(p[0]);
+	// 			close(p[1]);
+	// 		}
+	// 		execute_simple_command(shell->list);
+	// 		perror("execv");
+	// 		exit(1);
+	// 	}
+	// 	else
+	// 	{
+	// 		wait(NULL);
+	// 		close(p[0]);
+	// 		close(p[1]);
+	// 	}
+	// 	i++;
+	// 	shell->list = shell->list->next ;
+	// }
+	
+		
+}
 
 
