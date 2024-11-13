@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/11 18:38:21 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/13 23:12:04 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,29 +14,30 @@
 
 void ft_execve(t_shell *shell,char *path)
 {
-	int pid ;
-	int status ;
-	int signal_nb;
-	pid = fork();
-	if(pid == 0)
-	{
+	// int pid ;
+	// int status ;
+	// int signal_nb;
+	// pid = fork();
+	// if(pid == 0)
+	// {
+		
 		execve(path,shell->list->command,shell->env);
 		perror("bash : execve");
 		shell->exit_status = 1;
-	}
-	else
-	{
-		waitpid(pid,&status,0);
-        if(WIFEXITED(status))
-        {
-            shell->exit_status = WEXITSTATUS(status);
-        }
-        if(WIFSIGNALED(status))
-        {
-            signal_nb =  WTERMSIG(status) ;
-            shell->exit_status = 128 + signal_nb;
-        }
-    }
+	// }
+	// else
+	// {
+	// 	waitpid(pid,&status,0);
+    //     if(WIFEXITED(status))
+    //     {
+    //         shell->exit_status = WEXITSTATUS(status);
+    //     }
+    //     if(WIFSIGNALED(status))
+    //     {
+    //         signal_nb =  WTERMSIG(status) ;
+    //         shell->exit_status = 128 + signal_nb;
+    //     }
+    // }
 }
 
 void ft_exec_non_builtin(t_shell *shell)
@@ -140,66 +141,92 @@ void ft_execution(t_shell *shell)
 	shell->list->fd_input = -1;
 	shell->list->fd_output = -1;
 	handle_heredoc(shell);
-	i = ft_open_redictions(shell);
-	if(i < 0)
-		return;
-	if(nb_of_command(shell->list) == 1)
-	{	
-		int original_stdin = dup(0);
-		int original_stdout = dup(1);
-		if(shell->list->fd_input != -1)
-		{
-			dup2(shell->list->fd_input,0);
-			close(shell->list->fd_input);
-		}
-		if(shell->list->fd_output != -1)
-		{
-			dup2(shell->list->fd_output , 1);
-			close(shell->list->fd_output);
-		}
-		execute_simple_command(shell);
-		dup2(original_stdin, 0);
-		dup2(original_stdout, 1);
-		close(original_stdin);
-		close(original_stdout);
-		return;
-	}
-	// i = 0;
-    // nb = nb_of_command(shell->list);
-
-	// int p[2];
-	// while(shell->list != NULL)
-	// {
-	// 	pipe(p);
-	// 	pid = fork();
-	// 	if(pid == 0)
-	// 	{
-	// 		if(i == 0)
-	// 		{
-	// 			dup2(p[1],1);
-	// 			close(p[1]);
-	// 			close(p[0]);
-	// 		}
-	// 		if(i != 0)
-	// 		{
-	// 			dup2(p[0],0);
-	// 			close(p[0]);
-	// 			close(p[1]);
-	// 		}
-	// 		execute_simple_command(shell->list);
-	// 		perror("execv");
-	// 		exit(1);
-	// 	}
-	// 	else
-	// 	{
-	// 		wait(NULL);
-	// 		close(p[0]);
-	// 		close(p[1]);
-	// 	}
-	// 	i++;
-	// 	shell->list = shell->list->next ;
+	// i = ft_open_redictions(shell);
+	// if(i < 0)
+		// return;
+	// if(nb_of_command(shell->list) == 1)
+	// {	
+	// 	int original_stdin = dup(0);
+	// 	int original_stdout = dup(1);
+		// if(shell->list->fd_input != -1)
+		// {
+		// 	dup2(shell->list->fd_input,0);
+		// 	close(shell->list->fd_input);
+		// }
+		// if(shell->list->fd_output != -1)
+		// {
+		// 	dup2(shell->list->fd_output , 1);
+		// 	close(shell->list->fd_output);
+		// }
+	// 	execute_simple_command(shell);
+	// 	dup2(original_stdin, 0);
+	// 	dup2(original_stdout, 1);
+	// 	close(original_stdin);
+	// 	close(original_stdout);
+	// 	return;
 	// }
-	
+int preve_fd = -1;
+int nb = ft_cmnd_nb(shell->list);
+int fd[2] = {-1, -1};
+int id = -1;
+ i = 0;
+	while (shell->list != NULL) 
+	{
+		shell->list->fd_heredoc = -1;
+		shell->list->fd_input = -1;
+		shell->list->fd_output = -1;
+		ft_open_redictions(shell);
+		pipe(fd); 
+    	id = fork();
+
+    	if (id == 0) 
+		{ 
+        	if (i == 0) 
+			{
+            	dup2(fd[1], 1); 
+        	} 
+			else if(i < nb - 1) 
+			{
+            	dup2(preve_fd, 0);  
+            	dup2(fd[1], 1);
+       		} 
+			else 
+			{
+            	dup2(preve_fd, 0);
+     		}
+			if(shell->list->fd_input != -1)
+			{
+				dup2(shell->list->fd_input,0);
+				close(shell->list->fd_input);
+			}
+			if(shell->list->fd_output != -1)
+			{
+				dup2(shell->list->fd_output , 1);
+				close(shell->list->fd_output);
+			}
+        	close(fd[0]);
+        	close(fd[1]);
+        	if (preve_fd != -1)
+	   			close(preve_fd);
+
+       		execute_simple_command(shell );
+        	exit(shell->exit_status);
+		} 
+		else 
+		{  
+        	if (preve_fd != -1) 
+				close(preve_fd);
+        	preve_fd = fd[0];
+        	close(fd[1]);
+            if (shell->list->fd_input != -1) close(shell->list->fd_input);
+            if (shell->list->fd_output != -1) close(shell->list->fd_output);
+        	wait(NULL); 
+        	shell->list = shell->list->next;
+        	i++;
+    	}
+}
+if(preve_fd != -1)
+	close(preve_fd);
 		
 }
 

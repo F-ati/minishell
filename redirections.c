@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 17:44:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/11 16:28:38 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/13 22:44:05 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ int ft_open_redictions(t_shell *shell)
 	t_dir   *save_redir = NULL;
 
 	save_list = shell->list;
-	while(save_list != NULL)
-	{
+	// while(save_list != NULL)
+	// {
 		save_redir = save_list->redir;
 		while(save_redir != NULL)
 		{
@@ -105,7 +105,7 @@ int ft_open_redictions(t_shell *shell)
 			}
 			save_redir = save_redir->next;
 		}
-		save_list = save_list->next;
-	}
+	// 	save_list = save_list->next;
+	// }
 	return(1);
 } 
