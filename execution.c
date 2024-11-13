@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/13 23:12:04 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/13 23:14:55 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,7 +175,8 @@ int id = -1;
 		shell->list->fd_heredoc = -1;
 		shell->list->fd_input = -1;
 		shell->list->fd_output = -1;
-		ft_open_redictions(shell);
+		if (ft_open_redictions(shell) == -1) 
+        	printf("Error opening redirection files\n");
 		pipe(fd); 
     	id = fork();
 
