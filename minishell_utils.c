@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:08:34 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/11 10:47:16 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/14 03:29:40 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,16 +199,55 @@ char *get_env_value(char **env, char *var)
     }
     return(NULL);
 }
-int nb_of_command(t_list *list)
+char	*my_strjoin(char  *s1, char  *s2)
+{
+	int		i;
+	int		j;
+	char	*result;
+
+	i = 0;
+	j = 0;
+	if (s1 == NULL || s2 == NULL)
+		return (NULL);
+	result = malloc((ft_strlen(s1) + ft_strlen(s2) + 1) * sizeof(char));
+	if (result == NULL)
+		return (NULL);
+	while (i < ft_strlen(s1))
+	{
+		result[i] = s1[i];
+		i++;
+	}
+	while (j < ft_strlen(s2))
+	{
+		result[i + j] = s2[j];
+		j++;
+	}
+	result[i + j] = '\0';
+	free(s1);
+	// free(s2);
+	return (result);
+}
+
+void ft_free_path(char **path)
 {
 	int i = 0;
-	while(list != NULL)
+	while(path[i] != NULL)
 	{
+		free(path[i]);
 		i++;
-		list = list->next;
 	}
-	return(i);
+	
 }
+// int nb_of_command(t_list *list)
+// {
+// 	int i = 0;
+// 	while(list != NULL)
+// 	{
+// 		i++;
+// 		list = list->next;
+// 	}
+// 	return(i);
+// }
 
 // int is_parent_command( t_shell *shell)
 // {

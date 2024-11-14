@@ -79,9 +79,11 @@ int  ft_open_append(char *file_name ,t_shell *shell);
 int  ft_open_input(char *file_name ,t_shell *shell);
 void  execute_simple_command(t_shell *shell , int flag);
 void  handle_heredoc(t_shell *shell);
-int   nb_of_command(t_list *list);
+// int   nb_of_command(t_list *list);
 int ft_open_redictions(t_shell *shell);
-int ft_pipe(t_shell *shell);
+char	*my_strjoin(char  *s1, char  *s2);
+void	free_arr(char **str);
+// int ft_pipe(t_shell *shell);
 // int   is_parent_command( t_shell *shell);
 
 

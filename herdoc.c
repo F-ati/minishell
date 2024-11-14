@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:09:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/11 12:53:09 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/14 00:47:09 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ int ft_herdoc( t_shell *shell,t_dir *redir)
 		{
 			str = readline(">");
 			if (str == NULL)
-				exit(1);
+				exit(11);
 			if(ft_strcmp(str,redir->file_name) == 0)
 				break;
 			len = ft_strlen(str);
@@ -66,7 +66,10 @@ int ft_herdoc( t_shell *shell,t_dir *redir)
 		{
 			str = readline(">");
 			if (str == NULL)
-				exit(1);
+			{
+				printf("helll\n");
+				exit(44);
+			}
 			if(strcmp(str , redir->file_name) == 0)
 				break;
 
@@ -128,6 +131,7 @@ void handle_heredoc(t_shell *shell)
 				save_redir->herdoc_file_name = generate_temp_filename(save_redir->file_name);
 				close(save_list->fd_heredoc);
 				save_list->fd_heredoc = ft_herdoc( shell,save_redir);
+				// pause();
 			}
 			save_redir = save_redir->next;
 		}

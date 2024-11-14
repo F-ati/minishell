@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 17:44:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/13 22:44:05 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/14 03:04:00 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,16 +80,16 @@ int ft_open_redictions(t_shell *shell)
 				close(save_list->fd_output);
 				save_list->fd_output = ft_open_output(save_redir->file_name ,shell);
 				if(save_list->fd_output == -1)
+				{
 					return(-1);
+				}
 			}
 			if(save_redir->type == APPEND)
 			{
-				printf("===>heii\n");
 				close(save_list->fd_output);
 				save_list->fd_output = ft_open_append(save_redir->file_name,shell);
 				if(save_list->fd_output == -1)
 				{
-					printf("===>\n");
 					return(-1);
 				}
 			}
@@ -99,7 +99,6 @@ int ft_open_redictions(t_shell *shell)
 				save_list->fd_input = save_list->fd_heredoc;
 				if(save_list->fd_input == -1)
 				{
-					printf("===>\n");
 					return(-1);
 				}
 			}
