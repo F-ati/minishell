@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/14 05:13:31 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/17 17:31:44 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,10 +146,13 @@ void ft_execution(t_shell *shell)
 	shell->list->fd_heredoc = -1;
 	shell->list->fd_input = -1;
 	shell->list->fd_output = -1;
-	// handle_heredoc(shell);
+	handle_heredoc(shell);
 	i = ft_open_redictions(shell);
 	if(i < 0)
+	{
 		return;
+	}
+	
 	if(ft_cmnd_nb(shell->list) == 1)
 	{	
 		ft_execut_simple_command(shell);

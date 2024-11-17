@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 17:44:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/14 03:04:00 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/17 16:55:50 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int  ft_open_input(char *file_name ,t_shell *shell)
 {
 	int fd;
 	fd = open(file_name, O_RDWR, 0644);
-	if(fd < 0 )
+	if(fd < 0)
 	{	
 		printf("minishell: %s: %s\n", file_name, strerror(errno));
 		shell->exit_status = 1;
@@ -90,6 +90,7 @@ int ft_open_redictions(t_shell *shell)
 				save_list->fd_output = ft_open_append(save_redir->file_name,shell);
 				if(save_list->fd_output == -1)
 				{
+					// printf("hello\n");
 					return(-1);
 				}
 			}

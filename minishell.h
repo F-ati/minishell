@@ -18,6 +18,10 @@
 #include <stdio.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include <readline/readline.h>
+#include <readline/history.h>
+
+// #include <readline/history.h>
 #include "libft/libft.h"
 // remove strncmp;
 
@@ -79,10 +83,14 @@ int  ft_open_append(char *file_name ,t_shell *shell);
 int  ft_open_input(char *file_name ,t_shell *shell);
 void  execute_simple_command(t_shell *shell , int flag);
 void  handle_heredoc(t_shell *shell);
+char *get_variable(char *command,int pos);
 // int   nb_of_command(t_list *list);
 int ft_open_redictions(t_shell *shell);
 char	*my_strjoin(char  *s1, char  *s2);
 void	free_arr(char **str);
+void  ft_search_variable(char ***command,char **env);
+char *ft_replace(char *command,char *var,char *value,int k);
+
 // int ft_pipe(t_shell *shell);
 // int   is_parent_command( t_shell *shell);
 

@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:16:27 by root              #+#    #+#             */
-/*   Updated: 2024/11/14 04:14:38 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/17 17:25:12 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,21 @@ void ft_print_str(t_shell *minishell , int flag)
 		{
 			if(minishell->list->command[j][i]  == '$' && minishell->list->command[j][i + 1] == '?')
 			{
-				printf("%d",minishell->exit_status);
+				ft_putnbr_fd(1, minishell->exit_status);
 				i++;
 			}
 			else
 			{
-				printf("%c",minishell->list->command[j][i]);
+				write (1, &minishell->list->command[j][i], 1);
 			}
 			i++;
 		}
 		if(minishell->list->command[j + 1] != NULL)
-			printf(" ");
+			write (1, " ", 1);
 		j++;
 	}
-	if (flag == 1 )
-		printf("\n");
+	if (flag == 1)
+		write (1, "\n", 1);
 	
 }
 
@@ -60,12 +60,12 @@ void ft_echo(t_shell *shell)
 		if(shell->list->command[j][i] == '\0')
 		{
 			j++;
+			i = 0;
 		}
 		else
 		{
 			break;
 		}
-		
 	}
 	ft_print_str(shell,j);
 	shell->exit_status = 0;

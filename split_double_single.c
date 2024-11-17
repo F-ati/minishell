@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 10:01:06 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/14 04:16:35 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/17 17:38:58 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -654,7 +654,7 @@ char **ft_split_by_space(char **str)
         {
             mini_str = ft_split_by_space_tab(str[i]);
             j = filling(resu, NULL, mini_str, j);
-            // free_arr(mini_str);
+            free_arr(mini_str);
         }
         else
             j = filling(resu, str[i], NULL, j);
@@ -697,7 +697,7 @@ t_dir    *creat_dir_list(int typ,char *name)
 }
 void    add_dir_node(t_dir  *redir,int typ,char *name)
 {
-    t_dir *dir = NULL;
+    t_dir *dir;
     dir = creat_dir_list(typ,name);
     while(redir->next)
         redir = redir->next;
@@ -905,7 +905,7 @@ void    free_list(t_list *list)
 }
 void    leak()
 {
-    system("leaks minishell");
+    // system("leaks minishell");
 }
 int main(int ac,char **av,char **env)
 {
@@ -917,18 +917,13 @@ int main(int ac,char **av,char **env)
     char **command;
     char *input;
     t_shell minishell;
-    init_shell (&minishell,env);
     minishell.exit_status = 0;
+    init_shell (&minishell,env);
     while(1)
     {
-        
         input = readline("minishell$ ");
         if(input == NULL)
-        {
-            
-            // atexit(leak);
             break ;
-        }
         com = ft_split_command(input,&minishell.exit_status);
         if (com)
         {
@@ -937,14 +932,14 @@ int main(int ac,char **av,char **env)
             ft_join(com);
             ft_join_quote(com);
             command = ft_split_by_space(com);
-            // free_arr(com);
+            free_arr(com);
             c = check_error(command);
             if(c == 0)
             {
                 minishell.list = ft_filling_list(command);
-                // print_list (minishell.list);
-                ft_execution (&minishell);
-              //  free_list (minishell.list);
+            //    print_list (minishell.list);
+                ft_execution(&minishell);
+               free_list (minishell.list);
             }
             else
             {
