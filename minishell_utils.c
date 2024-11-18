@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:08:34 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/18 13:14:50 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:02:06 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -199,6 +199,20 @@ void ft_free_path(char **path)
 		i++;
 	}
 	
+}
+int	ft_write_data(int fd, char *value)
+{
+	int	i;
+
+	i = 0;
+	if (value == NULL)
+		return (i);
+	while (value[i] != '\0')
+	{
+		write(fd, &value[i], 1);
+		i++;
+	}
+	return (i);
 }
 // int nb_of_command(t_list *list)
 // {

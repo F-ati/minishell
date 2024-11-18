@@ -16,15 +16,18 @@ OBJ = $(SRC:.c=.o)
 all: $(NAME)
 
 $(NAME): $(OBJ) minishell.h
-	make -C libft
-	$(CC)  $(OBJ) libft/libft.a $(LDFLAGS) -o $(NAME)
+	make -C libft 
+	make -C ft_printf
+	$(CC)  $(OBJ) libft/libft.a  ft_printf/libftprintf.a $(LDFLAGS) -o $(NAME)
 
 clean:
 	make -C libft clean
+	make -C ft_printf clean
 	$(RM) $(OBJ) 
 
 fclean: clean
 	make -C libft fclean
+	make -C ft_printf fclean
 	$(RM) $(NAME) 
 
 re: fclean all

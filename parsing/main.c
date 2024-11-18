@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/18 13:28:04 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:33:19 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,7 @@ void    leak()
 {
     system("leaks -q minishell");
 } 
+
 void    ft_minishell(t_shell *minishell)
 { 
         ft_search_variable(&minishell->data.com,minishell->env);
@@ -108,7 +109,7 @@ int count_space_tab(char *str)
 }
 int main(int ac,char **av,char **env)
 {
-    // atexit(leak);
+    atexit(leak);
     (void)ac;
     (void)av;
     t_shell minishell;

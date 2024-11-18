@@ -6,26 +6,26 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:09:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/17 16:50:30 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/18 16:01:37 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	ft_write_data(int fd, char *value)
-{
-	int	i;
+// int	ft_write_data(int fd, char *value)
+// {
+// 	int	i;
 
-	i = 0;
-	if (value == NULL)
-		return (i);
-	while (value[i] != '\0')
-	{
-		write(fd, &value[i], 1);
-		i++;
-	}
-	return (i);
-}
+// 	i = 0;
+// 	if (value == NULL)
+// 		return (i);
+// 	while (value[i] != '\0')
+// 	{
+// 		write(fd, &value[i], 1);
+// 		i++;
+// 	}
+// 	return (i);
+// }
 
 void	ft_print_var(t_shell *shell, char *str, int fd)
 {

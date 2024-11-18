@@ -15,6 +15,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include "libft/libft.h"
+#include "ft_printf/ft_printf.h"
 
 typedef struct s_dir
 {
@@ -127,7 +128,7 @@ void  ft_env(t_shell *data);
 void  ft_cd(t_shell *shell);
 void  ft_pwd(t_shell *shell);
 void  ft_unset(t_shell *data);
-void  ft_export(t_shell *shell, int flag);
+void  ft_export(t_shell *shell);
 int   ft_herdoc_nb(t_list *save);
 void  ft_exit(t_shell *shell);
 int   ft_strnb(char **str);
@@ -144,6 +145,7 @@ int  ft_open_input(char *file_name ,t_shell *shell);
 void  execute_simple_command(t_shell *shell , int flag);
 void  handle_heredoc(t_shell *shell);
 char *get_variable(char *command,int pos);
+int	ft_write_data(int fd, char *value);
 // int   nb_of_command(t_list *list);
 int ft_open_redictions(t_shell *shell);
 char	*my_strjoin(char  *s1, char  *s2);
