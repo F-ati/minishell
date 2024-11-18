@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/18 12:24:14 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:41:10 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,12 +77,12 @@ void ft_exec_non_builtin(t_shell *shell , int flag)
 		}
 		if(ft_check_is_exist(shell->list->command[0],'/') == 1 && path[i] == NULL)
 		{
-			printf("bash: %s : No such file or directory\n",shell->list->command[0]);
+			printf("minishell: %s : No such file or directory\n",shell->list->command[0]);
 			shell->exit_status = 127;
 		}
 		else if (path[i] == NULL)
 		{
-			printf("%s: command not found\n" ,shell->list->command[0]);
+			printf("minishell: %s: command not found\n" ,shell->list->command[0]);
 			shell->exit_status = 127;
 		}
 	free_arr(path);
@@ -142,6 +142,7 @@ void ft_execution(t_shell *shell)
 {
 
 	int i = 0;
+	char *tmp[2];
 	shell->list->fd_heredoc = -1;
 	shell->list->fd_input = -1;
 	shell->list->fd_output = -1;
@@ -155,7 +156,12 @@ void ft_execution(t_shell *shell)
 	if(ft_cmnd_nb(shell->list) == 1)
 	{	
 		ft_execut_simple_command(shell);
-		ft_apdute_env(shell ,ft_strjoin("$?=",ft_itoa(shell->exit_status)));
+		tmp[1] = ft_itoa(shell->exit_status);
+		tmp[0] = ft_strjoin("?=", tmp[1]);
+		ft_apdute_env(shell ,tmp[0]);
+		free (tmp[0]);
+		free (tmp[1]);
+		return;
 	}
 int preve_fd = -1;
 int nb = ft_cmnd_nb(shell->list);

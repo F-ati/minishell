@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:16:27 by root              #+#    #+#             */
-/*   Updated: 2024/11/18 12:51:26 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:49:00 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,12 @@ void  ft_env(t_shell *data)
 	while (data->env[j] != NULL)
 	{
 		i = 0;
-		while (data->env[j][i] != '\0' && data->env[j][0] != '$')
+		while (data->env[j][i] != '\0' && data->env[j][0] != '?')
 		{
 			write(1,&data->env[j][i],1);
 			i ++;
 		}
-		if(data->env[j][0] != '$')
+		if(data->env[j][0] != '?')
 			write(1,"\n",1);
 		j ++;
 	}
@@ -165,7 +165,7 @@ void ft_cd(t_shell *shell)
 	if (chdir(path) < 0) 
 	{
 		// printf("====>%s\n",path);
-    	perror("loool bash: cd");
+    	perror("bash: cd");
         shell->exit_status = 1;
         return;
     }
@@ -231,7 +231,7 @@ char *get_name_var(char *command)
 
 void ft_apdute_env(t_shell *shell,char *new_arg)
 {
-    int indix ;
+    int indix;
 	char *var_name = get_name_var(new_arg);
 	indix = get_var_indix(shell->env ,var_name);
 	if(indix < 0)
@@ -377,30 +377,26 @@ void  ft_exit(t_shell *shell)
 	int len = cmmnd_len(shell->list->command);
 	if(len == 1)
 	{
-		shell->exit_status = 0;
-		exit(0);
+		exit(shell->exit_status);
 	}
 	if ( len == 2 && ft_check_is_number(shell->list->command[1]) == 1)
 	{
 		nb = ft_atoi(shell->list->command[1]);
-		if(nb > 255  )
-		{
-			nb = nb % 256;
-		} 
-		shell->exit_status = nb;
-		printf("exit\n");
 		exit(nb);
 	}
 	if ( ft_check_is_number(shell->list->command[1]) == 0)
 	{
-		printf("exit\nminishell: exit: %s: numeric argument required\n",shell->list->command[1]);
+		// ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("minishell: exit: ", 2);
+		ft_putstr_fd(shell->list->command[1], 2);
+		ft_putstr_fd(": numeric argument required\n", 2);
 		shell->exit_status = 255 ;
 		exit(255);
-		
 	}
 	if ( ft_check_is_number(shell->list->command[1]) == 1 && len > 2)
 	{
 		shell->exit_status = 1;
-		printf("exit\nbash: exit: too many arguments\n");
+		// ft_putstr_fd("exit\n", 2);
+		ft_putstr_fd("bash: exit: too many arguments\n", 2);
 	}
 }

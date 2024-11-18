@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/18 12:00:13 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/18 13:28:04 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,8 @@ void    ft_minishell(t_shell *minishell)
         if(minishell->data.c == 0)
         {
             minishell->list = ft_filling_list(minishell->data.command);
-           print_list (minishell->list);
-            //ft_exection
+        //    print_list (minishell->list);
+            ft_execution(minishell);
             free_list (minishell->list);
         }
         else
@@ -108,7 +108,7 @@ int count_space_tab(char *str)
 }
 int main(int ac,char **av,char **env)
 {
-    atexit(leak);
+    // atexit(leak);
     (void)ac;
     (void)av;
     t_shell minishell;

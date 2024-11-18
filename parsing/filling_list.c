@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filling_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 20:33:17 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/16 20:42:35 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/18 13:33:41 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ char **ft_add_command(char **com,int start,int pos,t_list *list)
             filling_redir(list,HEREDOC,com[++i], &c);
         else if (ft_strcmp (com[i], ">>") == 0)
             filling_redir(list,APPEND,com[++i], &c);
-        else if (ft_strcmp (com[i], "<") == 0)
-            filling_redir(list,OUT,com[++i], &c);
         else if (ft_strcmp (com[i], ">") == 0)
+            filling_redir(list,OUT,com[++i], &c);
+        else if (ft_strcmp (com[i], "<") == 0)
             filling_redir(list,IN,com[++i], &c);
         else
         {

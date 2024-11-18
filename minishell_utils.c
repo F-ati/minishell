@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:08:34 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/17 18:55:18 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/18 13:14:50 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,36 +160,7 @@ int check_invalid_arg(char *command)
 	}	
 return (1);
 }
-int ft_strcmp_len(char *s1,char *s2, int len)
-{
-    int	i;
 
-	i = 0;
-	while (i < len && s1[i] && s2[i])
-	{
-        if(s1[i] == s2[i])
-            i++;
-        else
-            break;
-	}
-    if(i == len)
-        return(0);
-    return (s1[i] - s2[i]);
-}
-
-char *get_env_value(char **env, char *var)
-{
-    int i = 0;
-    int len = ft_strlen(var);
-    
-    while(env[i])
-    {
-        if(ft_strcmp_len(env[i],var,len) == 0 && env[i][len] == '=')
-            return(env[i] + len + 1);
-        i++;
-    }
-    return(NULL);
-}
 char	*my_strjoin(char  *s1, char  *s2)
 {
 	int		i;

@@ -12,7 +12,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "Libft/libft.h"
+#include <fcntl.h>
+#include <errno.h>
+#include "libft/libft.h"
 
 typedef struct s_dir
 {
@@ -46,7 +48,7 @@ typedef struct s_shell
     char **env;
     char **export;
     t_list *list;
-    t_data *data
+    t_data data;
     int exit_status;
     // my vriable (execution);
     int len ;
@@ -134,7 +136,6 @@ int   get_var_indix(char **exp_or_env,char *name_var);
 int	  ft_check_is_number(char *str);
 int   cmmnd_len(char **str);
 char  *get_env_value(char **env, char *var);
-int   ft_strcmp_len(char *s1,char *s2, int len);
 int   check_invalid_arg(char *command);
 int   ft_check_is_exist(char *str,char c);
 int  ft_open_output(char *file_name ,t_shell  *shell);

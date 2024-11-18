@@ -8,7 +8,8 @@ LDFLAGS = -lreadline
 
 RM = rm -rf 
 
-SRC = parsing/error.c parsing/expand.c parsing/free.c parsing/filling_list.c parsing/filling_command.c parsing/filling_redirections.c parsing/help_join.c parsing/help.c parsing/join.c parsing/main.c parsing/split_cmd_by_quote.c parsing/split_cmd_by_space.c 
+SRC = parsing/error.c parsing/expand.c parsing/free.c parsing/filling_list.c parsing/filling_command.c parsing/filling_redirections.c parsing/help_join.c parsing/help.c parsing/join.c parsing/main.c parsing/split_cmd_by_quote.c parsing/split_cmd_by_space.c minishell_utils.c execution.c herdoc.c builtine_command.c redirections.c 
+
  
 OBJ = $(SRC:.c=.o)
 
