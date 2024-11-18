@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:46:58 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/18 17:35:50 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/18 19:14:45 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,23 +88,30 @@ void  ft_search_variable(char ***command,char **env)
             j = -1;
             while (++j < len)
             {
-                if((*command)[i][j] == '$' && (*command)[i][j + 1] == '?')
+                if((*command)[i][j] == '$')
                 {
-                    value = get_env_value(env, "?");
-                    tmp = ft_replace((*command)[i], "?", value, 0);
-                    free((*command)[i]);
-                    (*command)[i] = tmp;
-                    len = ft_strlen((*command)[i]);
-                }
-                else if((*command)[i][j] == '$' && (*command)[i][j + 1] != ' ')
-                {
-                    var = get_variable((*command)[i], j + 1);
-                    j += ft_strlen (var);
-                    value = get_env_value(env, var);
-                    value = ft_strjoin(value,"\1");
-                    tmp = ft_replace((*command)[i], var, value, 0);
-                    free (var);
-                    free (value);
+                    if((*command)[i][j + 1] == '?')
+                    {
+                        value = get_env_value(env, "?");
+                        tmp = ft_replace((*command)[i], "?", value, 0);
+                    }
+                    else if(((*command)[i][j + 1] == '@' || ft_isdigit((*command)[i][j + 1]) == 1))
+                    {
+                        var = ft_substr((*command)[i],j + 1,1);
+                        j += 1;
+                        tmp = ft_replace((*command)[i], var, "", 0);
+                        free (var);
+                    }
+                    else if((*command)[i][j + 1] != ' ')
+                    {
+                        var = get_variable((*command)[i], j + 1);
+                        j += ft_strlen (var);
+                        value = get_env_value(env, var);
+                        value = ft_strjoin(value,"\1");
+                        tmp = ft_replace((*command)[i], var, value, 0);
+                        free (var);
+                        free (value);
+                    }
                     free((*command)[i]);
                     (*command)[i] = tmp;
                     len = ft_strlen((*command)[i]);
