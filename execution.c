@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/17 17:31:44 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/18 12:24:14 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void ft_execve(t_shell *shell,char *path)
 {
 	int pid ;
-	int status ;
+	int status;
 	int signal_nb;
 	pid = fork();
 	if(pid == 0)
@@ -100,12 +100,11 @@ void execute_command(t_shell *shell , int flag)
 	else if ( ft_strcmp("pwd",shell->list->command[0]) == 0 )
 		ft_pwd(shell);
 	else if (ft_strcmp("cd",shell->list->command[0]) == 0)
-	{
-		//  cd ~ ;		
+	{		
 		ft_cd(shell);
 	}
 	else if ( ft_strcmp("export",shell->list->command[0]) == 0)
-		ft_export(shell);
+		ft_export(shell , 1);
 	else if (ft_strcmp("unset",shell->list->command[0]) == 0 )
 		ft_unset(shell);
 	else if (ft_strcmp("exit",shell->list->command[0]) == 0)
@@ -156,7 +155,7 @@ void ft_execution(t_shell *shell)
 	if(ft_cmnd_nb(shell->list) == 1)
 	{	
 		ft_execut_simple_command(shell);
-		return;
+		ft_apdute_env(shell ,ft_strjoin("$?=",ft_itoa(shell->exit_status)));
 	}
 int preve_fd = -1;
 int nb = ft_cmnd_nb(shell->list);
@@ -164,7 +163,7 @@ int fd[2] = {-1, -1};
 int id = -1;
 int child_pids[nb];
  i = 0;
-	while (shell->list != NULL) 
+	while (shell->list != NULL ) 
 	{
 		shell->list->fd_heredoc = -1;
 		shell->list->fd_input = -1;
@@ -227,7 +226,7 @@ int child_pids[nb];
         	shell->list = shell->list->next;
         	i++;
     	}
-}
+    }
 
 if(preve_fd != -1)
 	close(preve_fd);
@@ -251,6 +250,8 @@ for (int j = 0; j < nb; j++)
 	}
     waitpid(child_pids[j], NULL, 0);
 }
+// ft_apdute_env(shell ,ft_strjoin("$?=",ft_itoa(shell->exit_status)));	
+
 }
 
 

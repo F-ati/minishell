@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:16:27 by root              #+#    #+#             */
-/*   Updated: 2024/11/17 17:25:12 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/18 12:51:26 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,15 +23,8 @@ void ft_print_str(t_shell *minishell , int flag)
 		i = 0;
 		while (minishell->list->command[j][i] != '\0')
 		{
-			if(minishell->list->command[j][i]  == '$' && minishell->list->command[j][i + 1] == '?')
-			{
-				ft_putnbr_fd(1, minishell->exit_status);
-				i++;
-			}
-			else
-			{
-				write (1, &minishell->list->command[j][i], 1);
-			}
+			
+			write (1, &minishell->list->command[j][i], 1);
 			i++;
 		}
 		if(minishell->list->command[j + 1] != NULL)
@@ -80,12 +73,13 @@ void  ft_env(t_shell *data)
 	while (data->env[j] != NULL)
 	{
 		i = 0;
-		while ( data->env[j][i] != '\0')
+		while (data->env[j][i] != '\0' && data->env[j][0] != '$')
 		{
 			write(1,&data->env[j][i],1);
 			i ++;
 		}
-		write(1,"\n",1);
+		if(data->env[j][0] != '$')
+			write(1,"\n",1);
 		j ++;
 	}
 	data->exit_status = 0;
@@ -119,7 +113,6 @@ void update_pwd_env(t_shell *shell ,char *old_pwd)
     if (PWD ==  NULL)
     {
         perror("bash: cd");
-        // exit(1);
 		shell->exit_status = 1;
 		
     }
@@ -129,14 +122,12 @@ void update_pwd_env(t_shell *shell ,char *old_pwd)
 		{
 			save_for_free = shell->env[j];
 			shell->env[j] = ft_strjoin("PWD=",PWD);
-			// printf("%s\n",shell->env[j]);
 			free(save_for_free);
 		}	
 		if (shell->env[j][0] == 'O' && strncmp(shell->env[j] ,"OLDPWD",6) == 0 && shell->env[j][6] == '=')
 		{
 			save_for_free = shell->env[j];
 			shell->env[j] = ft_strjoin("OLDPWD=",old_pwd);
-			// printf("%s\n",shell->env[j]);
 			free(save_for_free);
 		}
 		j++;
@@ -169,14 +160,13 @@ void ft_cd(t_shell *shell)
     {
         perror("bash: cd");
         shell->exit_status = 1;
-		// exit (1);
 		return;
     }
 	if (chdir(path) < 0) 
 	{
-    	perror("bash: cd");
+		// printf("====>%s\n",path);
+    	perror("loool bash: cd");
         shell->exit_status = 1;
-		// exit(1);
         return;
     }
 	shell->exit_status = 0;
@@ -203,8 +193,7 @@ char **ft_resize(char **str, char *new_var)
 	char **p;
 	int len ;
 	len = ft_strnb(str);
-
-	p =  malloc(sizeof(char *) * (len + 2));
+	p =  ft_calloc(sizeof(char *), (len + 2));
 	if (p == NULL)
 		return(NULL);
 	len = 0;
@@ -213,10 +202,9 @@ char **ft_resize(char **str, char *new_var)
 		p[len] = str[len];
 		len++;
 	}
-	p[len] = new_var;
+	p[len] = ft_strdup(new_var);
 	len++;
-	p[len] = NULL;
-	free(str);
+	// printf("%s\n",p[len - 1]);
 	return(p);
 }
 
@@ -244,7 +232,6 @@ char *get_name_var(char *command)
 void ft_apdute_env(t_shell *shell,char *new_arg)
 {
     int indix ;
-	char *for_free;
 	char *var_name = get_name_var(new_arg);
 	indix = get_var_indix(shell->env ,var_name);
 	if(indix < 0)
@@ -253,10 +240,7 @@ void ft_apdute_env(t_shell *shell,char *new_arg)
 	}
 	else
 	{
-		
-		for_free = shell->env[indix]; 
 		shell->env[indix] = ft_strdup(new_arg);
-		free(for_free);
 	}
 	free(var_name);
 }
@@ -281,15 +265,15 @@ void  ft_apdute_export(t_shell *shell , char *new_arg)
 	free(var_name);
 }
 
-void ft_export(t_shell *shell)
+void ft_export(t_shell *shell , int flag)
 {
 	int i = 0;
-	
+	(void)flag;
 	if (shell->list->command[1] == NULL)
 	{
 		while (shell->export[i] != NULL)
 		{
-			printf("%s\n",shell->export[i]);
+			printf("declare -x %s\n",shell->export[i]);
 			i++;
 		}
 		shell->exit_status = 0;
@@ -302,6 +286,7 @@ void ft_export(t_shell *shell)
 		{
 			if(check_is_has_value(shell->list->command[i]) == 1)
 			{
+				
 				ft_apdute_env(shell , shell->list->command[i]);	
 			}
 			ft_apdute_export(shell,shell->list->command[i]);
@@ -315,7 +300,6 @@ void ft_export(t_shell *shell)
 		i++;
 	}	
 }
-
 
 // unset func 
 
@@ -382,7 +366,7 @@ void  ft_unset(t_shell *shell)
 		}
 		i++;
     }
-    
+    ft_export(shell,0);
 }
 
 // exit func

@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 10:01:06 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/17 17:38:58 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/18 12:53:20 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -905,7 +905,7 @@ void    free_list(t_list *list)
 }
 void    leak()
 {
-    // system("leaks minishell");
+    system("leaks minishell");
 }
 int main(int ac,char **av,char **env)
 {
@@ -953,4 +953,5 @@ int main(int ac,char **av,char **env)
     }
     free_arr(minishell.env);
     free_arr(minishell.export);
+    return (minishell.exit_status);
 }

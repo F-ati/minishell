@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:08:34 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/14 03:29:40 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/17 18:55:18 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,22 +83,13 @@ int ft_herdoc_nb(t_list *save)
 
 int ft_strnb(char **str)
 {
-	int count = 0;
 	
 	int j = 0;
 	while (str[j] != NULL)
 	{
-		int i = 0;
-		while (str[j][i] != '\0')
-		{	
-		
-			if(str[j][i + 1] == '\0')
-				count ++;
-			i++;
-		}
 		j++;
 	}
-	return(count);
+	return(j);
 }
 
 int get_var_indix(char **exp_or_env,char *name_var)
