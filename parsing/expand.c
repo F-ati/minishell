@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:46:58 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/18 13:13:04 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:35:50 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,10 @@ void  ft_search_variable(char ***command,char **env)
                     var = get_variable((*command)[i], j + 1);
                     j += ft_strlen (var);
                     value = get_env_value(env, var);
+                    value = ft_strjoin(value,"\1");
                     tmp = ft_replace((*command)[i], var, value, 0);
                     free (var);
+                    free (value);
                     free((*command)[i]);
                     (*command)[i] = tmp;
                     len = ft_strlen((*command)[i]);

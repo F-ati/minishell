@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filling_list.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 20:33:17 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/18 13:33:41 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/18 17:27:58 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ char **ft_add_command(char **com,int start,int pos,t_list *list)
                 resu[j++] = disable(com[i]);
             }
             else
-                resu[j++] = ft_strdup(com[i]);
+                resu[j++] = ft_strdup_and_remove_not_printible(com[i]);
         }
         i++;
     }
