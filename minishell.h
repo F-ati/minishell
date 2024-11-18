@@ -1,29 +1,18 @@
 #ifndef MINISHELL_H
 #define MINISHELL_H
 
-#define BUFFER_SIZE 1024
 #define HEREDOC 1
 #define APPEND 2
 #define IN 3
 #define OUT 4
-#define PATH_MAX 4096 
 
 
-#include <readline/readline.h>
-#include <stdlib.h>
-#include <fcntl.h>
-#include <string.h>
-#include <unistd.h>
-#include <limits.h>
-#include <stdio.h>
-#include <sys/wait.h>
-#include <errno.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-
-// #include <readline/history.h>
-#include "libft/libft.h"
-// remove strncmp;
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include "Libft/libft.h"
 
 typedef struct s_dir
 {
@@ -44,11 +33,20 @@ typedef struct s_list
     struct s_list   *next;
 }   t_list;
 
+typedef struct s_data
+{
+    int c;
+    char **com;
+    char **command;
+    char *input;
+}   t_data;
+
 typedef struct s_shell
 {
     char **env;
     char **export;
     t_list *list;
+    t_data *data
     int exit_status;
     // my vriable (execution);
     int len ;
@@ -57,7 +55,68 @@ typedef struct s_shell
     int herdoc_nb;
     int cmd_nb;
 }   t_shell;
+//======================================PARSING================================================
+// error //
+int is_redirection(char *str);
+int ft_arry_len(char **str);
+int    check_error(char **command);
 
+// help //
+int ft_strcmp_len(char *s1,char *s2, int len);
+int is_quote(char c);
+int ft_close(char *str, char c,int n, int start);
+char    *ft_substr_add_space(char *s, int start, int len);
+void fix_quotes (char **str);
+
+// split_command//
+char **ft_split_command(char *str,int *n);
+int ft_check(char *str);
+void ft_split_quote(char *str, char ***command);
+
+// expand //
+char *ft_replace(char *command,char *var,char *value,int k);
+char *get_env_value(char **env, char *var);
+char *get_variable(char *command,int pos);
+void  ft_search_variable(char ***command,char **env);
+
+// help join //
+void    ft_strcpy(char *s1, char *s2);
+int is_space_or_quote(char c);
+char *ft_remove(char *str,int len_r, int n);
+char *get_last_word(char *str);
+char *get_first_word(char *str); 
+
+// join //
+void    ft_collect_in_first(char **next,char **str);
+void    ft_collect_in_last(char **next,char **str);
+char **ft_join(char **str);
+void    ft_join_quote(char **str);
+
+// split_by_space //
+
+int is_space(char c);
+int	check_command(const char *str);
+char	**ft_split_by_space_tab(char const *s);
+char **ft_split_by_space(char **str);
+
+// filling //
+int    filling(char **resu,char *str,char **arry,int i);
+void    ft_filling(char *s,char **s1,int lenf,int start);
+char **ft_add_command(char **com,int start,int pos,t_list *list);
+t_list    *creat_list(char **com,int start,int pos);
+void   add_node(t_list *list,char **com,int start,int pos);
+t_list    *ft_filling_list(char **com);
+char *disable(char *str);
+t_dir    *creat_dir_list(int typ,char *name);
+void    add_dir_node(t_dir  *redir,int typ,char *name);
+void    filling_redir(t_list *list,int typ,char *name,int *c);
+
+
+// free //
+void	free_arr(char **str);
+void    free_node(t_list *list);
+void    free_list(t_list *list);
+//==============================================EXECUTION======================================================
 // funcs of the execution  
 void  ft_execution(t_shell *minishell);
 int   ft_cmnd_nb( t_list *data);
@@ -87,7 +146,6 @@ char *get_variable(char *command,int pos);
 // int   nb_of_command(t_list *list);
 int ft_open_redictions(t_shell *shell);
 char	*my_strjoin(char  *s1, char  *s2);
-void	free_arr(char **str);
 void  ft_search_variable(char ***command,char **env);
 char *ft_replace(char *command,char *var,char *value,int k);
 
@@ -96,5 +154,4 @@ char *ft_replace(char *command,char *var,char *value,int k);
 
 
 // void ft_herdoc(t_shell *data);
-
 #endif
