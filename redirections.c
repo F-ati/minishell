@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 17:44:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/17 16:55:50 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/18 21:38:17 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int  ft_open_output(char *file_name ,t_shell  *shell)
 	fd = open(file_name , O_CREAT | O_RDWR | O_TRUNC ,0644);
 	if(fd < 0)
 	{
-		printf("minishell: %s: %s\n",file_name,strerror(errno));
+		ft_printf("minishell: %s: %s\n",file_name,strerror(errno));
 		shell->exit_status = 1;
 		return(-1);
 		// exit(1);
@@ -35,7 +35,7 @@ int  ft_open_input(char *file_name ,t_shell *shell)
 	fd = open(file_name, O_RDWR, 0644);
 	if(fd < 0)
 	{	
-		printf("minishell: %s: %s\n", file_name, strerror(errno));
+		ft_printf("minishell: %s: %s\n", file_name, strerror(errno));
 		shell->exit_status = 1;
 		return(-1);
 		// exit(1);
@@ -50,7 +50,7 @@ int  ft_open_append(char *file_name , t_shell *shell)
 	fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if(fd < 0)
 	{
-		printf("minishell: %s: %s\n", file_name,strerror(errno));
+		ft_printf("minishell: %s: %s\n", file_name,strerror(errno));
 		shell->exit_status = 1;
 		return(-1);
 		// exit(1);
@@ -90,7 +90,6 @@ int ft_open_redictions(t_shell *shell)
 				save_list->fd_output = ft_open_append(save_redir->file_name,shell);
 				if(save_list->fd_output == -1)
 				{
-					// printf("hello\n");
 					return(-1);
 				}
 			}
@@ -98,6 +97,9 @@ int ft_open_redictions(t_shell *shell)
 			{
 				close(save_list->fd_input);
 				save_list->fd_input = save_list->fd_heredoc;
+				// save_list->fd_heredoc = ft_herdoc(shell, save_redir);
+
+				printf("==>%d\n",save_list->fd_input);
 				if(save_list->fd_input == -1)
 				{
 					return(-1);

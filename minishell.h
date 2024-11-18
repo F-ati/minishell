@@ -151,7 +151,7 @@ int ft_open_redictions(t_shell *shell);
 char	*my_strjoin(char  *s1, char  *s2);
 void  ft_search_variable(char ***command,char **env);
 char *ft_replace(char *command,char *var,char *value,int k);
-void ft_apdute_env(t_shell *shell,char *new_arg);
+void ft_apdate_env(t_shell *shell,char *new_arg);
 // int ft_pipe(t_shell *shell);
 // int   is_parent_command( t_shell *shell);
 

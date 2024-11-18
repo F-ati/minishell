@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/18 17:16:49 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/18 21:52:15 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,16 @@
 
 void ft_execve(t_shell *shell,char *path)
 {
-	int pid ;
+	int pid;
 	int status;
 	int signal_nb;
 	pid = fork();
 	if(pid == 0)
 	{
-		execve(path,shell->list->command,shell->env);
+		execve(path, shell->list->command, shell->env);
 		perror("bash : execve");
 		shell->exit_status = 1;
+		exit(shell->exit_status);
 	}
 	else
 	{
@@ -54,7 +55,7 @@ void ft_exec_non_builtin(t_shell *shell , int flag)
 	}
 	else if ( str == NULL || ft_check_is_exist(shell->list->command[0],'/') == 1)
 	{
-		printf("bash: %s: No such file or directory\n",shell->list->command[0]);
+		ft_printf("minishell: %s: No such file or directory\n",shell->list->command[0]);
 		shell->exit_status = 127;
 
 	}
@@ -77,7 +78,7 @@ void ft_exec_non_builtin(t_shell *shell , int flag)
 		}
 		if(ft_check_is_exist(shell->list->command[0],'/') == 1 && path[i] == NULL)
 		{
-			printf("minishell: %s : No such file or directory\n",shell->list->command[0]);
+			ft_printf("minishell: %s : No such file or directory\n",shell->list->command[0]);
 			shell->exit_status = 127;
 		}
 		else if (path[i] == NULL)
@@ -120,12 +121,13 @@ void ft_execut_simple_command(t_shell *shell )
 	original_stdout = dup(1);
 	if(shell->list->fd_input != -1)
 	{
-		dup2(shell->list->fd_input,0);
+		// dprintf(shell->list->fd_input, "lslslslsls==>%d\n",shell->list->fd_input);
+		dup2(shell->list->fd_input, 0);
 		close(shell->list->fd_input);
 	}
 	if(shell->list->fd_output != -1)
 	{
-		dup2(shell->list->fd_output , 1);
+		dup2(shell->list->fd_output, 1);
 		close(shell->list->fd_output);
 	}
 	execute_command(shell , 0);
@@ -140,7 +142,7 @@ void ft_execution(t_shell *shell)
 {
 
 	int i = 0;
-	// char *tmp[2];
+	char *tmp[2];
 	shell->list->fd_heredoc = -1;
 	shell->list->fd_input = -1;
 	shell->list->fd_output = -1;
@@ -150,15 +152,15 @@ void ft_execution(t_shell *shell)
 	{
 		return;
 	}
-	
+	// printf("==>%d\n",shell->list->fd_input);
 	if(ft_cmnd_nb(shell->list) == 1)
 	{	
 		ft_execut_simple_command(shell);
-		// tmp[1] = ft_itoa(shell->exit_status);
-		// tmp[0] = ft_strjoin("?=", tmp[1]);
-		// ft_apdute_env(shell ,tmp[0]);
-		// free (tmp[0]);
-		// free (tmp[1]);
+		tmp[1] = ft_itoa(shell->exit_status);
+		tmp[0] = ft_strjoin("?=", tmp[1]);
+		ft_apdate_env(shell ,tmp[0]);
+		free (tmp[0]);
+		free (tmp[1]);
 		return;
 	}
 int preve_fd = -1;
@@ -174,7 +176,7 @@ int child_pids[nb];
 		shell->list->fd_output = -1;
 		if (ft_open_redictions(shell) == -1) 
 		{
-        	printf("Error opening redirection files\n");
+			return;
 		}
 		pipe(fd); 
     	id = fork();
@@ -236,7 +238,8 @@ if(preve_fd != -1)
 	close(preve_fd);
 int status = 0;
 int signal_nb = 0;
-for (int j = 0; j < nb; j++) 
+int j = 0;
+while( j < nb) 
 {
 	if(j == nb - 1)
 	{
@@ -253,8 +256,25 @@ for (int j = 0; j < nb; j++)
    
 	}
     waitpid(child_pids[j], NULL, 0);
+	j++;
 }
-// ft_apdute_env(shell ,ft_strjoin("$?=",ft_itoa(shell->exit_status)));	
+t_list	*save_list;
+t_dir	*save_redir;
+
+save_list = NULL;
+save_redir = NULL;
+save_list = shell->list;
+while (save_list != NULL)
+{
+	save_redir = save_list->redir;
+	while (save_redir != NULL)
+	{
+		// unlink(save_redir->herdoc_file_name);
+		free(save_redir->herdoc_file_name);
+		save_redir = save_redir->next;
+	}
+	save_list = save_list->next;
+}
 
 }
 

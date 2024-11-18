@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:16:27 by root              #+#    #+#             */
-/*   Updated: 2024/11/18 17:44:46 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/18 19:11:42 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	ft_env(t_shell *data)
 		i = 0;
 		while (data->env[j][i] != '\0' && data->env[j][0] != '?')
 		{
+			// if(data->env[j][i] = '@' && data->env[j][i] == '')
 			write(1, &data->env[j][i], 1);
 			i++;
 		}
@@ -254,6 +255,7 @@ void	ft_apdate_env(t_shell *shell, char *new_arg)
 	}
 	else
 	{
+		free(shell->env[indix]);
 		shell->env[indix] = ft_strdup(new_arg);
 	}
 	free(var_name);
@@ -332,7 +334,7 @@ void	ft_export(t_shell *shell)
 		}
 		else
 		{
-			printf("bash: export: '%s': not a valid identifier\n",
+			ft_printf("minishell: export: '%s': not a valid identifier\n",
 				shell->list->command[i]);
 			shell->exit_status = 1;
 		}
@@ -397,7 +399,7 @@ void	ft_unset(t_shell *shell)
 		}
 		else
 		{
-			printf("bash: unset: %s: not a valid identifier\n",
+			ft_printf("minishell: unset: %s: not a valid identifier\n",
 				shell->list->command[i]);
 			shell->exit_status = 1;
 		}
@@ -422,7 +424,6 @@ void	ft_exit(t_shell *shell)
 	}
 	if (ft_check_is_number(shell->list->command[1]) == 0)
 	{
-		// ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("minishell: exit: ", 2);
 		ft_putstr_fd(shell->list->command[1], 2);
 		ft_putstr_fd(": numeric argument required\n", 2);
@@ -432,7 +433,6 @@ void	ft_exit(t_shell *shell)
 	if (ft_check_is_number(shell->list->command[1]) == 1 && len > 2)
 	{
 		shell->exit_status = 1;
-		// ft_putstr_fd("exit\n", 2);
 		ft_putstr_fd("bash: exit: too many arguments\n", 2);
 	}
 }
