@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/19 15:35:57 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:54:33 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,7 +152,7 @@ void ft_execution(t_shell *shell)
 		return;
 	}
 	if(ft_cmnd_nb(shell->list) == 1)
-	{	printf("helllo\n");
+	{	
 		ft_execut_simple_command(shell);
 		tmp[1] = ft_itoa(shell->exit_status);
 		tmp[0] = ft_strjoin("?=", tmp[1]);
