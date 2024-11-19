@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:09:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/19 16:26:50 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/19 17:11:28 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	ft_expand_heredoc_vars(t_shell *shell, t_dir *redir, int fd)
 	{
 		str = readline("> ");
 		if (str == NULL)
-			exit(0);
+			break ;
 		if (strcmp(str, redir->file_name) == 0)
 		{
 			free(str);
@@ -69,6 +69,7 @@ int	ft_herdoc(t_shell *shell, t_dir *redir)
 	char	*str;
 	
 	str = NULL;
+	printf("===>%s\n",redir->file_name);
 	fd = open(redir->herdoc_file_name, O_TRUNC | O_RDWR | O_CREAT, 0644);
 	if (fd < 0)
 	{
@@ -82,7 +83,7 @@ int	ft_herdoc(t_shell *shell, t_dir *redir)
 		{
 			str = readline("> ");
 			if (str == NULL)
-				exit(0);
+				break ;
 			if (ft_strcmp(str, redir->file_name) == 0)
 			{
 				free(str);
@@ -127,7 +128,7 @@ void	handle_heredoc(t_shell *shell)
 				save_redir->herdoc_file_name = generate_temp_filename("ab");
 				close(save_list->fd_heredoc);
 				save_list->fd_heredoc = ft_herdoc(shell, save_redir);
-				
+				// printf("%s\n",redir->file_name);
 			}
 			save_redir = save_redir->next;
 		}

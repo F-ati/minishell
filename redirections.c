@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 17:44:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/19 15:28:26 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/19 17:07:54 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ int ft_open_redictions(t_shell *shell)
 			{
 				    
                 close(save_list->fd_input);
-                save_list->fd_input = open(save_list->redir->herdoc_file_name, O_RDWR, 0777);
+                save_list->fd_input = open(save_redir->herdoc_file_name, O_RDWR, 0777);
                 if(save_list->fd_input == -1)
                 {
                     return(-1);
