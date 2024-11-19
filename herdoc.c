@@ -6,26 +6,11 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:09:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/18 16:01:37 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/19 14:38:14 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// int	ft_write_data(int fd, char *value)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (value == NULL)
-// 		return (i);
-// 	while (value[i] != '\0')
-// 	{
-// 		write(fd, &value[i], 1);
-// 		i++;
-// 	}
-// 	return (i);
-// }
 
 void	ft_print_var(t_shell *shell, char *str, int fd)
 {
@@ -38,7 +23,7 @@ void	ft_print_var(t_shell *shell, char *str, int fd)
 	i = 0;
 	while (str[i] != '\0')
 	{
-		if (str[i] == '$' && str[i + 1] != '\'' && str[i + 1] != ' ')
+		if ( str[0] != '\'' && str[0] != '\"' && str[i] == '$' && str[i + 1] != '\'' && str[i + 1] != ' ')
 		{
 			valid_var = get_variable(str, i + 1);
 			len = ft_strlen(get_variable(str, i + 1));
@@ -47,18 +32,17 @@ void	ft_print_var(t_shell *shell, char *str, int fd)
 			ft_write_data(fd, value);
 			i = len + 1;
 		}
-		write(fd, &str[i], 1);
+		write(fd,&str[i],1);
 		i++;
 	}
 }
 void	ft_expand_heredoc_vars(t_shell *shell, t_dir *redir, int fd)
 {
 	char	*str;
-
 	str = NULL;
 	while (1)
 	{
-		str = readline(">");
+		str = readline("> ");
 		if (str == NULL)
 			exit(0);
 		if (strcmp(str, redir->file_name) == 0)
@@ -76,11 +60,13 @@ int	ft_herdoc(t_shell *shell, t_dir *redir)
 {
 	int		fd;
 	char	*str;
-
+	redir->is_quoted = 0;
+	
 	str = NULL;
-	fd = open(redir->herdoc_file_name, O_RDWR | O_CREAT, 0777);
+	fd = open(redir->herdoc_file_name, O_TRUNC | O_RDWR | O_CREAT, 0644);
 	if (fd < 0)
 	{
+		unlink(redir->herdoc_file_name);
 		free(redir->herdoc_file_name);
 		shell->exit_status = 1;
 		return (-1);
@@ -89,7 +75,7 @@ int	ft_herdoc(t_shell *shell, t_dir *redir)
 	{
 		while (1)
 		{
-			str = readline(">");
+			str = readline("> ");
 			if (str == NULL)
 				exit(0);
 			if (ft_strcmp(str, redir->file_name) == 0)
@@ -104,13 +90,13 @@ int	ft_herdoc(t_shell *shell, t_dir *redir)
 	}
 	else
 		ft_expand_heredoc_vars(shell, redir, fd);
-	free(redir->herdoc_file_name);
+
 	return (fd);
 }
 
 char	*generate_temp_filename(char *file_name)
 {
-	file_name = ft_strjoin("/tmp/", file_name);
+	file_name = ft_strjoin("/tmp/.", file_name);
 	while (access(file_name, F_OK) == 0)
 	{
 		file_name = my_strjoin(file_name, "1");
@@ -136,6 +122,7 @@ void	handle_heredoc(t_shell *shell)
 				save_redir->herdoc_file_name = generate_temp_filename("ab");
 				close(save_list->fd_heredoc);
 				save_list->fd_heredoc = ft_herdoc(shell, save_redir);
+				
 			}
 			save_redir = save_redir->next;
 		}
