@@ -102,7 +102,7 @@ void	ft_pwd(t_shell *shell)
 		return ;
 	}
 	ft_write_data(1, path);
-	write(1,"\n",1);
+	write(1, "\n", 1);
 	shell->exit_status = 0;
 	free(path);
 }
@@ -285,9 +285,10 @@ void	ft_apdate_export(t_shell *shell, char *new_arg)
 void	ft_export(t_shell *shell)
 {
 	int	i;
-	int j;
-	int flag = 0;
+	int	j;
+	int	flag;
 
+	flag = 0;
 	i = 0;
 	if (shell->list->command[1] == NULL)
 	{
@@ -295,26 +296,26 @@ void	ft_export(t_shell *shell)
 		{
 			j = 0;
 			flag = 0;
-			ft_write_data(1,"declare -x ");
-			while(shell->export[i][j] != '\0')
+			ft_write_data(1, "declare -x ");
+			while (shell->export[i][j] != '\0')
 			{
-				if(shell->export[i][j] == '\"' || shell->export[i][j] == '$')
+				if (shell->export[i][j] == '\"' || shell->export[i][j] == '$')
 				{
-					write(1,"\\",1);
+					write(1, "\\", 1);
 				}
-				write(1,&shell->export[i][j],1);
-				if(shell->export[i][j] == '=' && flag == 0)
+				write(1, &shell->export[i][j], 1);
+				if (shell->export[i][j] == '=' && flag == 0)
 				{
-					write(1,"\"",1);
+					write(1, "\"", 1);
 					flag = 1;
 				}
 				j++;
 			}
-			if( flag == 1)
+			if (flag == 1)
 			{
-				write(1,"\"",1);
+				write(1, "\"", 1);
 			}
-			write(1,"\n",1);
+			write(1, "\n", 1);
 			i++;
 		}
 		shell->exit_status = 0;

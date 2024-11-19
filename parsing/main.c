@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/19 22:41:27 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/19 22:53:15 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,6 @@ int main(int ac,char **av,char **env)
     (void)ac;
     (void)av;
     t_shell minishell;
-
     init_shell (&minishell,env);
     while(1)
     {
