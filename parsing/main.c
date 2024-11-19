@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/18 17:33:19 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:44:35 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void    leak()
 
 void    ft_minishell(t_shell *minishell)
 { 
+           
         ft_search_variable(&minishell->data.com,minishell->env);
         fix_quotes(minishell->data.com);
         ft_join(minishell->data.com);
@@ -81,7 +82,7 @@ void    ft_minishell(t_shell *minishell)
         if(minishell->data.c == 0)
         {
             minishell->list = ft_filling_list(minishell->data.command);
-        //    print_list (minishell->list);
+            print_list (minishell->list);
             ft_execution(minishell);
             free_list (minishell->list);
         }

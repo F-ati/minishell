@@ -59,6 +59,7 @@ typedef struct s_shell
     int cmd_nb;
 }   t_shell;
 //======================================PARSING================================================
+void printer(char **a);
 // error //
 int is_redirection(char *str);
 int ft_arry_len(char **str);

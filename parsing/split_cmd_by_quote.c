@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:31:59 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/18 11:19:45 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/19 15:42:17 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void ft_split_quote(char *str, char ***command)
     int start = 0;
     char quote_char = '\0';
     int i = 0;
-
     while (str[i] != '\0') 
     {
         if (is_quote(str[i])) 

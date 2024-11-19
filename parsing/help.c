@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:41:30 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/16 17:41:36 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/19 15:38:42 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,12 +101,8 @@ char    *ft_substr_add_space(char *s, int start, int len)
     {
         if(s[start + i] == '|' || size == 2 ||  (s[start + i] == '<' && s[start + i + 1] != '<') || (s[start + i] == '>' && s[start + i + 1] != '>'))
         {
-            if(size == 2)
-            {
-                size = 1;
-                lenf += 1;
-            }
             lenf += 2;
+            size = 1;
         }
         else if((s[start + i] == '<' && s[start + i + 1] == '<') || (s[start + i] == '>' && s[start + i + 1] == '>'))
             size+= 1;

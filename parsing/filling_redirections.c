@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 20:40:38 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/16 20:42:40 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/19 15:44:06 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char *disable(char *str)
     int j = 0;
     int len  = ft_strlen(str);
     char *resu;
-
+    
     resu = malloc(len -1);
     while(i < len - 1)
         resu[j++] = str[i++];
