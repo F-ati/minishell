@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 17:44:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/18 21:38:17 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:28:26 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,6 @@ int ft_open_redictions(t_shell *shell)
 	t_dir   *save_redir = NULL;
 
 	save_list = shell->list;
-	// while(save_list != NULL)
-	// {
 		save_redir = save_list->redir;
 		while(save_redir != NULL)
 		{
@@ -95,19 +93,15 @@ int ft_open_redictions(t_shell *shell)
 			}
 			if(save_redir->type == HEREDOC)
 			{
-				close(save_list->fd_input);
-				save_list->fd_input = save_list->fd_heredoc;
-				// save_list->fd_heredoc = ft_herdoc(shell, save_redir);
-
-				printf("==>%d\n",save_list->fd_input);
-				if(save_list->fd_input == -1)
-				{
-					return(-1);
-				}
+				    
+                close(save_list->fd_input);
+                save_list->fd_input = open(save_list->redir->herdoc_file_name, O_RDWR, 0777);
+                if(save_list->fd_input == -1)
+                {
+                    return(-1);
+                }
 			}
 			save_redir = save_redir->next;
 		}
-	// 	save_list = save_list->next;
-	// }
 	return(1);
 } 

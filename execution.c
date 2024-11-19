@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/18 21:52:15 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/19 15:35:57 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ void ft_execut_simple_command(t_shell *shell )
 	original_stdout = dup(1);
 	if(shell->list->fd_input != -1)
 	{
-		// dprintf(shell->list->fd_input, "lslslslsls==>%d\n",shell->list->fd_input);
 		dup2(shell->list->fd_input, 0);
 		close(shell->list->fd_input);
 	}
@@ -152,9 +151,8 @@ void ft_execution(t_shell *shell)
 	{
 		return;
 	}
-	// printf("==>%d\n",shell->list->fd_input);
 	if(ft_cmnd_nb(shell->list) == 1)
-	{	
+	{	printf("helllo\n");
 		ft_execut_simple_command(shell);
 		tmp[1] = ft_itoa(shell->exit_status);
 		tmp[0] = ft_strjoin("?=", tmp[1]);
@@ -258,23 +256,23 @@ while( j < nb)
     waitpid(child_pids[j], NULL, 0);
 	j++;
 }
-t_list	*save_list;
-t_dir	*save_redir;
+// t_list	*save_list;
+// t_dir	*save_redir;
 
-save_list = NULL;
-save_redir = NULL;
-save_list = shell->list;
-while (save_list != NULL)
-{
-	save_redir = save_list->redir;
-	while (save_redir != NULL)
-	{
-		// unlink(save_redir->herdoc_file_name);
-		free(save_redir->herdoc_file_name);
-		save_redir = save_redir->next;
-	}
-	save_list = save_list->next;
-}
+// save_list = NULL;
+// save_redir = NULL;
+// save_list = shell->list;
+// while (save_list != NULL)
+// {
+// 	save_redir = save_list->redir;
+// 	while (save_redir != NULL)
+// 	{
+// 		// unlink(save_redir->herdoc_file_name);
+// 		free(save_redir->herdoc_file_name);
+// 		save_redir = save_redir->next;
+// 	}
+// 	save_list = save_list->next;
+// }
 
 }
 
