@@ -6,30 +6,31 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:08:34 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/18 16:02:06 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/19 18:23:08 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int ft_check_is_exist(char *str,char c)
+int	ft_check_is_exist(char *str, char c)
 {
-	int i ;
-	i = 0;
+	int	i;
 
-	while(str[i] != '\0')
+	i = 0;
+	while (str[i] != '\0')
 	{
-		if(str[i] == c)
-			return(1);
+		if (str[i] == c)
+			return (1);
 		i++;
 	}
-	return(0);
+	return (0);
 }
 
-
-void ft_free_env( char **str)
+void	ft_free_env(char **str)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (str[i] != NULL)
 	{
 		free(str[i]);
@@ -39,72 +40,81 @@ void ft_free_env( char **str)
 	str = NULL;
 }
 
-int ft_cmnd_nb(t_list *data)
+int	ft_cmnd_nb(t_list *data)
 {
-	t_list *tmp = data;
-	int i = 0;
-    if (data == NULL)
-    {
-        return (0);
-    }
+	t_list	*tmp;
+	int		i;
 
-	while ( tmp != NULL)
+	tmp = data;
+	i = 0;
+	if (data == NULL)
 	{
-		i ++;
-		tmp = tmp->next; 
+		return (0);
+	}
+	while (tmp != NULL)
+	{
+		i++;
+		tmp = tmp->next;
 	}
 	return (i);
 }
-int ft_herdoc_nb(t_list *save)
+
+int	ft_herdoc_nb(t_list *save)
 {
+	int		i;
+	t_dir	*redir_cur;
+	t_list	*cur;
 
-    int i = 0;
-    t_dir *redir_cur;
-    t_list *cur = save;
-    if (save == NULL) 
-		return 0;
-
-    while (cur != NULL)
-    {
-        redir_cur = cur->redir;
-        while (redir_cur != NULL)
-        {
-            if (redir_cur->type == HEREDOC)
-            {
-                i++;
-            }
-            redir_cur = redir_cur->next;
-        }
-        cur = cur->next;
-    }
-
-    return i;
+	i = 0;
+	cur = save;
+	if (save == NULL)
+		return (0);
+	while (cur != NULL)
+	{
+		redir_cur = cur->redir;
+		while (redir_cur != NULL)
+		{
+			if (redir_cur->type == HEREDOC)
+			{
+				i++;
+			}
+			redir_cur = redir_cur->next;
+		}
+		cur = cur->next;
+	}
+	return (i);
 }
 
-int ft_strnb(char **str)
+int	ft_strnb(char **str)
 {
-	
-	int j = 0;
+	int	j;
+
+	j = 0;
 	while (str[j] != NULL)
 	{
 		j++;
 	}
-	return(j);
+	return (j);
 }
 
-int get_var_indix(char **exp_or_env,char *name_var)
+int	get_var_indix(char **exp_or_env, char *name_var)
 {
-	int j = 0;
-	int len = ft_strlen(name_var);
-	while( exp_or_env[j] != NULL)
+	int	j;
+	int	len;
+
+	j = 0;
+	len = ft_strlen(name_var);
+	while (exp_or_env[j] != NULL)
 	{
-		if( (exp_or_env[j][0] == name_var[0] && strncmp(exp_or_env[j],name_var,len) == 0) && (exp_or_env[j][len] == '=' || exp_or_env[j][len] == '\0'))
+		if ((exp_or_env[j][0] == name_var[0] && strncmp(exp_or_env[j], name_var,
+			len) == 0) && (exp_or_env[j][len] == '='
+				|| exp_or_env[j][len] == '\0'))
 		{
-			return(j);
+			return (j);
 		}
 		j++;
 	}
-	return(-7);
+	return (-7);
 }
 
 int	ft_check_is_number(char *str)
@@ -127,9 +137,12 @@ int	ft_check_is_number(char *str)
 		return (0);
 	}
 }
-int cmmnd_len(char **str)
+
+int	cmmnd_len(char **str)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (str[i] != NULL)
 	{
 		i++;
@@ -137,31 +150,33 @@ int cmmnd_len(char **str)
 	return (i);
 }
 
-int check_invalid_arg(char *command)
+int	check_invalid_arg(char *command)
 {
-	int i ;
-	
-	if ((command[0] >= 'a' && command[0] <= 'z') || (command[0] >= 'A' && command[0] <= 'Z') || (command[0] == '_'))
+	int	i;
+
+	if ((command[0] >= 'a' && command[0] <= 'z') || (command[0] >= 'A'
+			&& command[0] <= 'Z') || (command[0] == '_'))
 	{
 		i = 1;
-		while(command[i] != '\0' && command[i] != '=')
+		while (command[i] != '\0' && command[i] != '=')
 		{
-				
-			if((command[i] < 'a' || command[i] > 'z') && (command[i] < 'A' || command[i] > 'Z') && (command[i] < 48 || command[i] > 57 ) && (command[i] != '_'))
+			if ((command[i] < 'a' || command[i] > 'z') && (command[i] < 'A'
+					|| command[i] > 'Z') && (command[i] < 48 || command[i] > 57)
+				&& (command[i] != '_'))
 			{
 				return (-7);
 			}
 			i++;
 		}
 	}
-	else 
+	else
 	{
-		return(-7);
-	}	
-return (1);
+		return (-7);
+	}
+	return (1);
 }
 
-char	*my_strjoin(char  *s1, char  *s2)
+char	*my_strjoin(char *s1, char *s2)
 {
 	int		i;
 	int		j;
@@ -186,20 +201,21 @@ char	*my_strjoin(char  *s1, char  *s2)
 	}
 	result[i + j] = '\0';
 	free(s1);
-	// free(s2);
 	return (result);
 }
 
-void ft_free_path(char **path)
+void	ft_free_path(char **path)
 {
-	int i = 0;
-	while(path[i] != NULL)
+	int	i;
+
+	i = 0;
+	while (path[i] != NULL)
 	{
 		free(path[i]);
 		i++;
 	}
-	
 }
+
 int	ft_write_data(int fd, char *value)
 {
 	int	i;
@@ -214,18 +230,3 @@ int	ft_write_data(int fd, char *value)
 	}
 	return (i);
 }
-// int nb_of_command(t_list *list)
-// {
-// 	int i = 0;
-// 	while(list != NULL)
-// 	{
-// 		i++;
-// 		list = list->next;
-// 	}
-// 	return(i);
-// }
-
-// int is_parent_command( t_shell *shell)
-// {
-// 	if(shell->list->command)
-// }
