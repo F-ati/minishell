@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herdoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:09:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/19 14:38:14 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/19 16:26:50 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,13 @@ void	ft_print_var(t_shell *shell, char *str, int fd)
 	i = 0;
 	while (str[i] != '\0')
 	{
-		if ( str[0] != '\'' && str[0] != '\"' && str[i] == '$' && str[i + 1] != '\'' && str[i + 1] != ' ')
+		if(str[i] == '$' && str[i + 1] == '?')
+		{
+			value = get_env_value(shell->env, "?");
+			ft_write_data(fd, value);
+			i++;
+		}
+		else if (str[i] == '$' && str[i + 1] != ' ')
 		{
 			valid_var = get_variable(str, i + 1);
 			len = ft_strlen(get_variable(str, i + 1));
@@ -32,7 +38,8 @@ void	ft_print_var(t_shell *shell, char *str, int fd)
 			ft_write_data(fd, value);
 			i = len + 1;
 		}
-		write(fd,&str[i],1);
+		else
+			write(fd,&str[i],1);
 		i++;
 	}
 }
@@ -60,7 +67,6 @@ int	ft_herdoc(t_shell *shell, t_dir *redir)
 {
 	int		fd;
 	char	*str;
-	redir->is_quoted = 0;
 	
 	str = NULL;
 	fd = open(redir->herdoc_file_name, O_TRUNC | O_RDWR | O_CREAT, 0644);
@@ -68,7 +74,6 @@ int	ft_herdoc(t_shell *shell, t_dir *redir)
 	{
 		unlink(redir->herdoc_file_name);
 		free(redir->herdoc_file_name);
-		shell->exit_status = 1;
 		return (-1);
 	}
 	if (redir->is_quoted == 1)
