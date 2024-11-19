@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/19 15:52:19 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/19 17:35:34 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void    ft_minishell(t_shell *minishell)
         if(minishell->data.c == 0)
         {
             minishell->list = ft_filling_list(minishell->data.command);
-            // print_list (minishell->list);
+            print_list (minishell->list);
             ft_execution(minishell);
             free_list (minishell->list);
         }

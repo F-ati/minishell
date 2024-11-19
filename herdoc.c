@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herdoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:09:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/19 14:38:14 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/19 17:11:28 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,13 @@ void	ft_print_var(t_shell *shell, char *str, int fd)
 	i = 0;
 	while (str[i] != '\0')
 	{
-		if ( str[0] != '\'' && str[0] != '\"' && str[i] == '$' && str[i + 1] != '\'' && str[i + 1] != ' ')
+		if(str[i] == '$' && str[i + 1] == '?')
+		{
+			value = get_env_value(shell->env, "?");
+			ft_write_data(fd, value);
+			i++;
+		}
+		else if (str[i] == '$' && str[i + 1] != ' ')
 		{
 			valid_var = get_variable(str, i + 1);
 			len = ft_strlen(get_variable(str, i + 1));
@@ -32,7 +38,8 @@ void	ft_print_var(t_shell *shell, char *str, int fd)
 			ft_write_data(fd, value);
 			i = len + 1;
 		}
-		write(fd,&str[i],1);
+		else
+			write(fd,&str[i],1);
 		i++;
 	}
 }
@@ -44,7 +51,7 @@ void	ft_expand_heredoc_vars(t_shell *shell, t_dir *redir, int fd)
 	{
 		str = readline("> ");
 		if (str == NULL)
-			exit(0);
+			break ;
 		if (strcmp(str, redir->file_name) == 0)
 		{
 			free(str);
@@ -60,15 +67,14 @@ int	ft_herdoc(t_shell *shell, t_dir *redir)
 {
 	int		fd;
 	char	*str;
-	redir->is_quoted = 0;
 	
 	str = NULL;
+	printf("===>%s\n",redir->file_name);
 	fd = open(redir->herdoc_file_name, O_TRUNC | O_RDWR | O_CREAT, 0644);
 	if (fd < 0)
 	{
 		unlink(redir->herdoc_file_name);
 		free(redir->herdoc_file_name);
-		shell->exit_status = 1;
 		return (-1);
 	}
 	if (redir->is_quoted == 1)
@@ -77,7 +83,7 @@ int	ft_herdoc(t_shell *shell, t_dir *redir)
 		{
 			str = readline("> ");
 			if (str == NULL)
-				exit(0);
+				break ;
 			if (ft_strcmp(str, redir->file_name) == 0)
 			{
 				free(str);
@@ -122,7 +128,7 @@ void	handle_heredoc(t_shell *shell)
 				save_redir->herdoc_file_name = generate_temp_filename("ab");
 				close(save_list->fd_heredoc);
 				save_list->fd_heredoc = ft_herdoc(shell, save_redir);
-				
+				// printf("%s\n",redir->file_name);
 			}
 			save_redir = save_redir->next;
 		}
