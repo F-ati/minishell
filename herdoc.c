@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:09:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/19 17:11:28 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/19 17:45:54 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ int	ft_herdoc(t_shell *shell, t_dir *redir)
 	char	*str;
 	
 	str = NULL;
-	printf("===>%s\n",redir->file_name);
+	// printf("===>%s\n",redir->file_name);
 	fd = open(redir->herdoc_file_name, O_TRUNC | O_RDWR | O_CREAT, 0644);
 	if (fd < 0)
 	{

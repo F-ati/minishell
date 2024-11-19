@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/19 16:54:10 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/19 22:41:27 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,11 +78,12 @@ void    ft_minishell(t_shell *minishell)
         ft_join_quote(minishell->data.com);
         minishell->data.command = ft_split_by_space(minishell->data.com);
         free_arr(minishell->data.com);
+        // printer(minishell->data.command);
         minishell->data.c = check_error(minishell->data.command);
         if(minishell->data.c == 0)
         {
             minishell->list = ft_filling_list(minishell->data.command);
-            //  print_list (minishell->list);
+           // print_list (minishell->list);
             ft_execution(minishell);
             free_list (minishell->list);
         }

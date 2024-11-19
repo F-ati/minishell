@@ -6,13 +6,34 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 20:33:17 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/19 15:27:01 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/19 22:35:25 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-
+void    decrypt(char **command)
+{
+    int i = 0;
+    int j;
+    
+    while(command[i])
+    {
+        j = 0;
+        while(command[i][j])
+        {
+            if(command[i][j] == '\1')
+                command[i][j] ='<';
+            else if(command[i][j] == '\2')
+                command[i][j] ='>';
+            else if(command[i][j] == '\3')
+                command[i][j] ='|';
+            j++;
+        }
+        i++;
+    }
+    // printer(command);
+}
 char **ft_add_command(char **com,int start,int pos,t_list *list)
 {
     char **resu;
@@ -21,6 +42,7 @@ char **ft_add_command(char **com,int start,int pos,t_list *list)
     int c = 0;
 
     resu = ft_calloc(sizeof(char *), (pos + 1));
+    // printer(com);
     while(i < pos)
     {
         if (ft_strcmp (com[i], "<<") == 0)
@@ -42,6 +64,7 @@ char **ft_add_command(char **com,int start,int pos,t_list *list)
         }
         i++;
     }
+    decrypt(resu);
     return (resu);
 }
 t_list    *creat_list(char **com,int start,int pos)
@@ -70,9 +93,11 @@ t_list    *ft_filling_list(char **com)
     t_list  *list;
     int c = 0;
     int start = 0;
+    int len;
 
     while(com[i])
     {
+        len = ft_strlen(com[i]);
         if(ft_strcmp(com[i],"|") == 0  && c == 0)
         {
             list = creat_list(com ,start, i);

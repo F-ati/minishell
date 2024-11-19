@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:31:59 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/19 15:42:17 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/19 22:46:09 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ char **ft_split_command(char *str,int *n)
     len = ft_check(str);
     if (len == -1)
     {
-        ft_putstr_fd("Error: Unmatched quotes\n",2);
+        ft_putstr_fd("minishell: unexpected EOF while looking for matching\n",2);
         (*n) = 2;
         return NULL;
     }
