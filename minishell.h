@@ -10,6 +10,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include <stdlib.h>
+#include <sys/wait.h>
 #include <string.h>
 #include <stdio.h>
 #include <fcntl.h>
@@ -154,6 +155,9 @@ void  ft_search_variable(char ***command,char **env);
 char *ft_replace(char *command,char *var,char *value,int k);
 void ft_apdate_env(t_shell *shell,char *new_arg);
 void update_exit_status_env(t_shell *shell);
+int	display_variable(t_shell *shell, char *str, int i, int fd);
+char	*generate_temp_filename(char *file_name);
+int	ft_handle_input_redirection(t_shell *shell, t_dir *redir);
 // int ft_pipe(t_shell *shell);
 // int   is_parent_command( t_shell *shell);
 

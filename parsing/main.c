@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/19 21:59:02 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/20 10:27:29 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,10 +110,11 @@ int count_space_tab(char *str)
 }
 int main(int ac,char **av,char **env)
 {
-    atexit(leak);
+    // atexit(leak);
     (void)ac;
     (void)av;
     t_shell minishell;
+
     init_shell (&minishell,env);
     while(1)
     {
