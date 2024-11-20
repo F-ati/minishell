@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:46:58 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/19 22:41:59 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/20 13:16:29 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ void  ft_search_variable(char ***command,char **env)
                             tmp = ft_replace((*command)[i], "?", value, 0);
                             in = 1;
                         }
-                        else if(((*command)[i][j + 1] == '@' || ft_isdigit((*command)[i][j + 1]) == 1))
+                        else if(((*command)[i][j + 1] == '@' || ft_isdigit((*command)[i][j + 1]) == 1) || (*command)[i][j + 1] == '$')
                         {
                             var = ft_substr((*command)[i],j + 1,1);
                             j += 1;
@@ -154,21 +154,17 @@ void  ft_search_variable(char ***command,char **env)
                             var = get_variable((*command)[i], j + 1);
                             j += ft_strlen (var);
                             value = get_env_value(env, var);
-                            // printf("====%s\n",value);
                             if(value != NULL)
                                 encryption(value); 
-                            // printf("====%s\n",value);
                             tmp = ft_replace((*command)[i], var, value, 0);
                             free (var);
                             in = 1;
-                           // free (value);
                         }
                         if(in == 1)
                         {
                             in = 0;
                             free((*command)[i]);
                             (*command)[i] = tmp;
-                            // printf("*****%s\n",tmp);
                             len = ft_strlen((*command)[i]);
                         }
                     }
