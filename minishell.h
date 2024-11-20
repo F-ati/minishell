@@ -153,6 +153,7 @@ char	*my_strjoin(char  *s1, char  *s2);
 void  ft_search_variable(char ***command,char **env);
 char *ft_replace(char *command,char *var,char *value,int k);
 void ft_apdate_env(t_shell *shell,char *new_arg);
+void update_exit_status_env(t_shell *shell);
 // int ft_pipe(t_shell *shell);
 // int   is_parent_command( t_shell *shell);
 

@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:16:27 by root              #+#    #+#             */
-/*   Updated: 2024/11/18 19:11:42 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/19 21:57:26 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,11 +112,11 @@ void	ft_pwd(t_shell *shell)
 void	update_pwd_env(t_shell *shell, char *old_pwd)
 {
 	int		j;
-	char	*PWD;
+	char	*pwd;
 
 	j = 0;
-	PWD = getcwd(NULL, 0);
-	if (PWD == NULL)
+	pwd = getcwd(NULL, 0);
+	if (pwd == NULL)
 	{
 		free(old_pwd);
 		perror("minishell: cd");
@@ -128,7 +128,7 @@ void	update_pwd_env(t_shell *shell, char *old_pwd)
 			&& shell->env[j][3] == '=')
 		{
 			free(shell->env[j]);
-			shell->env[j] = ft_strjoin("PWD=", PWD);
+			shell->env[j] = ft_strjoin("PWD=", pwd);
 		}
 		if (shell->env[j][0] == 'O' && strncmp(shell->env[j], "OLDPWD", 6) == 0
 			&& shell->env[j][6] == '=')
@@ -139,7 +139,7 @@ void	update_pwd_env(t_shell *shell, char *old_pwd)
 		j++;
 	}
 	free(old_pwd);
-	free(PWD);
+	free(pwd);
 }
 
 void	ft_cd(t_shell *shell)
@@ -413,7 +413,8 @@ void	ft_unset(t_shell *shell)
 void	ft_exit(t_shell *shell)
 {
 	int nb;
-	int len = cmmnd_len(shell->list->command);
+	int len;
+	len = cmmnd_len(shell->list->command);
 	if (len == 1)
 	{
 		exit(shell->exit_status);

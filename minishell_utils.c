@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:08:34 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/19 18:23:08 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/19 21:52:43 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -229,4 +229,16 @@ int	ft_write_data(int fd, char *value)
 		i++;
 	}
 	return (i);
+}
+
+void update_exit_status_env(t_shell *shell)
+{
+	char *tmp[2];
+
+	tmp[1] = ft_itoa(shell->exit_status);
+	tmp[0] = ft_strjoin("?=", tmp[1]);
+	ft_apdate_env(shell ,tmp[0]);
+	free (tmp[0]);
+	free (tmp[1]);
+	
 }
