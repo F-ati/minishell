@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:41:30 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/19 15:38:42 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/21 12:42:28 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@ void fix_quotes (char **str)
     int i;
     int len;
 
-    i = 0;
+    i = -1;
     len = 0;
-    while (str[i])
+    while (str[++i])
     {
         len = ft_strlen (str[i]);
         if (str[i][0] == '\'')
@@ -35,7 +35,6 @@ void fix_quotes (char **str)
                 len--;
             }
         }
-        i++;
     }
 }
 

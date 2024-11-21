@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 20:33:17 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/19 22:35:25 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/21 12:41:19 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,42 +32,41 @@ void    decrypt(char **command)
         }
         i++;
     }
-    // printer(command);
+}
+void    initialize_for_add_command(t_data_for_add_command *data,int start)
+{
+    data->i = start - 1;
+    data->j = 0;
+    data->c = 0;
 }
 char **ft_add_command(char **com,int start,int pos,t_list *list)
 {
-    char **resu;
-    int i = start;
-    int j = 0;
-    int c = 0;
+    t_data_for_add_command  data;
 
-    resu = ft_calloc(sizeof(char *), (pos + 1));
-    // printer(com);
-    while(i < pos)
+    initialize_for_add_command(&data,start);
+    data.resu = ft_calloc(sizeof(char *), (pos + 1));
+    while(++data.i < pos)
     {
-        if (ft_strcmp (com[i], "<<") == 0)
-            filling_redir(list,HEREDOC,com[++i], &c);
-        else if (ft_strcmp (com[i], ">>") == 0)
-            filling_redir(list,APPEND,com[++i], &c);
-        else if (ft_strcmp (com[i], ">") == 0)
-            filling_redir(list,OUT,com[++i], &c);
-        else if (ft_strcmp (com[i], "<") == 0)
-            filling_redir(list,IN,com[++i], &c);
+        if (ft_strcmp (com[data.i], "<<") == 0)
+            filling_redir(list,HEREDOC,com[++data.i], &data.c);
+        else if (ft_strcmp (com[data.i], ">>") == 0)
+            filling_redir(list,APPEND,com[++data.i], &data.c);
+        else if (ft_strcmp (com[data.i], ">") == 0)
+            filling_redir(list,OUT,com[++data.i], &data.c);
+        else if (ft_strcmp (com[data.i], "<") == 0)
+            filling_redir(list,IN,com[++data.i], &data.c);
         else
         {
-            if(com[i][0] == '\"')
-            {
-                resu[j++] = disable(com[i]);
-            }
+            if(com[data.i][0] == '\"')
+                data.resu[data.j++] = disable(com[data.i]);
             else
-                resu[j++] = ft_strdup_and_remove_not_printible(com[i]);
+                data.resu[data.j++] = ft_strdup_and_remove_not_printible(com[data.i]);
         }
-        i++;
     }
-    decrypt(resu);
-    return (resu);
+    decrypt(data.resu);
+    return (data.resu);
 }
-t_list    *creat_list(char **com,int start,int pos)
+t_list    *creat_list(char **com,int start,int pos,int *c)
 {
     t_list  *list;
     
@@ -75,13 +74,16 @@ t_list    *creat_list(char **com,int start,int pos)
     list->redir = NULL;
     list->command = ft_add_command(com ,start,pos,list);
     list->next = NULL;
-    
+    (*c) = 1;
     return(list);
 }
 void   add_node(t_list *list,char **com,int start,int pos)
 {
     t_list *lst;
-    lst = creat_list(com ,start,pos);
+    int c;
+
+    c = 0;
+    lst = creat_list(com ,start,pos,&c);
     while(list->next)
         list = list->next;
     list->next = lst;
@@ -89,33 +91,27 @@ void   add_node(t_list *list,char **com,int start,int pos)
 
 t_list    *ft_filling_list(char **com)
 {
-    int i = 0;
+    int i;
     t_list  *list;
-    int c = 0;
-    int start = 0;
-    int len;
+    int c;
+    int start;
 
-    while(com[i])
+    i = -1;
+    c = 0;
+    start = 0;
+    while(com[++i])
     {
-        len = ft_strlen(com[i]);
-        if(ft_strcmp(com[i],"|") == 0  && c == 0)
+        if(ft_strcmp(com[i],"|") == 0)
         {
-            list = creat_list(com ,start, i);
-            c = 1;
+            if(c == 0)
+                list = creat_list(com ,start, i,&c);
+            else
+                add_node(list,com,start,i);
             start = i + 1;
         }
-        else if(ft_strcmp(com[i],"|") == 0  && c == 1)
-        {
-            add_node(list,com,start,i);
-            start = i + 1;
-        }
-        i++;
     }
     if(c == 0)
-    {
-        list = creat_list(com ,start, i);
-        c = 1;
-    }
+        list = creat_list(com ,start, i,&c);
     else if(c == 1)
         add_node(list,com,start,i);
     return(list);

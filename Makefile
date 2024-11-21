@@ -26,7 +26,7 @@ $(NAME): $(OBJ) minishell.h
 clean:
 	make -C libft clean
 	make -C ft_printf clean
-	$(RM) $(OBJ) 
+	$(RM) $(OBJ)
 
 fclean: clean
 	make -C libft fclean

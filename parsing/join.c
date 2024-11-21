@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 17:43:00 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/16 17:55:38 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/21 13:25:49 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,22 @@ void    ft_collect_in_last(char **next,char **str)
     free((*str));
     (*str) = new_str;
 }
+void    edit_after_collect(char **str,int i)
+{
+    free(str[i]);
+    while(str[i + 1])
+    {
+        str[i] = str[i + 1];
+        i++;
+    }
+    str[i] = NULL;
+}
 char **ft_join(char **str)
 {
-    int i = 0;
+    int i;
     int len;
-    int k = 0;
 
+    i = 0;
     while (str[i] && str[i + 1]) 
     {
         len = ft_strlen(str[i]);
@@ -69,31 +79,13 @@ char **ft_join(char **str)
        {
             ft_collect_in_first(&str[i + 1],&str[i]); 
             if(ft_strcmp(str[i],"\0") == 0)
-            {
-                k = i;
-                free(str[k]);
-                while(str[k + 1])
-                {
-                    str[k] = str[k + 1];
-                    k++;
-                }
-                str[k] = NULL;
-            }
+                edit_after_collect(str,i);
        }
        else if((str[i][len - 1] == '\'' || str[i][len - 1] == '\"') && is_space_or_quote(str[i + 1][0]) == 0)
        {
             ft_collect_in_last(&str[i],&str[i + 1]);
             if(ft_strcmp(str[i + 1],"\0") == 0)
-            {
-                k = i + 1;
-                free(str[k]);
-                while(str[k + 1])
-                {
-                    str[k] = str[k + 1];
-                    k++;
-                }
-                str[k] = NULL;
-            }
+                edit_after_collect(str,i + 1);
        }
         i++;
     }
@@ -101,12 +93,12 @@ char **ft_join(char **str)
 }
 void    ft_join_quote(char **str)
 {
-    int i = 0;
+    int i;
     int len_str;
     int len_next;
     char *new_str;
-    int k = 0;
     
+    i = 0;
     while(str[i] && str[i + 1])
     {
             len_str = strlen(str[i]);
@@ -118,14 +110,7 @@ void    ft_join_quote(char **str)
             ft_strcpy(new_str + len_str - 1,str[i + 1] + 1);
             free(str[i]);
             str[i] = new_str;
-            k = i + 1;
-            free(str[k]);
-            while(str[k + 1])
-            {
-                str[k] = str[k + 1];
-                k++;
-            }
-            str[k] = NULL;
+                edit_after_collect(str,i + 1);
             i = -1;
         }
         i++;

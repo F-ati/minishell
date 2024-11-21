@@ -6,41 +6,44 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:46:58 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/20 13:35:24 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/21 19:11:08 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void    initialize_data_of_replale(t_data_of_replace *data,char *command,char *var,char *value)
+{
+    data->i = 0;
+    data->j = 0;
+    data->len_val = ft_strlen(value);
+    data->len_var = ft_strlen(var);
+    data->len_all = ft_strlen(command) - data->len_var - 1 + data->len_val;
+    data->what = 1;
+}
 char *ft_replace(char *command,char *var,char *value,int k)
 {
-    int i = 0;
-    int j = 0;
-    int len_val = ft_strlen(value);
-    int len_var = ft_strlen(var);
-    int len_all = ft_strlen(command) - len_var - 1 + len_val;
-    char *resu;
-    int lock = 1;
-
-    resu = malloc(len_all + 1);
-    while(command[i])
+    t_data_of_replace   data;
+    initialize_data_of_replale(&data,command,var,value);
+    data.resu = malloc(data.len_all + 1);
+    while(command[data.i])
     {
-        if(command[i] == '$' && lock)
+        if(command[data.i] == '$' && data.what)
         {
             k = 0;
-            while(value && (k < len_val))
+            while(value && (k < data.len_val))
             {
-                resu[j++] = value[k++];
+                data.resu[data.j++] = value[k++];
             }
-            i += len_var;
-            lock = 0;
+            data.i += data.len_var;
+            data.what = 0;
         }
         else
-            resu[j++] = command[i];
-        i++;
+            data.resu[data.j++] = command[data.i];
+        data.i++;
     }
-    resu[j] = '\0';
-    return(resu);
+    data.resu[data.j] = '\0';
+    return(data.resu);
 }
 
 char *get_env_value(char **env, char *var)
@@ -87,15 +90,36 @@ char *ft_last_word(char *str)
     last_word = ft_substr(str,len,(ft_strlen(str) - cout) - len);
     return last_word;
 }
+
+void    free_for_can_replace(char **tmp,char **tmp1,char **sub)
+{
+    free((*sub));
+    free((*tmp));
+    free((*tmp1));
+}
 int can_replace(char **command ,int i,int j)
 {
-    
-    if(command[i][j] == '$' && j == 1 && is_quote(command[i][0]) == 1 && ft_strcmp(ft_last_word(command[i - 1]),"<<") == 0)
+    char *tmp;
+    char *tmp1;
+    char *sub;
+
+    sub = ft_substr(command[i],0,j);
+    tmp = ft_last_word(sub);
+    if(i > 0)
+        tmp1 = ft_last_word(command[i - 1]);
+    else
+        tmp1 = ft_last_word(command[0]);
+    if(command[i][j] == '$' && j == 1 && is_quote(command[i][0]) == 1 && ft_strcmp(tmp1,"<<") == 0)
     {
+        free_for_can_replace(&tmp,&tmp1,&sub);
         return(1);
     }
-    else if(command[i][j] == '$' && (j > 1 && ft_strcmp(ft_last_word(ft_substr(command[i],0,j)),"<<") == 0))
+    else if(command[i][j] == '$' && (j > 1 && ft_strcmp(tmp,"<<") == 0))
+    {
+        free_for_can_replace(&tmp,&tmp1,&sub);
         return(1);
+    }
+    free_for_can_replace(&tmp,&tmp1,&sub);
     return(0);
 }
 void    encryption(char *str)
@@ -113,64 +137,66 @@ void    encryption(char *str)
         i++;
     }
 }
+void    hendled_expand(t_data_for_expand *data ,char **env,char ***command)
+{
+    if((*command)[data->i][data->j + 1] == '?')
+    {
+        data->value = get_env_value(env, "?");
+        data->tmp = ft_replace((*command)[data->i], "?", data->value, 0);
+        data->in = 1;
+    }
+    else if(((*command)[data->i][data->j + 1] == '@' || ft_isdigit((*command)[data->i][data->j + 1]) == 1))
+    {
+        data->var = ft_substr((*command)[data->i],data->j + 1,1);
+        data->j += 1;
+        data->tmp = ft_replace((*command)[data->i], data->var, "", 0);
+        free (data->var);
+        data->in = 1;
+    }
+    else if((*command)[data->i][data->j + 1] != ' ')
+    {
+        data->var = get_variable((*command)[data->i], data->j + 1);
+        data->j += ft_strlen (data->var);
+        data->value = get_env_value(env, data->var);
+        if(data->value != NULL)
+            encryption(data->value); 
+        data->tmp = ft_replace((*command)[data->i], data->var, data->value, 0);
+        free (data->var);
+        data->in = 1;
+    }
+}
+void    expand_command(t_data_for_expand *data,char ****command)
+{
+    data->in = 0;
+    free((**command)[data->i]);
+    (**command)[data->i] = data->tmp;
+    data->len = ft_strlen((**command)[data->i]);
+}
+void    initialize_data_of_search_variable(t_data_for_expand   *data)
+{
+    data->i = -1;
+    data->in = 0;
+}
 void  ft_search_variable(char ***command,char **env)
 {
-    int i = -1;
-    int j = 0;
-    char *var;
-    char *value;
-    char *tmp;
-    int len;
-    int in = 0;
+    t_data_for_expand data;
+   initialize_data_of_search_variable(&data);
     
-    while((*command)[++i])
+    while((*command)[++data.i])
     {
-        len = ft_strlen((*command)[i]);
-        if((*command)[i][0] != '\'')
+        data.len = ft_strlen((*command)[data.i]);
+        if((*command)[data.i][0] != '\'')
         {
-            j = -1;
-            while (++j < len)
+            data.j = -1;
+            while (++data.j < data.len)
             {
-                if((*command)[i][j] == '$')
+                if((*command)[data.i][data.j] == '$')
                 {
-                    if(can_replace((*command),i,j) == 0)
+                    if(can_replace((*command),data.i,data.j) == 0)
                     {
-                        if((*command)[i][j + 1] == '?')
-                        {
-                            value = get_env_value(env, "?");
-                            tmp = ft_replace((*command)[i], "?", value, 0);
-                            in = 1;
-                        }
-                        else if(((*command)[i][j + 1] == '@' || ft_isdigit((*command)[i][j + 1]) == 1) || (*command)[i][j + 1] == '$')
-                        {
-                            var = ft_substr((*command)[i],j + 1,1);
-                            j += 1;
-                            tmp = ft_replace((*command)[i], var, "", 0);
-                            free (var);
-                            in = 1;
-                        }
-                        else if((*command)[i][j + 1] != ' ')
-                        {
-                            var = get_variable((*command)[i], j + 1);
-                            j += ft_strlen (var);
-                            value = get_env_value(env, var);
-                            // printf("====%s\n",value);
-                            if(value != NULL)
-                                encryption(value); 
-                            // printf("====%s\n",value);
-                            tmp = ft_replace((*command)[i], var, value, 0);
-                            free (var);
-                            in = 1;
-                           // free (value);
-                        }
-                        if(in == 1)
-                        {
-                            in = 0;
-                            free((*command)[i]);
-                            (*command)[i] = tmp;
-                            // printf("*****%s\n",tmp);
-                            len = ft_strlen((*command)[i]);
-                        }
+                        hendled_expand(&data,env,command);
+                        if(data.in == 1)
+                        expand_command(&data,&command);
                     }
                 }
             }
