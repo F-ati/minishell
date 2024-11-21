@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 17:43:00 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/21 13:04:39 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/21 13:20:46 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,22 @@ void    ft_collect_in_last(char **next,char **str)
     free((*str));
     (*str) = new_str;
 }
-
+void    edit_after_collect(char **str,int i)
+{
+    free(str[i]);
+    while(str[i + 1])
+    {
+        str[i] = str[i + 1];
+        i++;
+    }
+    str[i] = NULL;
+}
 char **ft_join(char **str)
 {
     int i;
     int len;
-    int k;
 
     i = 0;
-    k = 0;
     while (str[i] && str[i + 1]) 
     {
         len = ft_strlen(str[i]);
@@ -72,31 +79,13 @@ char **ft_join(char **str)
        {
             ft_collect_in_first(&str[i + 1],&str[i]); 
             if(ft_strcmp(str[i],"\0") == 0)
-            {
-                k = i;
-                free(str[k]);
-                while(str[k + 1])
-                {
-                    str[k] = str[k + 1];
-                    k++;
-                }
-                str[k] = NULL;
-            }
+                edit_after_collect(str,i);
        }
        else if((str[i][len - 1] == '\'' || str[i][len - 1] == '\"') && is_space_or_quote(str[i + 1][0]) == 0)
        {
             ft_collect_in_last(&str[i],&str[i + 1]);
             if(ft_strcmp(str[i + 1],"\0") == 0)
-            {
-                k = i + 1;
-                free(str[k]);
-                while(str[k + 1])
-                {
-                    str[k] = str[k + 1];
-                    k++;
-                }
-                str[k] = NULL;
-            }
+                edit_after_collect(str,i + 1);
        }
         i++;
     }
