@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:16:27 by root              #+#    #+#             */
-/*   Updated: 2024/11/19 21:57:26 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:27:00 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,6 @@ void	ft_echo(t_shell *shell)
 	shell->exit_status = 0;
 }
 
-//  env command
-
 void	ft_env(t_shell *data)
 {
 	int	j;
@@ -78,7 +76,6 @@ void	ft_env(t_shell *data)
 		i = 0;
 		while (data->env[j][i] != '\0' && data->env[j][0] != '?')
 		{
-			// if(data->env[j][i] = '@' && data->env[j][i] == '')
 			write(1, &data->env[j][i], 1);
 			i++;
 		}
@@ -89,7 +86,6 @@ void	ft_env(t_shell *data)
 	data->exit_status = 0;
 }
 
-// pwd command ;
 void	ft_pwd(t_shell *shell)
 {
 	char	*path;
@@ -107,8 +103,6 @@ void	ft_pwd(t_shell *shell)
 	free(path);
 }
 
-// cd command
-
 void	update_pwd_env(t_shell *shell, char *old_pwd)
 {
 	int		j;
@@ -117,11 +111,8 @@ void	update_pwd_env(t_shell *shell, char *old_pwd)
 	j = 0;
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
-	{
-		free(old_pwd);
-		perror("minishell: cd");
-		shell->exit_status = 1;
-	}
+		print_error(shell, old_pwd);
+		return;
 	while (shell->env[j] != NULL)
 	{
 		if (shell->env[j][0] == 'P' && strncmp(shell->env[j], "PWD", 3) == 0
@@ -151,36 +142,25 @@ void	ft_cd(t_shell *shell)
 	args_nb = cmmnd_len(shell->list->command);
 	if (args_nb == 1)
 	{
-		path = get_env_value(shell->env, "HOME");
-		if (path == NULL)
-		{
-			ft_printf("minishell: cd: HOME not set\n");
-			shell->exit_status = 1;
-			return ;
-		}
+		path = go_to_home(shell);
+		return ;
 	}
 	else
-	{
 		path = shell->list->command[1];
-	}
 	old_pwd = getcwd(NULL, 0);
 	if (old_pwd == NULL)
 	{
-		perror("minishell: cd");
-		shell->exit_status = 1;
+		print_error(shell, old_pwd);
 		return ;
 	}
 	if (chdir(path) < 0)
 	{
-		free(old_pwd);
-		perror("minishell: cd");
-		shell->exit_status = 1;
+		print_error(shell, old_pwd);
 		return ;
 	}
 	shell->exit_status = 0;
 	update_pwd_env(shell, old_pwd);
 }
-//  export command ;
 
 int	check_is_has_value(char *command)
 {
@@ -281,21 +261,15 @@ void	ft_apdate_export(t_shell *shell, char *new_arg)
 	}
 	free(var_name);
 }
-
-void	ft_export(t_shell *shell)
+void print_exported_vars(t_shell *shell)
 {
-	int	i;
-	int	j;
-	int	flag;
-
-	flag = 0;
-	i = 0;
-	if (shell->list->command[1] == NULL)
+	int i = 0;
+	int j;
+	int flag;
+	while (shell->export[i] != NULL)
 	{
-		while (shell->export[i] != NULL)
-		{
-			j = 0;
-			flag = 0;
+		j = 0;
+		flag = 0;
 			ft_write_data(1, "declare -x ");
 			while (shell->export[i][j] != '\0')
 			{
@@ -317,7 +291,43 @@ void	ft_export(t_shell *shell)
 			}
 			write(1, "\n", 1);
 			i++;
-		}
+	}
+}
+void	ft_export(t_shell *shell)
+{
+	int	i;
+	int	flag;
+
+	flag = 0;
+	if (shell->list->command[1] == NULL)
+	{
+		// print_exported_vars(shell)
+		// while (shell->export[i] != NULL)
+		// {
+		// 	j = 0;
+		// 	flag = 0;
+		// 	ft_write_data(1, "declare -x ");
+		// 	while (shell->export[i][j] != '\0')
+		// 	{
+		// 		if (shell->export[i][j] == '\"' || shell->export[i][j] == '$')
+		// 		{
+		// 			write(1, "\\", 1);
+		// 		}
+		// 		write(1, &shell->export[i][j], 1);
+		// 		if (shell->export[i][j] == '=' && flag == 0)
+		// 		{
+		// 			write(1, "\"", 1);
+		// 			flag = 1;
+		// 		}
+		// 		j++;
+		// 	}
+		// 	if (flag == 1)
+		// 	{
+		// 		write(1, "\"", 1);
+		// 	}
+		// 	write(1, "\n", 1);
+		// 	i++;
+		// }
 		shell->exit_status = 0;
 		return ;
 	}

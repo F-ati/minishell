@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/20 10:27:29 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/20 21:40:12 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,16 @@ int count_space_tab(char *str)
     }
     return(count);
 }
+
+void signal(int sig_num)
+{
+    (void)sig_num;
+    rl_replace_line("" , 0);
+}
+
+
 int main(int ac,char **av,char **env)
 {
-    // atexit(leak);
     (void)ac;
     (void)av;
     t_shell minishell;

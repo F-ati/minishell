@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 17:44:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/20 13:21:36 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/20 16:27:55 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,40 +57,20 @@ int	ft_open_append(char *file_name, t_shell *shell)
 int	ft_open_redictions(t_shell *shell)
 {
 	t_dir	*save_redir;
-//  handler_input 
-//  handler_output
+
 	save_redir = shell->list->redir;
 	while (save_redir != NULL)
 	{
 		if (save_redir->type == IN || save_redir->type == HEREDOC)
 		{
 			if (ft_handle_input_redirection(shell, save_redir) == -1)
-				return(-1);
-		}
-		else if (save_redir->type == OUT )
-		{
-			close(shell->list->fd_output);
-			shell->list->fd_output = ft_open_output(save_redir->file_name,
-					shell);
-			if (shell->list->fd_output == -1)
 				return (-1);
 		}
-		else if (save_redir->type == APPEND)
+		else if (save_redir->type == OUT || save_redir->type == APPEND)
 		{
-			close(shell->list->fd_output);
-			shell->list->fd_output = ft_open_append(save_redir->file_name,
-					shell);
-			if (shell->list->fd_output == -1)
+			if (ft_handle_output_redirection(shell, save_redir) == -1)
 				return (-1);
 		}
-		// else if (save_redir->type == HEREDOC)
-		// {
-		// 	close(shell->list->fd_input);
-		// 	shell->list->fd_input = open(save_redir->herdoc_file_name, O_RDWR,
-		// 			0777);
-		// 	if (shell->list->fd_input == -1)
-		// 		return (-1);
-		// }
 		save_redir = save_redir->next;
 	}
 	return (1);

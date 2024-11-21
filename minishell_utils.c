@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:08:34 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/20 13:13:22 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/20 19:26:46 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -267,7 +267,7 @@ int	display_variable(t_shell *shell, char *str, int i, int fd)
 	return (len);
 }
 
-int	 ft_handle_input_redirection(t_shell *shell, t_dir *redir)
+int	ft_handle_input_redirection(t_shell *shell, t_dir *redir)
 {
 	if (redir->type == HEREDOC)
 	{
@@ -276,13 +276,51 @@ int	 ft_handle_input_redirection(t_shell *shell, t_dir *redir)
 		if (shell->list->fd_input == -1)
 			return (-1);
 	}
-	else if(redir->type == IN )
+	else if (redir->type == IN)
 	{
-			close(shell->list->fd_input);
-			shell->list->fd_input = ft_open_input(redir->file_name, shell);
-			if (shell->list->fd_input == -1)
-				return (-1);
+		close(shell->list->fd_input);
+		shell->list->fd_input = ft_open_input(redir->file_name, shell);
+		if (shell->list->fd_input == -1)
+			return (-1);
+	}
+	return (1);
+}
+
+int	ft_handle_output_redirection(t_shell *shell, t_dir *redir)
+{
+	if (redir->type == OUT)
+	{
+		close(shell->list->fd_output);
+		shell->list->fd_output = ft_open_output(redir->file_name, shell);
+		if (shell->list->fd_output == -1)
+			return (-1);
+	}
+	else if (redir->type == APPEND)
+	{
+		close(shell->list->fd_output);
+		shell->list->fd_output = ft_open_append(redir->file_name, shell);
+		if (shell->list->fd_output == -1)
+			return (-1);
 	}
 	return(1);
 }
 
+void print_error(t_shell  *shell,char *old_pwd)
+{
+		free(old_pwd);
+		perror("minishell: cd");
+		shell->exit_status = 1;
+}
+
+char *go_to_home(t_shell *shell)
+{
+	char *path;
+	path = get_env_value(shell->env, "HOME");
+	if (path == NULL)
+	{
+		ft_printf("minishell: cd: HOME not set\n");
+		shell->exit_status = 1;
+		
+	}
+	return(path);
+}
