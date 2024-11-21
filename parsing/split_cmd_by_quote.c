@@ -6,43 +6,51 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:31:59 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/19 22:46:09 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/21 17:05:16 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void    initialize_for_split_quote(t_data_for_split_quote *data)
+{
+    data->count = 0;
+    data->quote_char = '\0';
+    data->start = 0;
+    data->in_quote = 0;
+    data->i = 0;
+}
+void    beginning_not_quote(t_data_for_split_quote *data,char *str, char ***command)
+{
+    if (data->i > data->start) 
+        (*command)[data->count++] = ft_substr_add_space(str ,data->start, data->i - data->start);
+    data->in_quote = 1;
+    data->quote_char = str[data->i];
+    data->start = data->i;
+}
 void ft_split_quote(char *str, char ***command) 
 {
-    int count = 0;
-    int in_quote = 0;
-    int start = 0;
-    char quote_char = '\0';
-    int i = 0;
-    while (str[i] != '\0') 
+    t_data_for_split_quote  data;
+    
+    initialize_for_split_quote(&data);
+    while (str[data.i] != '\0') 
     {
-        if (is_quote(str[i])) 
+        if (is_quote(str[data.i]) == 1) 
         {
-            if (in_quote == 1 && str[i] == quote_char) 
+            if (data.in_quote == 1 && str[data.i] == data.quote_char) 
             {
-                in_quote = 0;
-                (*command)[count++] = ft_substr(str ,start , i - start + 1);
-                start = i + 1;
+                data.in_quote = 0;
+                (*command)[data.count++] = ft_substr(str ,data.start , data.i - data.start + 1);
+                data.start = data.i + 1;
             } 
-            else if (in_quote == 0) 
-            {
-                if (i > start) 
-                    (*command)[count++] = ft_substr_add_space(str ,start, i - start);
-                in_quote = 1;
-                quote_char = str[i];
-                start = i;
-            }
+            else if (data.in_quote == 0) 
+                beginning_not_quote(&data,str,command);
         }
-        i++;
+        data.i++;
     }
-    if (i > start)
-        (*command)[count++] = ft_substr_add_space(str , start, i - start);
-    (*command)[count] = NULL;
+    if (data.i > data.start)
+        (*command)[data.count++] = ft_substr_add_space(str , data.start, data.i - data.start);
+   (*command)[data.count] = NULL;
 }
 
 int ft_check(char *str)

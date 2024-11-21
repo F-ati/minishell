@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 17:43:00 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/21 13:20:46 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/21 13:25:49 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,12 +93,12 @@ char **ft_join(char **str)
 }
 void    ft_join_quote(char **str)
 {
-    int i = 0;
+    int i;
     int len_str;
     int len_next;
     char *new_str;
-    int k = 0;
     
+    i = 0;
     while(str[i] && str[i + 1])
     {
             len_str = strlen(str[i]);
@@ -110,14 +110,7 @@ void    ft_join_quote(char **str)
             ft_strcpy(new_str + len_str - 1,str[i + 1] + 1);
             free(str[i]);
             str[i] = new_str;
-            k = i + 1;
-            free(str[k]);
-            while(str[k + 1])
-            {
-                str[k] = str[k + 1];
-                k++;
-            }
-            str[k] = NULL;
+                edit_after_collect(str,i + 1);
             i = -1;
         }
         i++;

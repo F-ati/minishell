@@ -44,6 +44,14 @@ typedef struct s_data
     char *input;
 }   t_data;
 
+typedef struct s_data_for_split_quote
+{
+    int count;
+    int in_quote;
+    int start;
+    char quote_char;
+    int i;
+}   t_data_for_split_quote;
 typedef struct s_data_for_add_command
 {
     char **resu;
