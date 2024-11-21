@@ -44,6 +44,36 @@ typedef struct s_data
     char *input;
 }   t_data;
 
+typedef struct s_data_for_add_command
+{
+    char **resu;
+    int i;
+    int j;
+    int c;
+}   t_data_for_add_command;
+
+typedef struct s_data_of_replace
+{
+    int i;
+    int j;
+    int len_val;
+    int len_var;
+    int len_all;
+    char *resu;
+    int what;
+}   t_data_of_replace;
+
+typedef struct s_data_for_expand
+{
+    int i;
+    int j;
+    char *var;
+    char *value;
+    char *tmp;
+    int len;
+    int in;
+}   t_data_for_expand;
+
 typedef struct s_shell
 {
     char **env;
@@ -107,7 +137,7 @@ char **ft_split_by_space(char **str);
 int    filling(char **resu,char *str,char **arry,int i);
 void    ft_filling(char *s,char **s1,int lenf,int start);
 char **ft_add_command(char **com,int start,int pos,t_list *list);
-t_list    *creat_list(char **com,int start,int pos);
+t_list    *creat_list(char **com,int start,int pos,int *c);
 void   add_node(t_list *list,char **com,int start,int pos);
 t_list    *ft_filling_list(char **com);
 char *disable(char *str);

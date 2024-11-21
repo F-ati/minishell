@@ -2,7 +2,7 @@ NAME = minishell
 
 CC = cc
 
- CFLAGS = -Wall -Wextra -Werror -I.
+CFLAGS = -Wall -Wextra -Werror -I.# -g -fsanitize=address
 
 LDFLAGS = -lreadline
 
@@ -23,7 +23,7 @@ $(NAME): $(OBJ) minishell.h
 clean:
 	make -C libft clean
 	make -C ft_printf clean
-	$(RM) $(OBJ) 
+	$(RM) $(OBJ)
 
 fclean: clean
 	make -C libft fclean

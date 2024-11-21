@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 17:52:53 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/16 17:54:28 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/20 19:20:18 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,9 @@ char *ft_remove(char *str,int len_r, int n)
     int i;
     int j;
     int len;
-    int len_s;
     char *resu;
 
-    len_s = ft_strlen(str);
-    len = len_s - len_r + 1;
+    len = ft_strlen(str) - len_r + 1;
     resu = malloc(len);
     i  = 0;
     if(n == 1)
@@ -86,3 +84,4 @@ char *get_first_word(char *str)
      word[i] = '\0';
     return word;
 }
+

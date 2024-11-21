@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/19 22:53:15 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/20 17:41:48 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ void    ft_minishell(t_shell *minishell)
         ft_join_quote(minishell->data.com);
         minishell->data.command = ft_split_by_space(minishell->data.com);
         free_arr(minishell->data.com);
-        // printer(minishell->data.command);
         minishell->data.c = check_error(minishell->data.command);
         if(minishell->data.c == 0)
         {
@@ -111,7 +110,7 @@ int count_space_tab(char *str)
 }
 int main(int ac,char **av,char **env)
 {
-    // atexit(leak);
+ //   atexit(leak);
     (void)ac;
     (void)av;
     t_shell minishell;

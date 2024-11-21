@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 17:43:00 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/16 17:55:38 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/21 13:04:39 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,15 @@ void    ft_collect_in_last(char **next,char **str)
     free((*str));
     (*str) = new_str;
 }
+
 char **ft_join(char **str)
 {
-    int i = 0;
+    int i;
     int len;
-    int k = 0;
+    int k;
 
+    i = 0;
+    k = 0;
     while (str[i] && str[i + 1]) 
     {
         len = ft_strlen(str[i]);
