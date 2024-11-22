@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
-int is_space(char c) 
+int	is_space(char c)
 {
-    return (c == ' ' || c == '\t');
+	return (c == ' ' || c == '\t');
 }
 
- void	*free_arry(char **str, int i)
+void	*free_arry(char **str, int i)
 {
 	while (i >= 0)
 	{
@@ -88,37 +88,40 @@ char	**ft_split_by_space_tab(char const *s)
 //     while (a[i])
 //         printf ("--%s--\n", a[i++]);
 // 	if(a[0] == NULL)
-// 		printf("null");    
+// 		printf("null");
 // }
-char **ft_split_by_space(char **str)
+char	**ft_split_by_space(char **str)
 {
-    char **mini_str;
-    char **resu;
-    int i = 0;
-    int count = 0;
-    int j = 0;
-    
-    while (str[i])
-    {
-        if (str[i][0] != '"' && str[i][0] != '\'')
-            count += check_command(str[i]);
-        else
-            count++;
-        i++;
-    }
-    resu = malloc(sizeof(char *) * (count + 1));
-    i = 0;
-    while (str[i])
-    {
-        if (str[i][0] != '"' && str[i][0] != '\'')
-        {
-            mini_str = ft_split_by_space_tab(str[i]);
-            j = filling(resu, NULL, mini_str, j);
-            free_arr(mini_str);
-        }
-        else
-            j = filling(resu, str[i], NULL, j);
-        i++;
-    }
-    return (resu);
+	char	**mini_str;
+	char	**resu;
+	int		i;
+	int		count;
+	int		j;
+
+	i = 0;
+	count = 0;
+	j = 0;
+	while (str[i])
+	{
+		if (str[i][0] != '"' && str[i][0] != '\'')
+			count += check_command(str[i]);
+		else
+			count++;
+		i++;
+	}
+	resu = malloc(sizeof(char *) * (count + 1));
+	i = 0;
+	while (str[i])
+	{
+		if (str[i][0] != '"' && str[i][0] != '\'')
+		{
+			mini_str = ft_split_by_space_tab(str[i]);
+			j = filling(resu, NULL, mini_str, j);
+			free_arr(mini_str);
+		}
+		else
+			j = filling(resu, str[i], NULL, j);
+		i++;
+	}
+	return (resu);
 }

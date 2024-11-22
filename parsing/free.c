@@ -12,12 +12,12 @@
 
 #include "minishell.h"
 
- void	free_arr(char **str)
+void	free_arr(char **str)
 {
-    int i;
+	int	i;
 
-    i = 0;
-	while(str[i])
+	i = 0;
+	while (str[i])
 	{
 		free(str[i]);
 		i++;
@@ -25,34 +25,35 @@
 	free(str);
 }
 
-void    free_node(t_list *list)
+void	free_node(t_list *list)
 {
-    t_dir   *red;
+	t_dir	*red;
 
-    free_arr(list->command);
-    list->command = NULL;
-    while(list->redir)
-    {
-        red = list->redir;
-        list->redir = list->redir->next;
-        red->type = 0;
-        free(red->file_name);
-        red->file_name = NULL;
-        free(red);
-        red = NULL;
-    }
-    list->next = NULL;
+	free_arr(list->command);
+	list->command = NULL;
+	while (list->redir)
+	{
+		red = list->redir;
+		list->redir = list->redir->next;
+		red->type = 0;
+		free(red->file_name);
+		red->file_name = NULL;
+		free(red);
+		red = NULL;
+	}
+	list->next = NULL;
 }
 
-void    free_list(t_list *list)
+void	free_list(t_list *list)
 {
-    t_list *lst;
-    while(list)
-    {
-        lst = list;
-        list = list->next;
-        free_node(lst);
-        free(lst);
-        lst = NULL;
-    }
+	t_list	*lst;
+
+	while (list)
+	{
+		lst = list;
+		list = list->next;
+		free_node(lst);
+		free(lst);
+		lst = NULL;
+	}
 }
