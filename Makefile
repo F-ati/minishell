@@ -4,8 +4,8 @@ CC = cc
 
 CFLAGS = -Wall -Wextra -Werror -I. $(READLINE_FLAGS)
 
-READLINE_FLAGS = # -I/Users/fel-aziz/.brew/opt/readline/include
-READLINE_LIB = #-L/Users/fel-aziz/.brew/opt/readline/lib
+READLINE_FLAGS =  #-I/Users/$(USER)/.brew/opt/readline/include
+READLINE_LIB = #-L/Users/$(USER)/.brew/opt/readline/lib
 
 LDFLAGS = -lreadline
 
