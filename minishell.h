@@ -97,6 +97,15 @@ typedef struct s_shell
     int herdoc_nb;
     int cmd_nb;
 }   t_shell;
+typedef struct s_execution
+{
+    int	preve_fd;
+	int	fd[2];
+	int	id;
+	int	*child_pids;
+	int	i;
+}   t_execution;
+
 //======================================PARSING================================================
 void printer(char **a);
 // error //
@@ -165,7 +174,7 @@ void  ft_execution(t_shell *minishell);
 int   ft_cmnd_nb( t_list *data);
 void  ft_echo(t_shell *shell);
 void  ft_env(t_shell *data);
-void  ft_cd(t_shell *shell);
+void	ft_cd(t_shell *shell , int args_nb);
 void  ft_pwd(t_shell *shell);
 void  ft_unset(t_shell *data);
 void  ft_export(t_shell *shell);
@@ -201,6 +210,14 @@ void print_error(t_shell  *shell,char *old_pwd);
 char *go_to_home(t_shell *shell);
 void ensure_fds_closed(t_list *list);
 void	update_pwd_env(t_shell *shell, char *old_pwd);
+int	check_is_has_value(char *command);
+char	**ft_resize(char **str, char *new_var);
+char	*get_name_var(char *command);
+void	ft_apdate_env(t_shell *shell, char *new_arg);
+void	ft_set_pwd_env(t_shell *shell, char *pwd, int j);
+void	export_invalid_arg_error(t_shell *shell, char *str);
+void	check_export_cases(char c, int *flag);
+char	**remove_and_resize(char **str, int indx);
 // int ft_pipe(t_shell *shell);
 // int   is_parent_command( t_shell *shell);
 
