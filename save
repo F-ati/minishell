@@ -1,0 +1,2 @@
+remove strcomp , don't while whit the original list 
+in heredoc wait() or waitpid()

@@ -7,15 +7,16 @@
 #define OUT 4
 
 
-#include <readline/readline.h>
-#include <readline/history.h>
-#include <stdlib.h>
-#include <string.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <sys/wait.h>
+#include <string.h>
 #include <fcntl.h>
 #include <errno.h>
 #include "libft/libft.h"
 #include "ft_printf/ft_printf.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
 typedef struct s_dir
 {
@@ -191,6 +192,13 @@ char	*my_strjoin(char  *s1, char  *s2);
 void  ft_search_variable(char ***command,char **env);
 char *ft_replace(char *command,char *var,char *value,int k);
 void ft_apdate_env(t_shell *shell,char *new_arg);
+void update_exit_status_env(t_shell *shell);
+int	display_variable(t_shell *shell, char *str, int i, int fd);
+char	*generate_temp_filename(char *file_name);
+int	ft_handle_input_redirection(t_shell *shell, t_dir *redir);
+int	ft_handle_output_redirection(t_shell *shell, t_dir *redir);
+void print_error(t_shell  *shell,char *old_pwd);
+char *go_to_home(t_shell *shell);
 // int ft_pipe(t_shell *shell);
 // int   is_parent_command( t_shell *shell);
 
