@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 20:30:10 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/21 19:30:22 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/22 15:27:16 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,58 @@ int	check_error(char **command)
 	while (command[i + 1])
 	{
 		if (is_redirection(command[i]) == 1 && (is_redirection(command[i
-					+ 1]) == 1 || ft_strcmp(command[i + 1], "|") == 0))
+						+ 1]) == 1 || ft_strcmp(command[i + 1], "|") == 0))
 			return (1);
 		i++;
 	}
 	return (0);
+}
+
+char	*ft_last_word(char *str)
+{
+	char	*last_word;
+	int		cout;
+	int		len;
+
+	cout = 0;
+	len = ft_strlen(str);
+	while (is_space(str[len - 1]) == 1)
+	{
+		len--;
+		cout++;
+	}
+	while (len > 0 && is_space(str[len - 1]) == 0)
+	{
+		len--;
+	}
+	last_word = ft_substr(str, len, (ft_strlen(str) - cout) - len);
+	return (last_word);
+}
+
+int	ft_check(char *str)
+{
+	int	i;
+	int	k;
+	int	xhal;
+
+	i = 0;
+	k = 0;
+	xhal = 0;
+	while (str[i] != '\'' && str[i] != '\"' && str[i])
+		i++;
+	if (str[i] == '\0')
+		return (0);
+	else
+	{
+		if (i != 0)
+			xhal++;
+		while (str[i])
+		{
+			k = position_of_quoter(str, i, &k, &xhal);
+			if (k == -1)
+				return (-1);
+			i = k;
+		}
+	}
+	return (xhal);
 }

@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:41:30 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/21 12:42:28 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/22 15:45:56 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,14 +99,14 @@ char	*ft_substr_add_space(char *s, int start, int len)
 	while (++i < len)
 	{
 		if (s[start + i] == '|' || size == 2 || (s[start + i] == '<' && s[start
-				+ i + 1] != '<') || (s[start + i] == '>' && s[start + i
-				+ 1] != '>'))
+					+ i + 1] != '<') || (s[start + i] == '>' && s[start + i
+					+ 1] != '>'))
 		{
 			lenf += 2;
 			size = 1;
 		}
 		else if ((s[start + i] == '<' && s[start + i + 1] == '<') || (s[start
-				+ i] == '>' && s[start + i + 1] == '>'))
+					+ i] == '>' && s[start + i + 1] == '>'))
 			size += 1;
 	}
 	s1 = malloc((lenf + 1) * sizeof(char));

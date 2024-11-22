@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:31:59 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/21 18:48:58 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/22 15:50:54 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	initialize_for_split_quote(t_data_for_split_quote *data)
 	data->in_quote = 0;
 	data->i = 0;
 }
+
 void	beginning_not_quote(t_data_for_split_quote *data, char *str,
 		char ***command)
 {
@@ -30,6 +31,7 @@ void	beginning_not_quote(t_data_for_split_quote *data, char *str,
 	data->quote_char = str[data->i];
 	data->start = data->i;
 }
+
 void	ft_split_quote(char *str, char ***command)
 {
 	t_data_for_split_quote	data;
@@ -73,33 +75,6 @@ int	position_of_quoter(char *str, int i, int *k, int *xhal)
 	if ((*k) != -1)
 		(*xhal)++;
 	return ((*k));
-}
-int	ft_check(char *str)
-{
-	int	i;
-	int	k;
-	int	xhal;
-
-	i = 0;
-	k = 0;
-	xhal = 0;
-	while (str[i] != '\'' && str[i] != '\"' && str[i])
-		i++;
-	if (str[i] == '\0')
-		return (0);
-	else
-	{
-		if (i != 0)
-			xhal++;
-		while (str[i])
-		{
-			k = position_of_quoter(str, i, &k, &xhal);
-			if (k == -1)
-				return (-1);
-			i = k;
-		}
-	}
-	return (xhal);
 }
 
 char	**ft_split_command(char *str, int *n)

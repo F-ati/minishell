@@ -6,40 +6,19 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 20:33:17 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/21 12:41:19 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/22 15:41:39 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	decrypt(char **command)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (command[i])
-	{
-		j = 0;
-		while (command[i][j])
-		{
-			if (command[i][j] == '\1')
-				command[i][j] = '<';
-			else if (command[i][j] == '\2')
-				command[i][j] = '>';
-			else if (command[i][j] == '\3')
-				command[i][j] = '|';
-			j++;
-		}
-		i++;
-	}
-}
 void	initialize_for_add_command(t_data_for_add_command *data, int start)
 {
 	data->i = start - 1;
 	data->j = 0;
 	data->c = 0;
 }
+
 char	**ft_add_command(char **com, int start, int pos, t_list *list)
 {
 	t_data_for_add_command	data;
@@ -61,12 +40,13 @@ char	**ft_add_command(char **com, int start, int pos, t_list *list)
 			if (com[data.i][0] == '\"')
 				data.resu[data.j++] = disable(com[data.i]);
 			else
-				data.resu[data.j++] = ft_strdup_and_remove_not_printible(com[data.i]);
+				data.resu[data.j++] = ft_strdup_and_rm_nprintible(com[data.i]);
 		}
 	}
 	decrypt(data.resu);
 	return (data.resu);
 }
+
 t_list	*creat_list(char **com, int start, int pos, int *c)
 {
 	t_list	*list;
@@ -78,6 +58,7 @@ t_list	*creat_list(char **com, int start, int pos, int *c)
 	(*c) = 1;
 	return (list);
 }
+
 void	add_node(t_list *list, char **com, int start, int pos)
 {
 	t_list	*lst;

@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 18:12:00 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/16 18:16:08 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/22 15:42:56 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,22 @@ void	free_list(t_list *list)
 		free(lst);
 		lst = NULL;
 	}
+}
+
+void	free_for_can_replace(char **tmp, char **tmp1, char **sub)
+{
+	free((*sub));
+	free((*tmp));
+	free((*tmp1));
+}
+
+void	*free_arry(char **str, int i)
+{
+	while (i >= 0)
+	{
+		free(str[i]);
+		i--;
+	}
+	free(str);
+	return (NULL);
 }

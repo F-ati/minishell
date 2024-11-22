@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 17:52:53 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/20 19:20:18 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/22 15:43:27 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ char	*ft_remove(char *str, int len_r, int n)
 	resu[i] = '\0';
 	return (resu);
 }
+
 char	*get_last_word(char *str)
 {
 	char	*last_word;

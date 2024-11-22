@@ -103,6 +103,8 @@ void printer(char **a);
 int is_redirection(char *str);
 int ft_arry_len(char **str);
 int    check_error(char **command);
+char	*ft_last_word(char *str);
+int ft_check(char *str);
 
 // help //
 int ft_strcmp_len(char *s1,char *s2, int len);
@@ -113,14 +115,18 @@ void fix_quotes (char **str);
 
 // split_command//
 char **ft_split_command(char *str,int *n);
-int ft_check(char *str);
 void ft_split_quote(char *str, char ***command);
+int	position_of_quoter(char *str, int i, int *k, int *xhal);
 
 // expand //
-char *ft_replace(char *command,char *var,char *value,int k);
+void  ft_search_variable(char ***command,char **env);
+// expand utilis
+void	initialize_data_of_replale(t_data_of_replace *data, char *command,char *var, char *value);
 char *get_env_value(char **env, char *var);
 char *get_variable(char *command,int pos);
-void  ft_search_variable(char ***command,char **env);
+void	encryption(char *str);
+char	*ft_replace(char *command, char *var, char *value, int k);
+
 
 // help join //
 void    ft_strcpy(char *s1, char *s2);
@@ -153,12 +159,15 @@ char *disable(char *str);
 t_dir    *creat_dir_list(int typ,char *name);
 void    add_dir_node(t_dir  *redir,int typ,char *name);
 void    filling_redir(t_list *list,int typ,char *name,int *c);
+void	decrypt(char **command);
 
 
 // free //
+void	*free_arry(char **str, int i);
 void	free_arr(char **str);
 void    free_node(t_list *list);
 void    free_list(t_list *list);
+void	free_for_can_replace(char **tmp, char **tmp1, char **sub);
 //==============================================EXECUTION======================================================
 // funcs of the execution  
 void  ft_execution(t_shell *minishell);
