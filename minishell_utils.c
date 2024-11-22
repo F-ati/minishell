@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:08:34 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/20 19:26:46 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/22 09:01:05 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -320,7 +320,33 @@ char *go_to_home(t_shell *shell)
 	{
 		ft_printf("minishell: cd: HOME not set\n");
 		shell->exit_status = 1;
+		return(NULL);
 		
 	}
 	return(path);
+}
+void ensure_fds_closed(t_list *list)
+{
+	t_list *tmp;
+
+	tmp = list ;
+	while(tmp != NULL)
+	{
+		if(tmp->fd_heredoc >= 0)
+		{
+			close(tmp->fd_heredoc);
+			tmp->fd_heredoc = -1;
+		}
+		if(tmp->fd_input >= 0)
+		{
+			close(tmp->fd_input);
+			tmp->fd_input = -1;
+		}
+		if(tmp->fd_output >= 0)
+		{
+			close(tmp->fd_output);
+			tmp->fd_output = -1;
+		}
+		tmp = tmp->next;
+	}
 }

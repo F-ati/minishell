@@ -199,6 +199,7 @@ int	ft_handle_input_redirection(t_shell *shell, t_dir *redir);
 int	ft_handle_output_redirection(t_shell *shell, t_dir *redir);
 void print_error(t_shell  *shell,char *old_pwd);
 char *go_to_home(t_shell *shell);
+void ensure_fds_closed(t_list *list);
 // int ft_pipe(t_shell *shell);
 // int   is_parent_command( t_shell *shell);
 

@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/22 12:22:08 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/22 12:31:03 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ void	leak(void)
 	system("leaks -q minishell");
 }
 
+// void signal(int sig_num)
+// {
+//     (void)sig_num;
+//     rl_replace_line("" , 0);
+// }
 void	ft_minishell(t_shell *minishell)
 {
 	ft_search_variable(&minishell->data.com, minishell->env);
