@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/22 10:16:45 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/22 11:53:40 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,11 @@ void	leak(void)
 	system("leaks -q minishell");
 }
 
+// void signal(int sig_num)
+// {
+//     (void)sig_num;
+//     rl_replace_line("" , 0);
+// }
 void	ft_minishell(t_shell *minishell)
 {
 	ft_search_variable(&minishell->data.com, minishell->env);

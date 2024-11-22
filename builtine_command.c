@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:16:27 by root              #+#    #+#             */
-/*   Updated: 2024/11/20 19:27:00 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/22 12:26:39 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,8 +111,10 @@ void	update_pwd_env(t_shell *shell, char *old_pwd)
 	j = 0;
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
+	{
 		print_error(shell, old_pwd);
-		return;
+		return ;
+	}
 	while (shell->env[j] != NULL)
 	{
 		if (shell->env[j][0] == 'P' && strncmp(shell->env[j], "PWD", 3) == 0
@@ -143,7 +145,8 @@ void	ft_cd(t_shell *shell)
 	if (args_nb == 1)
 	{
 		path = go_to_home(shell);
-		return ;
+		if (path == NULL)
+			return ;
 	}
 	else
 		path = shell->list->command[1];
@@ -261,38 +264,42 @@ void	ft_apdate_export(t_shell *shell, char *new_arg)
 	}
 	free(var_name);
 }
-void print_exported_vars(t_shell *shell)
+
+void	print_exported_vars(t_shell *shell)
 {
-	int i = 0;
-	int j;
-	int flag;
+	int	i;
+	int	j;
+	int	flag;
+
+	i = 0;
 	while (shell->export[i] != NULL)
 	{
 		j = 0;
 		flag = 0;
-			ft_write_data(1, "declare -x ");
-			while (shell->export[i][j] != '\0')
+		ft_write_data(1, "declare -x ");
+		while (shell->export[i][j] != '\0')
+		{
+			if (shell->export[i][j] == '\"' || shell->export[i][j] == '$')
 			{
-				if (shell->export[i][j] == '\"' || shell->export[i][j] == '$')
-				{
-					write(1, "\\", 1);
-				}
-				write(1, &shell->export[i][j], 1);
-				if (shell->export[i][j] == '=' && flag == 0)
-				{
-					write(1, "\"", 1);
-					flag = 1;
-				}
-				j++;
+				write(1, "\\", 1);
 			}
-			if (flag == 1)
+			write(1, &shell->export[i][j], 1);
+			if (shell->export[i][j] == '=' && flag == 0)
 			{
 				write(1, "\"", 1);
+				flag = 1;
 			}
-			write(1, "\n", 1);
-			i++;
+			j++;
+		}
+		if (flag == 1)
+		{
+			write(1, "\"", 1);
+		}
+		write(1, "\n", 1);
+		i++;
 	}
 }
+
 void	ft_export(t_shell *shell)
 {
 	int	i;
@@ -301,33 +308,7 @@ void	ft_export(t_shell *shell)
 	flag = 0;
 	if (shell->list->command[1] == NULL)
 	{
-		// print_exported_vars(shell)
-		// while (shell->export[i] != NULL)
-		// {
-		// 	j = 0;
-		// 	flag = 0;
-		// 	ft_write_data(1, "declare -x ");
-		// 	while (shell->export[i][j] != '\0')
-		// 	{
-		// 		if (shell->export[i][j] == '\"' || shell->export[i][j] == '$')
-		// 		{
-		// 			write(1, "\\", 1);
-		// 		}
-		// 		write(1, &shell->export[i][j], 1);
-		// 		if (shell->export[i][j] == '=' && flag == 0)
-		// 		{
-		// 			write(1, "\"", 1);
-		// 			flag = 1;
-		// 		}
-		// 		j++;
-		// 	}
-		// 	if (flag == 1)
-		// 	{
-		// 		write(1, "\"", 1);
-		// 	}
-		// 	write(1, "\n", 1);
-		// 	i++;
-		// }
+		print_exported_vars(shell);
 		shell->exit_status = 0;
 		return ;
 	}
@@ -422,8 +403,9 @@ void	ft_unset(t_shell *shell)
 
 void	ft_exit(t_shell *shell)
 {
-	int nb;
-	int len;
+	int	nb;
+	int	len;
+
 	len = cmmnd_len(shell->list->command);
 	if (len == 1)
 	{
