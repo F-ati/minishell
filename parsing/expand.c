@@ -6,104 +6,26 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:46:58 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/22 10:17:30 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/22 15:36:31 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	initialize_data_of_replale(t_data_of_replace *data, char *command,
-		char *var, char *value)
+void	initialize_data_of_search_variable(t_data_for_expand *data, int n)
 {
-	data->i = 0;
-	data->j = 0;
-	data->len_val = ft_strlen(value);
-	data->len_var = ft_strlen(var);
-	data->len_all = ft_strlen(command) - data->len_var - 1 + data->len_val;
-	data->what = 1;
-}
-char	*ft_replace(char *command, char *var, char *value, int k)
-{
-	t_data_of_replace	data;
-
-	initialize_data_of_replale(&data, command, var, value);
-	data.resu = malloc(data.len_all + 1);
-	while (command[data.i])
+	if (n == 0)
 	{
-		if (command[data.i] == '$' && data.what)
-		{
-			k = 0;
-			while (value && (k < data.len_val))
-				data.resu[data.j++] = value[k++];
-			data.i += data.len_var;
-			data.what = 0;
-		}
-		else
-			data.resu[data.j++] = command[data.i];
-		data.i++;
+		data->i = -1;
+		data->in = 0;
 	}
-	data.resu[data.j] = '\0';
-	return (data.resu);
-}
-
-char	*get_env_value(char **env, char *var)
-{
-	int	i;
-	int	len;
-
-	i = 0;
-	len = ft_strlen(var);
-	while (env[i])
+	else
 	{
-		if (ft_strcmp_len(env[i], var, len) == 0 && env[i][len] == '=')
-			return (env[i] + len + 1);
-		i++;
+		free(data->var);
+		data->in = 1;
 	}
-	return (NULL);
 }
 
-char	*get_variable(char *command, int pos)
-{
-	char	*var;
-	int		i;
-
-	i = 0;
-	while (command[i + pos])
-	{
-		if (ft_isalnum(command[i + pos]) == 0)
-			break ;
-		i++;
-	}
-	var = ft_substr(command, pos, i);
-	return (var);
-}
-char	*ft_last_word(char *str)
-{
-	char	*last_word;
-	int		cout;
-	int		len;
-
-	cout = 0;
-	len = ft_strlen(str);
-	while (is_space(str[len - 1]) == 1)
-	{
-		len--;
-		cout++;
-	}
-	while (len > 0 && is_space(str[len - 1]) == 0)
-	{
-		len--;
-	}
-	last_word = ft_substr(str, len, (ft_strlen(str) - cout) - len);
-	return (last_word);
-}
-
-void	free_for_can_replace(char **tmp, char **tmp1, char **sub)
-{
-	free((*sub));
-	free((*tmp));
-	free((*tmp1));
-}
 int	can_replace(char **command, int i, int j)
 {
 	char	*tmp;
@@ -130,22 +52,7 @@ int	can_replace(char **command, int i, int j)
 	free_for_can_replace(&tmp, &tmp1, &sub);
 	return (0);
 }
-void	encryption(char *str)
-{
-	int	i;
 
-	i = 0;
-	while (str[i])
-	{
-		if (str[i] == '<')
-			str[i] = '\1';
-		else if (str[i] == '>')
-			str[i] = '\2';
-		else if (str[i] == '|')
-			str[i] = '\3';
-		i++;
-	}
-}
 void	hendled_expand(t_data_for_expand *data, char **env, char ***command)
 {
 	if ((*command)[data->i][data->j + 1] == '?')
@@ -160,8 +67,7 @@ void	hendled_expand(t_data_for_expand *data, char **env, char ***command)
 		data->var = ft_substr((*command)[data->i], data->j + 1, 1);
 		data->j += 1;
 		data->tmp = ft_replace((*command)[data->i], data->var, "", 0);
-		free(data->var);
-		data->in = 1;
+		initialize_data_of_search_variable(data, 1);
 	}
 	else if ((*command)[data->i][data->j + 1] != ' ')
 	{
@@ -171,10 +77,10 @@ void	hendled_expand(t_data_for_expand *data, char **env, char ***command)
 		if (data->value != NULL)
 			encryption(data->value);
 		data->tmp = ft_replace((*command)[data->i], data->var, data->value, 0);
-		free(data->var);
-		data->in = 1;
+		initialize_data_of_search_variable(data, 1);
 	}
 }
+
 void	expand_command(t_data_for_expand *data, char ****command)
 {
 	data->in = 0;
@@ -182,16 +88,12 @@ void	expand_command(t_data_for_expand *data, char ****command)
 	(**command)[data->i] = data->tmp;
 	data->len = ft_strlen((**command)[data->i]);
 }
-void	initialize_data_of_search_variable(t_data_for_expand *data)
-{
-	data->i = -1;
-	data->in = 0;
-}
+
 void	ft_search_variable(char ***command, char **env)
 {
 	t_data_for_expand	data;
 
-	initialize_data_of_search_variable(&data);
+	initialize_data_of_search_variable(&data, 0);
 	while ((*command)[++data.i])
 	{
 		data.len = ft_strlen((*command)[data.i]);

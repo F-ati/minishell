@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 14:52:43 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/18 17:42:04 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/22 15:41:22 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	*ft_strdup(const char *s1)
 	}
 	return (dup);
 }
-char	*ft_strdup_and_remove_not_printible(const char *s1)
+char	*ft_strdup_and_rm_nprintible(const char *s1)
 {
 	int		i;
 	char	*dup;

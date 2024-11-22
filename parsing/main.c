@@ -6,38 +6,12 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/22 12:31:03 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/22 15:50:15 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// // just print
-void	printer(char **a)
-{
-	int	i;
-
-	i = 0;
-	while (a[i])
-		printf("--%s--\n", a[i++]);
-}
-void	print_list(t_list *list)
-{
-	while (list)
-	{
-		printer(list->command);
-		while (list->redir)
-		{
-			if (list->redir->type)
-				printf("redir type : %d and redir type : %s is_quated = %d\n",
-					list->redir->type, list->redir->file_name,
-					list->redir->is_quoted);
-			list->redir = list->redir->next;
-		}
-		list = list->next;
-	}
-}
-// end //
 char	**ft_strdup_arr(char **env, int n)
 {
 	int		len;
@@ -56,7 +30,7 @@ char	**ft_strdup_arr(char **env, int n)
 		resu[i] = ft_strdup("?=0");
 	return (resu);
 }
-//
+
 void	init_shell(t_shell *minishell, char **env)
 {
 	minishell->env = ft_strdup_arr(env, 2);
@@ -66,16 +40,6 @@ void	init_shell(t_shell *minishell, char **env)
 	minishell->list = NULL;
 }
 
-void	leak(void)
-{
-	system("leaks -q minishell");
-}
-
-// void signal(int sig_num)
-// {
-//     (void)sig_num;
-//     rl_replace_line("" , 0);
-// }
 void	ft_minishell(t_shell *minishell)
 {
 	ft_search_variable(&minishell->data.com, minishell->env);
@@ -88,7 +52,6 @@ void	ft_minishell(t_shell *minishell)
 	if (minishell->data.c == 0)
 	{
 		minishell->list = ft_filling_list(minishell->data.command);
-		// print_list (minishell->list);
 		ft_execution(minishell);
 		free_list(minishell->list);
 	}
@@ -99,7 +62,8 @@ void	ft_minishell(t_shell *minishell)
 	}
 	free_arr(minishell->data.command);
 }
-int	count_space_tab(char *str)
+
+int	sp_tb(char *str)
 {
 	int	count;
 	int	i;
@@ -114,11 +78,11 @@ int	count_space_tab(char *str)
 	}
 	return (count);
 }
+
 int	main(int ac, char **av, char **env)
 {
 	t_shell	minishell;
 
-	//   atexit(leak);
 	(void)ac;
 	(void)av;
 	init_shell(&minishell, env);
@@ -127,7 +91,7 @@ int	main(int ac, char **av, char **env)
 		minishell.data.input = readline("minishell$ ");
 		if (minishell.data.input == NULL)
 			break ;
-		if (count_space_tab(minishell.data.input) != ft_strlen(minishell.data.input))
+		if (sp_tb(minishell.data.input) != ft_strlen(minishell.data.input))
 		{
 			minishell.data.com = ft_split_command(minishell.data.input,
 					&minishell.exit_status);

@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 20:40:38 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/21 11:58:20 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/22 15:42:41 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ char	*disable(char *str)
 	resu[j] = '\0';
 	return (resu);
 }
+
 t_dir	*creat_dir_list(int typ, char *name)
 {
 	t_dir	*redir;
@@ -46,6 +47,7 @@ t_dir	*creat_dir_list(int typ, char *name)
 	redir->next = NULL;
 	return (redir);
 }
+
 void	add_dir_node(t_dir *redir, int typ, char *name)
 {
 	t_dir	*dir;
@@ -55,6 +57,7 @@ void	add_dir_node(t_dir *redir, int typ, char *name)
 		redir = redir->next;
 	redir->next = dir;
 }
+
 void	filling_redir(t_list *list, int typ, char *name, int *c)
 {
 	if ((*c) == 0)

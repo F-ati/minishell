@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 17:43:00 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/21 13:25:49 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/22 15:46:35 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ void	ft_collect_in_first(char **next, char **str)
 	free((*str));
 	(*str) = new_str;
 }
+
 void	ft_collect_in_last(char **next, char **str)
 {
 	int		len_next;
@@ -57,6 +58,7 @@ void	ft_collect_in_last(char **next, char **str)
 	free((*str));
 	(*str) = new_str;
 }
+
 void	edit_after_collect(char **str, int i)
 {
 	free(str[i]);
@@ -67,6 +69,7 @@ void	edit_after_collect(char **str, int i)
 	}
 	str[i] = NULL;
 }
+
 char	**ft_join(char **str)
 {
 	int	i;
@@ -94,6 +97,7 @@ char	**ft_join(char **str)
 	}
 	return (str);
 }
+
 void	ft_join_quote(char **str)
 {
 	int		i;

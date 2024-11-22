@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 17:58:42 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/21 13:23:47 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/22 15:51:19 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,6 @@
 int	is_space(char c)
 {
 	return (c == ' ' || c == '\t');
-}
-
-void	*free_arry(char **str, int i)
-{
-	while (i >= 0)
-	{
-		free(str[i]);
-		i--;
-	}
-	free(str);
-	return (NULL);
 }
 
 int	check_command(const char *str)
@@ -52,6 +41,7 @@ int	check_command(const char *str)
 	}
 	return (word);
 }
+
 char	**ft_split_by_space_tab(char const *s)
 {
 	char	**result;
@@ -80,16 +70,25 @@ char	**ft_split_by_space_tab(char const *s)
 	result[j] = NULL;
 	return (result);
 }
-// void printer(char **a)
-// {
-//     int i;
 
-//     i = 0;
-//     while (a[i])
-//         printf ("--%s--\n", a[i++]);
-// 	if(a[0] == NULL)
-// 		printf("null");
-// }
+int	quote_in_start(char **str)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (str[i])
+	{
+		if (str[i][0] != '"' && str[i][0] != '\'')
+			count += check_command(str[i]);
+		else
+			count++;
+		i++;
+	}
+	return (count);
+}
+
 char	**ft_split_by_space(char **str)
 {
 	char	**mini_str;
@@ -99,18 +98,9 @@ char	**ft_split_by_space(char **str)
 	int		j;
 
 	i = 0;
-	count = 0;
 	j = 0;
-	while (str[i])
-	{
-		if (str[i][0] != '"' && str[i][0] != '\'')
-			count += check_command(str[i]);
-		else
-			count++;
-		i++;
-	}
+	count = quote_in_start(str);
 	resu = malloc(sizeof(char *) * (count + 1));
-	i = 0;
 	while (str[i])
 	{
 		if (str[i][0] != '"' && str[i][0] != '\'')
