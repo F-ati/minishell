@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/22 12:18:18 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/22 12:55:53 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ void	ft_execve(t_shell *shell, char *path)
 	int	pid;
 	int	status;
 	int	signal_nb;
-
 	pid = fork();
 	if (pid == 0)
 	{
@@ -65,8 +64,15 @@ void	ft_exec_non_builtin(t_shell *shell, int flag)
 			shell->list->command[0]);
 		shell->exit_status = 127;
 	}
-	else if (str != NULL)
+	else if (str != NULL && shell->list->command[0])
 	{
+		if (shell->list->command[0][0] == '\0')
+		{
+			ft_printf("minishell: %s: command not found\n",
+				shell->list->command[0]);
+			shell->exit_status = 127;
+			return ;
+		}
 		path = ft_split(str, ':');
 		while (path[i] != NULL)
 		{
