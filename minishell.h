@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <sys/wait.h>
 #include <string.h>
 #include <fcntl.h>
@@ -168,6 +169,9 @@ void	free_arr(char **str);
 void    free_node(t_list *list);
 void    free_list(t_list *list);
 void	free_for_can_replace(char **tmp, char **tmp1, char **sub);
+
+// signal //
+void	handle_sigint(int sigint);
 //==============================================EXECUTION======================================================
 // funcs of the execution  
 void  ft_execution(t_shell *minishell);

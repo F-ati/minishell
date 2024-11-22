@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/22 12:55:53 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/22 19:29:24 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,12 @@ void	ft_execve(t_shell *shell, char *path)
 {
 	int	pid;
 	int	status;
-	int	signal_nb;
+
+	signal(SIGINT, SIG_IGN);
 	pid = fork();
 	if (pid == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		execve(path, shell->list->command, shell->env);
 		perror("bash : execve");
 		shell->exit_status = 1;
@@ -28,15 +30,11 @@ void	ft_execve(t_shell *shell, char *path)
 	else
 	{
 		waitpid(pid, &status, 0);
+		signal(SIGINT, handle_sigint);		
 		if (WIFEXITED(status))
-		{
 			shell->exit_status = WEXITSTATUS(status);
-		}
 		if (WIFSIGNALED(status))
-		{
-			signal_nb = WTERMSIG(status);
-			shell->exit_status = 128 + signal_nb;
-		}
+			shell->exit_status = 128 + WTERMSIG(status);
 	}
 }
 

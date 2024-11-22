@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/22 15:50:15 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/22 19:24:13 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,12 +79,23 @@ int	sp_tb(char *str)
 	return (count);
 }
 
+void	handle_sigint(int sigint)
+{
+	(void)sigint;
+	write(1,"\n",1);
+	rl_on_new_line();
+	rl_replace_line("", 0);
+	rl_redisplay();
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_shell	minishell;
 
 	(void)ac;
 	(void)av;
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);	
 	init_shell(&minishell, env);
 	while (1)
 	{
