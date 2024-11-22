@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   minishell_utils.c                                  :+:      :+:    :+:   */
+/*   minishell_utils_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:08:34 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/22 09:01:05 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/22 15:48:41 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,4 +349,50 @@ void ensure_fds_closed(t_list *list)
 		}
 		tmp = tmp->next;
 	}
+}
+
+void	ft_set_pwd_env(t_shell *shell, char *pwd, int j)
+{
+	free(shell->env[j]);
+	shell->env[j] = ft_strjoin("PWD=", pwd);
+}
+
+void	export_invalid_arg_error(t_shell *shell, char *str)
+{
+	ft_printf("minishell: export: '%s': not a valid identifier\n", str);
+	shell->exit_status = 1;
+}
+
+void	check_export_cases(char c, int *flag)
+{
+	if (c == '\"' || c == '$')
+		write(1, "\\", 1);
+	write(1, &c, 1);
+	if (c == '=' && *flag == 0)
+	{
+		write(1, "\"", 1);
+		*flag = 1;
+	}
+}
+char	**remove_and_resize(char **str, int indx)
+{
+	char	**p;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	p = malloc(sizeof(char *) * ft_strnb(str));
+	if (p == NULL)
+		return (NULL);
+	while (str[i] != NULL)
+	{
+		if (i == indx)
+			free(str[i++]);
+		else
+			p[j++] = str[i++];
+	}
+	p[j] = NULL;
+	free(str);
+	return (p);
 }
