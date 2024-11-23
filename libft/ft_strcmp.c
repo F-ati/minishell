@@ -24,18 +24,18 @@ int	ft_strcmp(char *s1, char *s2)
 	return (s1[i] - s2[i]);
 }
 
-int ft_strncmp(char *s1, char *s2, int n)
+int	ft_strncmp(char *s1, char *s2, int n)
 {
-    int i;
+	int	i;
 
-    i = 0;
-    while (i < n && (s1[i] || s2[i]))
-    {
-        if (s1[i] != s2[i])
-            return s1[i] - s2[i];
-        i++;
-    }
-    return 0;
+	i = 0;
+	while (i < n && (s1[i] || s2[i]))
+	{
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
+		i++;
+	}
+	return (0);
 }
 //#include <stdio.h>
 //#include <string.h>

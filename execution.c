@@ -134,5 +134,3 @@ void	ft_execution(t_shell *shell)
 	}
 	update_exit_status_env(shell);
 }
-
-

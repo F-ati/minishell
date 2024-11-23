@@ -29,8 +29,8 @@ void	update_pwd_env(t_shell *shell, char *old_pwd)
 		if (shell->env[j][0] == 'P' && ft_strncmp(shell->env[j], "PWD", 3) == 0
 			&& shell->env[j][3] == '=')
 			ft_set_pwd_env(shell, pwd, j);
-		if (shell->env[j][0] == 'O' && ft_strncmp(shell->env[j], "OLDPWD", 6) == 0
-			&& shell->env[j][6] == '=')
+		if (shell->env[j][0] == 'O' && ft_strncmp(shell->env[j], "OLDPWD",
+				6) == 0 && shell->env[j][6] == '=')
 		{
 			free(shell->env[j]);
 			shell->env[j] = ft_strjoin("OLDPWD=", old_pwd);

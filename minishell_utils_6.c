@@ -70,4 +70,3 @@ void	export_invalid_arg_error(t_shell *shell, char *str)
 	ft_printf("minishell: export: '%s': not a valid identifier\n", str);
 	shell->exit_status = 1;
 }
-

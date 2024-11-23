@@ -18,17 +18,17 @@
 # define IN 3
 # define OUT 4
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <signal.h>
-#include <sys/wait.h>
-#include <string.h>
-#include <fcntl.h>
-#include <errno.h>
-#include "libft/libft.h"
-#include "ft_printf/ft_printf.h"
-#include <readline/readline.h>
-#include <readline/history.h>
+# include "ft_printf/ft_printf.h"
+# include "libft/libft.h"
+# include <errno.h>
+# include <fcntl.h>
+# include <readline/history.h>
+# include <readline/readline.h>
+# include <signal.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <string.h>
+# include <sys/wait.h>
 
 typedef struct s_dir
 {

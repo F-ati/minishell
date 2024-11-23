@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:09:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/23 13:35:36 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/23 13:59:53 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,11 +104,8 @@ int	ft_herdoc(t_shell *shell, t_dir *redir)
 			ft_expand_heredoc_vars(shell, redir, fd);
 		exit(EXIT_SUCCESS);
 	}
-	else
-	{
-		wait(NULL);
-		signal(SIGINT, handle_sigint);
-	}
+	wait(NULL);
+	signal(SIGINT, handle_sigint);
 	return (fd);
 }
 

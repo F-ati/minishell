@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 int	ft_write_data(int fd, char *value)
 {
 	int	i;
