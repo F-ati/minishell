@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 21:02:41 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/22 21:41:42 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/23 13:48:02 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	get_var_indix(char **exp_or_env, char *name_var)
 	len = ft_strlen(name_var);
 	while (exp_or_env[j] != NULL)
 	{
-		if ((exp_or_env[j][0] == name_var[0] && ft_strcmp(exp_or_env[j], name_var) == 0) && (exp_or_env[j][len] == '='
+		if ((exp_or_env[j][0] == name_var[0] && ft_strncmp(exp_or_env[j], name_var ,len) == 0) && (exp_or_env[j][len] == '='
 				|| exp_or_env[j][len] == '\0'))
 		{
 			return (j);

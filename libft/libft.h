@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/09 09:57:28 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/22 15:55:11 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/23 12:32:21 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,5 @@ void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 // add for minishell
 char	*ft_strdup_and_rm_nprintible(const char *s1);
+int ft_strncmp(char *s1, char *s2, int n);
 #endif

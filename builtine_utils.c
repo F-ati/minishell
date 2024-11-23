@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 13:05:23 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/22 21:51:35 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/23 13:32:23 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,10 +26,10 @@ void	update_pwd_env(t_shell *shell, char *old_pwd)
 	}
 	while (shell->env[j] != NULL)
 	{
-		if (shell->env[j][0] == 'P' && strncmp(shell->env[j], "PWD", 3) == 0
+		if (shell->env[j][0] == 'P' && ft_strncmp(shell->env[j], "PWD", 3) == 0
 			&& shell->env[j][3] == '=')
 			ft_set_pwd_env(shell, pwd, j);
-		if (shell->env[j][0] == 'O' && strncmp(shell->env[j], "OLDPWD", 6) == 0
+		if (shell->env[j][0] == 'O' && ft_strncmp(shell->env[j], "OLDPWD", 6) == 0
 			&& shell->env[j][6] == '=')
 		{
 			free(shell->env[j]);

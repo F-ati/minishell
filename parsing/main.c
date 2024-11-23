@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/22 15:50:15 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/23 12:55:04 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,8 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 	init_shell(&minishell, env);
 	while (1)
 	{

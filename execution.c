@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/23 13:27:21 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/23 13:56:46 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ void	execute_pipe_command(t_shell *shell, int nb)
 	if (exec->preve_fd != -1)
 		close(exec->preve_fd);
 	wait_all_children(shell, exec->child_pids, nb);
+	signal(SIGINT, handle_sigint);
 }
 
 void	ft_execution(t_shell *shell)

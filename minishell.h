@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 21:24:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/22 21:42:26 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/23 13:55:12 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,17 @@
 # define IN 3
 # define OUT 4
 
-# include "ft_printf/ft_printf.h"
-# include "libft/libft.h"
-# include <errno.h>
-# include <fcntl.h>
-# include <readline/history.h>
-# include <readline/readline.h>
-# include <stdio.h>
-# include <stdlib.h>
-# include <string.h>
-# include <sys/wait.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <signal.h>
+#include <sys/wait.h>
+#include <string.h>
+#include <fcntl.h>
+#include <errno.h>
+#include "libft/libft.h"
+#include "ft_printf/ft_printf.h"
+#include <readline/readline.h>
+#include <readline/history.h>
 
 typedef struct s_dir
 {
@@ -179,6 +180,9 @@ t_dir				*creat_dir_list(int typ, char *name);
 void				add_dir_node(t_dir *redir, int typ, char *name);
 void				filling_redir(t_list *list, int typ, char *name, int *c);
 void				decrypt(char **command);
+// signal //
+
+void				handle_sigint(int sigint);
 
 // free //
 void				*free_arry(char **str, int i);
