@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filling_redirections.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 20:40:38 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/22 15:42:41 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/23 20:53:18 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ t_dir	*creat_dir_list(int typ, char *name)
 	}
 	else
 		redir->file_name = ft_strdup(name);
+	if (typ == HEREDOC)
+		redir->herdoc_file_name = ft_calloc(1,sizeof(char));
 	redir->next = NULL;
 	return (redir);
 }

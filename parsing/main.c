@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/23 12:55:04 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/23 21:19:10 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	init_shell(t_shell *minishell, char **env)
 
 void	ft_minishell(t_shell *minishell)
 {
+	t_list	*tmp;
 	ft_search_variable(&minishell->data.com, minishell->env);
 	fix_quotes(minishell->data.com);
 	ft_join(minishell->data.com);
@@ -52,10 +53,12 @@ void	ft_minishell(t_shell *minishell)
 	if (minishell->data.c == 0)
 	{
 		minishell->list = ft_filling_list(minishell->data.command);
+		tmp = minishell->list;
 		ft_execution(minishell);
+		minishell->list = tmp;
 		free_list(minishell->list);
 	}
-	else
+	else if(minishell->data.c == 1)
 	{
 		ft_putstr_fd("minishell: syntax error\n", 2);
 		minishell->exit_status = 2;
@@ -79,8 +82,14 @@ int	sp_tb(char *str)
 	return (count);
 }
 
+void aa ()
+{
+	system ("leaks -q minishell");
+}
+
 int	main(int ac, char **av, char **env)
 {
+	// atexit (aa);
 	t_shell	minishell;
 
 	(void)ac;

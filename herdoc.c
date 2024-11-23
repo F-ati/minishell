@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:09:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/23 13:59:53 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/23 21:13:18 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,6 @@ int	ft_herdoc(t_shell *shell, t_dir *redir)
 	if (fd < 0)
 	{
 		unlink(redir->herdoc_file_name);
-		free(redir->herdoc_file_name);
 		return (-1);
 	}
 	signal(SIGINT, SIG_IGN);
@@ -124,6 +123,7 @@ void	handle_heredoc(t_shell *shell)
 		{
 			if (save_redir->type == HEREDOC)
 			{
+				free (save_redir->herdoc_file_name);
 				save_redir->herdoc_file_name = generate_temp_filename("ab");
 				close(save_list->fd_heredoc);
 				save_list->fd_heredoc = ft_herdoc(shell, save_redir);

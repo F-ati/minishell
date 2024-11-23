@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 18:12:00 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/22 15:42:56 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/23 21:15:02 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,12 @@ void	free_node(t_list *list)
 	{
 		red = list->redir;
 		list->redir = list->redir->next;
-		red->type = 0;
 		free(red->file_name);
+		if (red->type == HEREDOC)
+			free(red->herdoc_file_name);
+		red->type = 0;
 		red->file_name = NULL;
+		red->herdoc_file_name = NULL;
 		free(red);
 		red = NULL;
 	}

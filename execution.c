@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/23 13:56:46 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/23 21:13:51 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,15 +98,21 @@ void	execute_pipe_command(t_shell *shell, int nb)
 		if (ft_open_redictions(shell) == -1)
 		{
 			ensure_fds_closed(shell->list);
+			free (exec);
 			return ;
 		}
 		if (pipe_fork_and_execute(shell, nb, exec))
+		{
+			free (exec);
 			return ;
+		}
 	}
 	if (exec->preve_fd != -1)
 		close(exec->preve_fd);
 	wait_all_children(shell, exec->child_pids, nb);
 	signal(SIGINT, handle_sigint);
+	free (exec->child_pids);
+	free (exec);
 }
 
 void	ft_execution(t_shell *shell)
