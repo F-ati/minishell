@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils_6.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 21:12:13 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/22 21:54:18 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/23 22:38:43 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 
 void	print_error(t_shell *shell, char *old_pwd)
 {
+	(void)shell;
+	
 	free(old_pwd);
 	perror("minishell: cd");
-	shell->exit_status = 1;
+	g_signal = 1;
 }
 
 char	*go_to_home(t_shell *shell)
@@ -27,7 +29,7 @@ char	*go_to_home(t_shell *shell)
 	if (path == NULL)
 	{
 		ft_printf("minishell: cd: HOME not set\n");
-		shell->exit_status = 1;
+		g_signal = 1;
 		return (NULL);
 	}
 	return (path);
@@ -67,6 +69,7 @@ void	ft_set_pwd_env(t_shell *shell, char *pwd, int j)
 
 void	export_invalid_arg_error(t_shell *shell, char *str)
 {
+	(void)shell;
 	ft_printf("minishell: export: '%s': not a valid identifier\n", str);
-	shell->exit_status = 1;
+	g_signal = 1;
 }

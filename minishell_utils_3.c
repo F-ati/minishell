@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils_3.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 19:59:55 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/23 14:14:06 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/23 22:38:01 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 
 void	print_file_not_found(t_shell *shell, char *str)
 {
+	(void)shell;
 	ft_printf("minishell: %s : No such file or directory\n", str);
-	shell->exit_status = 127;
+	g_signal = 127;
 }
 
 void	print_cmd_not_found(t_shell *shell, char *str)
 {
+	(void)shell;
 	ft_printf("minishell: %s: command not found\n", str);
-	shell->exit_status = 127;
+	g_signal = 127;
 }
 
 void	is_fork_required(int flag, t_shell *shell, char *path)

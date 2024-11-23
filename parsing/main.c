@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/23 21:19:10 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/23 22:54:40 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,11 @@ char	**ft_strdup_arr(char **env, int n)
 
 void	init_shell(t_shell *minishell, char **env)
 {
+	signal(SIGINT, handle_sigint);
+	signal(SIGQUIT, SIG_IGN);
 	minishell->env = ft_strdup_arr(env, 2);
 	minishell->export = ft_strdup_arr(env, 1);
-	minishell->exit_status = 0;
+	g_signal = 0;
 	minishell->data.c = 0;
 	minishell->list = NULL;
 }
@@ -43,6 +45,7 @@ void	init_shell(t_shell *minishell, char **env)
 void	ft_minishell(t_shell *minishell)
 {
 	t_list	*tmp;
+
 	ft_search_variable(&minishell->data.com, minishell->env);
 	fix_quotes(minishell->data.com);
 	ft_join(minishell->data.com);
@@ -58,10 +61,10 @@ void	ft_minishell(t_shell *minishell)
 		minishell->list = tmp;
 		free_list(minishell->list);
 	}
-	else if(minishell->data.c == 1)
+	else if (minishell->data.c == 1)
 	{
 		ft_putstr_fd("minishell: syntax error\n", 2);
-		minishell->exit_status = 2;
+		g_signal = 2;
 	}
 	free_arr(minishell->data.command);
 }
@@ -82,20 +85,17 @@ int	sp_tb(char *str)
 	return (count);
 }
 
-void aa ()
-{
-	system ("leaks -q minishell");
-}
+// void	aa(void)
+// {
+// 	system("leaks -q minishell");
+// }
 
 int	main(int ac, char **av, char **env)
 {
-	// atexit (aa);
 	t_shell	minishell;
 
 	(void)ac;
 	(void)av;
-	signal(SIGINT, handle_sigint);
-	signal(SIGQUIT, SIG_IGN);
 	init_shell(&minishell, env);
 	while (1)
 	{
@@ -105,14 +105,15 @@ int	main(int ac, char **av, char **env)
 		if (sp_tb(minishell.data.input) != ft_strlen(minishell.data.input))
 		{
 			minishell.data.com = ft_split_command(minishell.data.input,
-					&minishell.exit_status);
+					&g_signal);
 			if (minishell.data.com)
 				ft_minishell(&minishell);
+
 		}
 		add_history(minishell.data.input);
 		free(minishell.data.input);
 	}
 	free_arr(minishell.env);
 	free_arr(minishell.export);
-	return (minishell.exit_status);
+	return (g_signal);
 }

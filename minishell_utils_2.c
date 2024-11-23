@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils_2.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 19:47:28 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/22 21:17:06 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/23 22:36:19 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	pipe_fork_and_execute(t_shell *shell, int nb, t_execution *exec)
 		perror("pipe");
 		return (1);
 	}
+	signal (SIGINT, SIG_IGN);
 	exec->id = fork();
 	if (exec->id == -1)
 	{
@@ -26,7 +27,10 @@ int	pipe_fork_and_execute(t_shell *shell, int nb, t_execution *exec)
 		return (1);
 	}
 	if (exec->id == 0)
+	{
 		child_ps(exec, nb, shell);
+		signal (SIGINT, SIG_DFL);
+	}	
 	else
 		parent_ps(exec, shell);
 	return (0);
@@ -83,7 +87,7 @@ void	child_ps(t_execution *exec, int nb, t_shell *shell)
 	re_dup_redirection(shell);
 	closing_fds(shell, exec);
 	execute_command(shell, 1);
-	exit(shell->exit_status);
+	exit(g_signal);
 }
 
 void	closing_fds(t_shell *shell, t_execution *exec)

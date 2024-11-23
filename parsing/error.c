@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 20:30:10 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/23 20:51:15 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/23 22:02:27 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,12 @@ int	check_error(char **command)
 
 	i = 0;
 	len = ft_arry_len(command);
-	if(len == 0)
-		return(2);
-	if ((ft_strcmp(command[0], "|") == 0 || ft_strcmp(command[len - 1], "<") == 0
-		|| ft_strcmp(command[len - 1], ">") == 0 || ft_strcmp(command[len - 1],
-			"<<") == 0 || ft_strcmp(command[len - 1], ">>") == 0
-		|| ft_strcmp(command[len - 1], "|") == 0))
+	if (len == 0)
+		return (2);
+	if ((ft_strcmp(command[0], "|") == 0 || ft_strcmp(command[len - 1],
+				"<") == 0 || ft_strcmp(command[len - 1], ">") == 0
+			|| ft_strcmp(command[len - 1], "<<") == 0 || ft_strcmp(command[len
+					- 1], ">>") == 0 || ft_strcmp(command[len - 1], "|") == 0))
 		return (1);
 	while (command[i + 1])
 	{

@@ -45,7 +45,7 @@ t_dir	*creat_dir_list(int typ, char *name)
 	else
 		redir->file_name = ft_strdup(name);
 	if (typ == HEREDOC)
-		redir->herdoc_file_name = ft_calloc(1,sizeof(char));
+		redir->herdoc_file_name = ft_calloc(1, sizeof(char));
 	redir->next = NULL;
 	return (redir);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/23 21:13:51 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/23 22:52:09 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	ft_exec_non_builtin(t_shell *shell, int flag)
 	{
 		ft_printf("minishell: %s: No such file or directory\n",
 			shell->list->command[0]);
-		shell->exit_status = 127;
+		g_signal = 127;
 	}
 	else if (str != NULL && shell->list->command[0])
 		generate_exec_path(shell, flag, str);
@@ -97,20 +97,20 @@ void	execute_pipe_command(t_shell *shell, int nb)
 		init_var(shell);
 		if (ft_open_redictions(shell) == -1)
 		{
-			ensure_fds_closed(shell->list);
 			free (exec);
+			ensure_fds_closed(shell->list);
 			return ;
 		}
 		if (pipe_fork_and_execute(shell, nb, exec))
 		{
 			free (exec);
+			signal(SIGINT, handle_sigint);
 			return ;
 		}
 	}
 	if (exec->preve_fd != -1)
 		close(exec->preve_fd);
 	wait_all_children(shell, exec->child_pids, nb);
-	signal(SIGINT, handle_sigint);
 	free (exec->child_pids);
 	free (exec);
 }
@@ -131,12 +131,8 @@ void	ft_execution(t_shell *shell)
 		return ;
 	}
 	else if (nb == 1)
-	{
 		ft_execut_simple_command(shell);
-	}
 	else
-	{
 		execute_pipe_command(shell, nb);
-	}
 	update_exit_status_env(shell);
 }
