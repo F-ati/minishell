@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 17:43:00 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/22 15:46:35 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/23 13:04:03 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,8 +108,8 @@ void	ft_join_quote(char **str)
 	i = 0;
 	while (str[i] && str[i + 1])
 	{
-		len_str = strlen(str[i]);
-		len_next = strlen(str[i + 1]);
+		len_str = ft_strlen(str[i]);
+		len_next = ft_strlen(str[i + 1]);
 		if ((str[i][len_str - 1] == '\'' || str[i][len_str - 1] == '\"')
 				&& (str[i + 1][0] == '\'' || str[i + 1][0] == '\"'))
 		{

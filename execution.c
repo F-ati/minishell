@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/22 19:32:26 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/23 12:55:13 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -216,30 +216,26 @@ void	closing_fds(t_shell *shell, t_execution *exec)
 	if (exec->preve_fd != -1)
 		close(exec->preve_fd);
 }
-
+void	ft_perror(char *str)
+{
+	perror(str);
+	exit(1);
+}
 void	child_ps(t_execution *exec, int nb, t_shell *shell)
 {
+	signal(SIGINT, SIG_DFL);
 	if (exec->i == 0)
 	{
 		if (dup2(exec->fd[1], 1) == -1)
-		{
-			perror("dup2");
-			exit(1);
-		}
+			ft_perror("dup2");
 	}
 	else if (exec->i < nb - 1)
 	{
 		if (dup2(exec->preve_fd, 0) == -1 || dup2(exec->fd[1], 1) == -1)
-		{
-			perror("dup2");
-			exit(1);
-		}
+			ft_perror("dup2");
 	}
 	else if (dup2(exec->preve_fd, 0) == -1)
-	{
-		perror("dup2");
-		exit(1);
-	}
+		ft_perror("dup2");
 	re_dup_redirection(shell);
 	closing_fds(shell, exec);
 	execute_command(shell, 1);
@@ -277,6 +273,7 @@ int	pipe_fork_and_execute(t_shell *shell, int nb, t_execution *exec)
 		perror("pipe");
 		return (1);
 	}
+	signal(SIGINT, SIG_IGN);
 	exec->id = fork();
 	if (exec->id == -1)
 	{
@@ -310,6 +307,7 @@ void	execute_pipe_command(t_shell *shell, int nb)
 	if (exec->preve_fd != -1)
 		close(exec->preve_fd);
 	wait_all_children(shell, exec->child_pids, nb);
+	signal(SIGINT, handle_sigint);
 }
 
 void	ft_execution(t_shell *shell)

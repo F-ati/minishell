@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/11 17:44:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/20 16:27:55 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/23 13:15:56 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	ft_open_output(char *file_name, t_shell *shell)
 	fd = open(file_name, O_CREAT | O_RDWR | O_TRUNC, 0644);
 	if (fd < 0)
 	{
-		ft_printf("minishell: %s: %s\n", file_name, strerror(errno));
+		// ft_printf("minishell: %s: %s\n", file_name, strerror(errno));
 		shell->exit_status = 1;
 		return (-1);
 	}
@@ -33,7 +33,7 @@ int	ft_open_input(char *file_name, t_shell *shell)
 	fd = open(file_name, O_RDWR, 0644);
 	if (fd < 0)
 	{
-		ft_printf("minishell: %s: %s\n", file_name, strerror(errno));
+		// ft_printf("minishell: %s: %s\n", file_name, strerror(errno));
 		shell->exit_status = 1;
 		return (-1);
 	}
@@ -47,7 +47,7 @@ int	ft_open_append(char *file_name, t_shell *shell)
 	fd = open(file_name, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 	{
-		ft_printf("minishell: %s: %s\n", file_name, strerror(errno));
+		// ft_printf("minishell: %s: %s\n", file_name, strerror(errno));
 		shell->exit_status = 1;
 		return (-1);
 	}

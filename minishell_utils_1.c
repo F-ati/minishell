@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_utils_1.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 16:08:34 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/22 15:48:41 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/23 12:33:30 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,7 @@ int	get_var_indix(char **exp_or_env, char *name_var)
 	len = ft_strlen(name_var);
 	while (exp_or_env[j] != NULL)
 	{
-		if ((exp_or_env[j][0] == name_var[0] && strncmp(exp_or_env[j], name_var,
+		if ((exp_or_env[j][0] == name_var[0] && ft_strncmp(exp_or_env[j], name_var,
 					len) == 0) && (exp_or_env[j][len] == '='
 				|| exp_or_env[j][len] == '\0'))
 		{

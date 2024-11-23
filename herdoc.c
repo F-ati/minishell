@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herdoc.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
+/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:09:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/20 11:56:10 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/23 13:14:31 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	ft_expand_heredoc_vars(t_shell *shell, t_dir *redir, int fd)
 		str = readline("> ");
 		if (str == NULL)
 			break ;
-		if (strcmp(str, redir->file_name) == 0)
+		if (ft_strcmp(str, redir->file_name) == 0)
 		{
 			free(str);
 			break ;
@@ -93,9 +93,11 @@ int	ft_herdoc(t_shell *shell, t_dir *redir)
 		free(redir->herdoc_file_name);
 		return (-1);
 	}
+	signal(SIGINT, SIG_IGN);
 	id = fork();
 	if (id == 0)
 	{
+		signal(SIGINT, SIG_DFL);
 		if (redir->is_quoted == 1)
 			ft_unexpanded_heredoc_vars(redir, fd);
 		else
@@ -105,6 +107,7 @@ int	ft_herdoc(t_shell *shell, t_dir *redir)
 	else
 	{
 		wait(NULL);
+		signal(SIGINT, handle_sigint);
 	}
 	return (fd);
 }
