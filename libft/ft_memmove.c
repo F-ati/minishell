@@ -6,7 +6,7 @@
 /*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/24 13:32:23 by jmayou            #+#    #+#             */
-/*   Updated: 2024/09/08 13:09:01 by fel-aziz         ###   ########.fr       */
+/*   Updated: 2024/11/22 21:24:57 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,6 @@
 
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	// size_t	i;
-
-	// i = 0;
 	if (dst == 0 && src == 0)
 		return (NULL);
 	else if (dst > src)

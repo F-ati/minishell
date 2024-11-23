@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
+/*   By: fel-aziz <fel-aziz@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/01 14:52:43 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/22 15:41:22 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/22 21:25:17 by fel-aziz         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,13 @@ char	*ft_strdup(const char *s1)
 	}
 	return (dup);
 }
+
 char	*ft_strdup_and_rm_nprintible(const char *s1)
 {
 	int		i;
 	char	*dup;
 	int		len;
-	int	j;
+	int		j;
 
 	i = 0;
 	j = 0;
@@ -46,7 +47,7 @@ char	*ft_strdup_and_rm_nprintible(const char *s1)
 		return (0);
 	while (i < len)
 	{
-		if(s1[i] != '\1')
+		if (s1[i] != '\1')
 		{
 			dup[j] = s1[i];
 			j++;
