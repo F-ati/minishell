@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/24 12:57:19 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/24 13:44:23 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,6 +138,5 @@ void	ft_execution(t_shell *shell)
 		execute_pipe_command(shell, nb);
 		shell->list = list;
 	}
-	update_exit_status_env(shell);
 	ensure_fds_closed(shell->list);
 }

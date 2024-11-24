@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 14:08:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/23 22:38:59 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/24 13:29:15 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	ft_execve(t_shell *shell, char *path)
 	if (pid == 0)
 	{
 		signal (SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		execve(path, shell->list->command, shell->env);
 		perror("bash : execve");
 		g_signal = 1;

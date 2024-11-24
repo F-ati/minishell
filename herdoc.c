@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/16 14:09:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/24 12:32:43 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/24 13:25:54 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ int	ft_herdoc(t_shell *shell, t_dir *redir)
 	if (id == 0)
 	{
 		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		if (redir->is_quoted == 1)
 			ft_unexpanded_heredoc_vars(redir, fd);
 		else

@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 19:47:28 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/23 22:36:19 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/24 13:29:03 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ int	pipe_fork_and_execute(t_shell *shell, int nb, t_execution *exec)
 	}
 	if (exec->id == 0)
 	{
-		child_ps(exec, nb, shell);
 		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
+		child_ps(exec, nb, shell);
 	}
 	else
 		parent_ps(exec, shell);

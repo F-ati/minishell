@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:11:07 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/24 13:07:29 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/24 13:47:26 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	handle_sigint(int sigint)
 
 void	ft_update_exit_status_env(t_shell *minishell)
 {
+	minishell->data.input = readline("minishell$ ");
 	if (g_signal == 1)
 	{
 		update_exit_status_env(minishell);
