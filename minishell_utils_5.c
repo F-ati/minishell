@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 21:07:29 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/23 22:56:49 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/24 12:24:32 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ void	update_exit_status_env(t_shell *shell)
 {
 	char	*tmp[2];
 
-	tmp[1] = ft_itoa(shell->exit_status);
+	(void)shell;
+	tmp[1] = ft_itoa(g_signal);
 	tmp[0] = ft_strjoin("?=", tmp[1]);
 	ft_apdate_env(shell, tmp[0]);
 	free(tmp[0]);

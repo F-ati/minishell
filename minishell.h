@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 21:24:05 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/23 22:19:30 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/24 13:10:24 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 
-int g_signal;
+int					g_signal;
 
 typedef struct s_dir
 {
@@ -103,7 +103,6 @@ typedef struct s_shell
 	char			**export;
 	t_list			*list;
 	t_data			data;
-	int				exit_status;
 	int				len;
 	char			**path;
 	int				i;
@@ -184,6 +183,7 @@ void				filling_redir(t_list *list, int typ, char *name, int *c);
 void				decrypt(char **command);
 // signal //
 
+void				ft_update_exit_status_env(t_shell *minishell);
 void				handle_sigint(int sigint);
 
 // free //

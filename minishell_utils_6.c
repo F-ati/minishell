@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 21:12:13 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/23 22:38:43 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/24 12:58:46 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 void	print_error(t_shell *shell, char *old_pwd)
 {
 	(void)shell;
-	
 	free(old_pwd);
 	perror("minishell: cd");
 	g_signal = 1;

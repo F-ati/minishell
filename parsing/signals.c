@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/23 12:11:07 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/23 22:56:09 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/24 13:07:29 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,13 @@ void	handle_sigint(int sigint)
 	rl_replace_line("", 0);
 	rl_redisplay();
 	g_signal = 1;
-	update_exit_status_env(shell);
+}
 
+void	ft_update_exit_status_env(t_shell *minishell)
+{
+	if (g_signal == 1)
+	{
+		update_exit_status_env(minishell);
+		g_signal = 0;
+	}
 }

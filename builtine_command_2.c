@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 12:32:40 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/23 22:51:06 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/24 13:09:20 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	ft_echo(t_shell *shell)
 		}
 	}
 	ft_print_str(shell, j);
-	// g_signal = 0;
 }
 
 void	ft_env(t_shell *data)
@@ -81,7 +80,6 @@ void	ft_env(t_shell *data)
 			write(1, "\n", 1);
 		j++;
 	}
-	data->exit_status = 0;
 }
 
 void	ft_pwd(t_shell *shell)
@@ -98,7 +96,6 @@ void	ft_pwd(t_shell *shell)
 	}
 	ft_write_data(1, path);
 	write(1, "\n", 1);
-	g_signal = 0;
 	free(path);
 }
 

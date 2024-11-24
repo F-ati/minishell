@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/22 19:59:55 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/23 22:38:01 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/24 12:35:44 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,14 @@ void	generate_exec_path(t_shell *shell, int flag, char *str)
 
 void	init_var(t_shell *shell)
 {
-	shell->list->fd_heredoc = -1;
-	shell->list->fd_input = -1;
-	shell->list->fd_output = -1;
+	t_list	*tmp_list;
+
+	tmp_list = shell->list;
+	while (tmp_list != NULL)
+	{
+		tmp_list->fd_heredoc = -1;
+		tmp_list->fd_input = -1;
+		tmp_list->fd_output = -1;
+		tmp_list = tmp_list->next;
+	}
 }

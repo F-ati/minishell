@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/06 14:58:50 by jmayou            #+#    #+#             */
-/*   Updated: 2024/11/23 22:54:40 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/24 13:06:06 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		minishell.data.input = readline("minishell$ ");
+		ft_update_exit_status_env(&minishell);
 		if (minishell.data.input == NULL)
 			break ;
 		if (sp_tb(minishell.data.input) != ft_strlen(minishell.data.input))
@@ -108,7 +109,6 @@ int	main(int ac, char **av, char **env)
 					&g_signal);
 			if (minishell.data.com)
 				ft_minishell(&minishell);
-
 		}
 		add_history(minishell.data.input);
 		free(minishell.data.input);

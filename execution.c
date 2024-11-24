@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/08 15:58:09 by fel-aziz          #+#    #+#             */
-/*   Updated: 2024/11/23 22:52:09 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/24 12:57:19 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,16 +94,15 @@ void	execute_pipe_command(t_shell *shell, int nb)
 	init_exec_var(exec, nb);
 	while (shell->list != NULL)
 	{
-		init_var(shell);
 		if (ft_open_redictions(shell) == -1)
 		{
-			free (exec);
+			free(exec);
 			ensure_fds_closed(shell->list);
 			return ;
 		}
 		if (pipe_fork_and_execute(shell, nb, exec))
 		{
-			free (exec);
+			free(exec);
 			signal(SIGINT, handle_sigint);
 			return ;
 		}
@@ -111,16 +110,18 @@ void	execute_pipe_command(t_shell *shell, int nb)
 	if (exec->preve_fd != -1)
 		close(exec->preve_fd);
 	wait_all_children(shell, exec->child_pids, nb);
-	free (exec->child_pids);
-	free (exec);
+	free(exec->child_pids);
+	free(exec);
 }
 
 void	ft_execution(t_shell *shell)
 {
-	int	redir_ret;
-	int	nb;
+	int		redir_ret;
+	int		nb;
+	t_list	*list;
 
 	redir_ret = 0;
+	list = shell->list;
 	init_var(shell);
 	handle_heredoc(shell);
 	redir_ret = ft_open_redictions(shell);
@@ -133,6 +134,10 @@ void	ft_execution(t_shell *shell)
 	else if (nb == 1)
 		ft_execut_simple_command(shell);
 	else
+	{
 		execute_pipe_command(shell, nb);
+		shell->list = list;
+	}
 	update_exit_status_env(shell);
+	ensure_fds_closed(shell->list);
 }

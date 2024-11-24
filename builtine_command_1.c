@@ -6,7 +6,7 @@
 /*   By: jmayou <jmayou@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 11:16:27 by root              #+#    #+#             */
-/*   Updated: 2024/11/23 22:36:19 by jmayou           ###   ########.fr       */
+/*   Updated: 2024/11/24 13:09:40 by jmayou           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ void	ft_cd(t_shell *shell, int args_nb)
 		print_error(shell, old_pwd);
 		return ;
 	}
-	g_signal = 0;
 	update_pwd_env(shell, old_pwd);
 }
 
@@ -95,7 +94,6 @@ void	ft_export(t_shell *shell)
 	if (shell->list->command[1] == NULL)
 	{
 		print_exported_vars(shell);
-		g_signal = 0;
 		return ;
 	}
 	while (shell->list->command[i] != NULL)
@@ -105,7 +103,6 @@ void	ft_export(t_shell *shell)
 			if (check_is_has_value(shell->list->command[i]) == 1)
 				ft_apdate_env(shell, shell->list->command[i]);
 			ft_apdate_export(shell, shell->list->command[i]);
-			g_signal = 0;
 		}
 		else
 			export_invalid_arg_error(shell, shell->list->command[i]);
@@ -130,7 +127,6 @@ void	ft_unset(t_shell *shell)
 				shell->export = remove_and_resize(shell->export, indx1);
 			if (indx2 >= 0)
 				shell->env = remove_and_resize(shell->env, indx2);
-			g_signal = 0;
 		}
 		else
 		{

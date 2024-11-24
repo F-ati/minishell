@@ -19,7 +19,7 @@ int	pipe_fork_and_execute(t_shell *shell, int nb, t_execution *exec)
 		perror("pipe");
 		return (1);
 	}
-	signal (SIGINT, SIG_IGN);
+	signal(SIGINT, SIG_IGN);
 	exec->id = fork();
 	if (exec->id == -1)
 	{
@@ -29,8 +29,8 @@ int	pipe_fork_and_execute(t_shell *shell, int nb, t_execution *exec)
 	if (exec->id == 0)
 	{
 		child_ps(exec, nb, shell);
-		signal (SIGINT, SIG_DFL);
-	}	
+		signal(SIGINT, SIG_DFL);
+	}
 	else
 		parent_ps(exec, shell);
 	return (0);
